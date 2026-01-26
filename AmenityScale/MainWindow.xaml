@@ -1,0 +1,321 @@
+﻿<Window
+    x:Class="AmenityScale.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AmenityScale"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+
+    <Grid>
+        <DockPanel>
+
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File" />
+                <MenuItem Header="_Web" IsEnabled="False" />
+            </Menu>
+
+            <Grid>
+                <TabControl Margin="12">
+
+                    <!--  ===================== LOCATIONS TAB =====================  -->
+                    <TabItem Header="Locations">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock
+                                    FontSize="18"
+                                    FontWeight="SemiBold"
+                                    Text="Locations" />
+                                <Button
+                                    Margin="12,0,0,0"
+                                    Padding="12,6"
+                                    Click="LocationCreate_Click"
+                                    Content="Create" />
+                                <Button
+                                    Margin="8,0,0,0"
+                                    Padding="12,6"
+                                    Click="LocationUpdate_Click"
+                                    Content="Update" />
+                                <Button
+                                    Margin="8,0,0,0"
+                                    Padding="12,6"
+                                    Click="LocationDelete_Click"
+                                    Content="Delete" />
+                                <Button
+                                    Margin="8,0,0,0"
+                                    Padding="12,6"
+                                    Click="LocationRead_Click"
+                                    Content="Refresh" />
+                            </StackPanel>
+
+                            <DataGrid
+                                x:Name="LocationsGrid"
+                                Grid.Row="1"
+                                Margin="0,12,0,0"
+                                AutoGenerateColumns="True"
+                                IsReadOnly="True"
+                                SelectionChanged="LocationsGrid_SelectionChanged"
+                                SelectionMode="Single"
+                                SelectionUnit="FullRow" />
+                        </Grid>
+                    </TabItem>
+
+
+                    <!--  ===================== AMENITIES TAB =====================  -->
+                    <TabItem Header="Amenities">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Text="Amenities" />
+                                <Button
+                                    Margin="12,0,0,0"
+                                    Padding="12,2"
+                                    Click="AmenityCreate_Click"
+                                    Content="Create" />
+                                <Button
+                                    Margin="8,0,0,0"
+                                    Padding="12,2"
+                                    Click="AmenityUpdate_Click"
+                                    Content="Update" />
+                                <Button
+                                    Margin="8,0,0,0"
+                                    Padding="12,2"
+                                    Click="AmenityDelete_Click"
+                                    Content="Delete" />
+                                <Button
+                                    Margin="8,0,0,0"
+                                    Padding="12,2"
+                                    Click="AmenityRead_Click"
+                                    Content="Refresh" />
+                            </StackPanel>
+
+                            <DataGrid
+                                x:Name="AmenitiesGrid"
+                                Grid.Row="1"
+                                Margin="0,12,0,0"
+                                AutoGenerateColumns="False"
+                                IsReadOnly="True"
+                                SelectionChanged="AmenitiesGrid_SelectionChanged"
+                                SelectionMode="Single"
+                                SelectionUnit="FullRow">
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        Width="70"
+                                        Binding="{Binding AmenityID}"
+                                        Header="ID" />
+                                    <DataGridTextColumn
+                                        Width="200"
+                                        Binding="{Binding Name}"
+                                        Header="Name" />
+                                    <DataGridTextColumn
+                                        Width="140"
+                                        Binding="{Binding CategoryName}"
+                                        Header="Category" />
+                                    <DataGridTextColumn
+                                        Width="200"
+                                        Binding="{Binding Street}"
+                                        Header="Street" />
+                                    <DataGridTextColumn
+                                        Width="120"
+                                        Binding="{Binding City}"
+                                        Header="City" />
+                                    <DataGridTextColumn
+                                        Width="110"
+                                        Binding="{Binding SubdivisionID}"
+                                        Header="SubdivisionID" />
+                                    <DataGridTextColumn
+                                        Width="110"
+                                        Binding="{Binding Latitude}"
+                                        Header="Lat" />
+                                    <DataGridTextColumn
+                                        Width="110"
+                                        Binding="{Binding Longitude}"
+                                        Header="Lng" />
+                                    <DataGridTextColumn
+                                        Width="110"
+                                        Binding="{Binding GeometryType}"
+                                        Header="Geom" />
+                                    <DataGridTextColumn
+                                        Width="250"
+                                        Binding="{Binding LocationWKT}"
+                                        Header="WKT" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+
+
+                </TabControl>
+
+                <!--  Overlay behind drawer  -->
+                <Border
+                    x:Name="Overlay"
+                    Panel.ZIndex="10"
+                    Background="#80000000"
+                    MouseDown="Overlay_MouseDown"
+                    Visibility="Collapsed" />
+
+                <!--  Right drawer  -->
+                <Border
+                    x:Name="Drawer"
+                    Width="380"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Stretch"
+                    Panel.ZIndex="20"
+                    Background="White"
+                    BorderBrush="#DDD"
+                    BorderThickness="1">
+
+                    <Border.RenderTransform>
+                        <TranslateTransform x:Name="DrawerTranslate" X="380" />
+                    </Border.RenderTransform>
+
+                    <Grid Margin="16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            x:Name="DrawerTitle"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Text="Create" />
+
+                        <!--  ============ AMENITY FORM ============  -->
+                        <StackPanel
+                            x:Name="AmenityFormPanel"
+                            Grid.Row="1"
+                            Margin="0,16,0,16"
+                            Visibility="Collapsed">
+
+                            <TextBlock Text="Amenity Name" />
+                            <TextBox x:Name="AmenityNameInput" Margin="0,4,0,12" />
+
+                            <TextBlock Text="Street" />
+                            <TextBox x:Name="StreetInput" Margin="0,4,0,12" />
+
+                            <TextBlock Text="City" />
+                            <TextBox x:Name="CityInput" Margin="0,4,0,12" />
+
+                            <TextBlock Text="Category" />
+                            <ComboBox
+                                x:Name="CategoryCombo"
+                                Margin="0,4,0,12"
+                                DisplayMemberPath="Name"
+                                SelectedValuePath="CategoryID" />
+
+                            <TextBlock Text="Subdivision" />
+                            <ComboBox
+                                x:Name="SubdivisionCombo"
+                                Margin="0,4,0,12"
+                                DisplayMemberPath="Name"
+                                SelectedValuePath="SubdivisionID" />
+
+                            <TextBlock Margin="0,4,0,4" Text="Geometry Type" />
+                            <StackPanel Margin="0,0,0,12" Orientation="Horizontal">
+                                <RadioButton
+                                    x:Name="GeoPointRadio"
+                                    Margin="0,0,12,0"
+                                    Checked="GeoType_Checked"
+                                    Content="Point (Lat/Lng)"
+                                    IsChecked="True" />
+                                <RadioButton
+                                    x:Name="GeoWktRadio"
+                                    Checked="GeoType_Checked"
+                                    Content="WKT" />
+                            </StackPanel>
+
+                            <StackPanel x:Name="LatLngPanel">
+                                <TextBlock Text="Latitude" />
+                                <TextBox x:Name="LatitudeInput" Margin="0,4,0,12" />
+
+                                <TextBlock Text="Longitude" />
+                                <TextBox x:Name="LongitudeInput" Margin="0,4,0,12" />
+                            </StackPanel>
+
+                            <StackPanel x:Name="WktPanel" Visibility="Collapsed">
+                                <TextBlock Text="Location WKT" />
+                                <TextBox
+                                    x:Name="LocationWktInput"
+                                    Height="90"
+                                    Margin="0,4,0,12"
+                                    AcceptsReturn="True"
+                                    TextWrapping="Wrap"
+                                    VerticalScrollBarVisibility="Auto" />
+                            </StackPanel>
+
+                        </StackPanel>
+
+                        <!--  ============ LOCATION FORM ============  -->
+                        <StackPanel
+                            x:Name="LocationFormPanel"
+                            Grid.Row="1"
+                            Margin="0,16,0,16"
+                            Visibility="Collapsed">
+
+                            <TextBlock Text="Location Name" />
+                            <TextBox x:Name="LocationNameInput" Margin="0,4,0,12" />
+
+                            <TextBlock Text="Street Number" />
+                            <TextBox x:Name="StreetNumberInput" Margin="0,4,0,12" />
+
+                            <TextBlock Text="Street" />
+                            <TextBox x:Name="LocationStreetInput" Margin="0,4,0,12" />
+
+                            <TextBlock Text="City" />
+                            <TextBox x:Name="LocationCityInput" Margin="0,4,0,12" />
+
+                            <TextBlock Text="Subdivision" />
+                            <ComboBox
+                                x:Name="LocationSubdivisionCombo"
+                                Margin="0,4,0,12"
+                                DisplayMemberPath="Name"
+                                SelectedValuePath="SubdivisionID" />
+
+                            <TextBlock Text="Latitude" />
+                            <TextBox x:Name="LocationLatitudeInput" Margin="0,4,0,12" />
+
+                            <TextBlock Text="Longitude" />
+                            <TextBox x:Name="LocationLongitudeInput" Margin="0,4,0,12" />
+
+                        </StackPanel>
+
+                        <!--  Drawer buttons  -->
+                        <StackPanel
+                            Grid.Row="2"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                            <Button
+                                Margin="0,0,8,0"
+                                Padding="12,6"
+                                Click="CloseDrawer_Click"
+                                Content="Cancel" />
+                            <Button
+                                Padding="12,6"
+                                Click="Save_Click"
+                                Content="Save" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

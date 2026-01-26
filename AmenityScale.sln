@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmenityScale", "AmenityScale\AmenityScale.csproj", "{6D8CA850-7CEC-476E-A53A-B1A8D72324DE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F6CE5E7-3934-49C4-BA1B-7A52DA60BFA3} = {1F6CE5E7-3934-49C4-BA1B-7A52DA60BFA3}
+		{920A7529-36A1-422C-9063-A8F37F4CE6A9} = {920A7529-36A1-422C-9063-A8F37F4CE6A9}
+		{F6A29092-67B2-4B2A-9A35-62EE3814968C} = {F6A29092-67B2-4B2A-9A35-62EE3814968C}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{920A7529-36A1-422C-9063-A8F37F4CE6A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoTools_Objects", "GeoTools_Objects\GeoTools_Objects.csproj", "{F6A29092-67B2-4B2A-9A35-62EE3814968C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crud_Tester_5000", "Crud_Tester_5000\Crud_Tester_5000.csproj", "{1F6CE5E7-3934-49C4-BA1B-7A52DA60BFA3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D8CA850-7CEC-476E-A53A-B1A8D72324DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D8CA850-7CEC-476E-A53A-B1A8D72324DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D8CA850-7CEC-476E-A53A-B1A8D72324DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D8CA850-7CEC-476E-A53A-B1A8D72324DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{920A7529-36A1-422C-9063-A8F37F4CE6A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{920A7529-36A1-422C-9063-A8F37F4CE6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{920A7529-36A1-422C-9063-A8F37F4CE6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{920A7529-36A1-422C-9063-A8F37F4CE6A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6A29092-67B2-4B2A-9A35-62EE3814968C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6A29092-67B2-4B2A-9A35-62EE3814968C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6A29092-67B2-4B2A-9A35-62EE3814968C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6A29092-67B2-4B2A-9A35-62EE3814968C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F6CE5E7-3934-49C4-BA1B-7A52DA60BFA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F6CE5E7-3934-49C4-BA1B-7A52DA60BFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F6CE5E7-3934-49C4-BA1B-7A52DA60BFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F6CE5E7-3934-49C4-BA1B-7A52DA60BFA3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54E71480-43C9-44D2-9D51-A385EAF61F3E}
+	EndGlobalSection
+EndGlobal
