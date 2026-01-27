@@ -1,4 +1,10 @@
-﻿using DataAccess;
+﻿/// <summary>
+/// Version         Date        Coder                   Remarks
+/// 0.1             2015-26-01  Greeley                 Early morning email wanting command line crud. This is that.
+/// 
+
+
+using DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
