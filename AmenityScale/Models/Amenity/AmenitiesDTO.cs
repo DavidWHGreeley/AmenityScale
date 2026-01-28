@@ -1,4 +1,9 @@
-﻿using System;
+﻿/// <summary>
+/// Version         Date        Coder                   Remarks
+/// 0.1             2015-26-01  Greeley                 Init DTO
+/// 
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,22 +24,12 @@ namespace AmenityScale.Models.Amenity
 
         public int SubdivisionID { get; set; }
 
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
 
-        public string GeometryType { get; set; }   // "Point" or "WKT"
+        // "Point" or "WKT"
+        public string GeometryType { get; set; }
         public string LocationWKT { get; set; }
     }
 
-    public class CategoryDTO
-    {
-        public int CategoryID { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class SubdivisionDTO
-    {
-        public int SubdivisionID { get; set; }
-        public string Name { get; set; }
-    }
 }

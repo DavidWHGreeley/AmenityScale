@@ -638,8 +638,6 @@ namespace Geotool_Objects
 
 
             return polygon.Clone();
-
-
         }
 
         public String ToSQLGEOGRAPHY()

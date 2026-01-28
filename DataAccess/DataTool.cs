@@ -1895,9 +1895,6 @@ namespace DataAccess
 
         private AmenityRow MapAmenityRow(System.Data.SqlClient.SqlDataReader r)
         {
-            // Columns from sp_Amenity_Read / Create / Update SELECT:
-            // AmenityID, Name, CategoryID, CategoryName, Street, City, SubdivisionID,
-            // Latitude, Longitude, GeometryType, LocationWKT
 
             var row = new AmenityRow
             {
@@ -1957,16 +1954,16 @@ namespace DataAccess
         }
 
         public AmenityRow Amenity_Update(
-    int amenityId,
-    string name = null,
-    int? categoryId = null,
-    string street = null,
-    string city = null,
-    int? subdivisionId = null,
-    decimal? latitude = null,
-    decimal? longitude = null,
-    string locationWkt = null
-)
+            int amenityId,
+            string name = null,
+            int? categoryId = null,
+            string street = null,
+            string city = null,
+            int? subdivisionId = null,
+            decimal? latitude = null,
+            decimal? longitude = null,
+            string locationWkt = null
+        )
         {
 
             PDM.Data.SqlHelper.ExecuteNonQuery(

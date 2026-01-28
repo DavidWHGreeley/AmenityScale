@@ -1,17 +1,22 @@
-﻿using AmenityScale.Data;
-using AmenityScale.Models;
+﻿/// <summary>
+/// Version         Date        Coder           Remarks
+/// 0.1             2015-24-01  Greeley         Rewrite from RESTful to WPF
+
+
+
+using AmenityScale.Data;
+using AmenityScale.Models.Amenity;
+using AmenityScale.Models.Location;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using AmenityScale.Models.Amenity;
-using AmenityScale.Models.Location;
 
 namespace AmenityScale
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private readonly AmenityDataAccess _amenityRepo = new AmenityDataAccess();
         private readonly LocationDataAccess _locationRepo = new LocationDataAccess();
@@ -53,14 +58,30 @@ namespace AmenityScale
         {
             try
             {
-                CategoryCombo.ItemsSource = _amenityRepo.ReadCategories();
-                SubdivisionCombo.ItemsSource = _amenityRepo.ReadSubdivisions();
-                LocationSubdivisionCombo.ItemsSource = _locationRepo.ReadSubdivisions();
+                var categories = _amenityRepo.ReadCategories();
+
+                // TODO: Put Subdivision in a shard file (Maybe the lookup.cs)
+                var amenitySubdivisions = _amenityRepo.ReadSubdivisions();
+                var locationSubdivisions = _locationRepo.ReadSubdivisions();
+
+                CategoryCombo.ItemsSource = categories;
+                CategoryCombo.DisplayMemberPath = "CategoryName";
+                CategoryCombo.SelectedValuePath = "CategoryID";
+
+                SubdivisionCombo.ItemsSource = amenitySubdivisions;
+                SubdivisionCombo.DisplayMemberPath = "SubdivisionName";
+                SubdivisionCombo.SelectedValuePath = "SubdivisionID";
+
+                LocationSubdivisionCombo.ItemsSource = locationSubdivisions;
+                LocationSubdivisionCombo.DisplayMemberPath = "SubdivisionName";
+                LocationSubdivisionCombo.SelectedValuePath = "SubdivisionID";
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Lookup load failed");
+            }
         }
 
-        // ===================== AMENITIES =====================
 
         private void RefreshAmenities()
         {
@@ -169,8 +190,12 @@ namespace AmenityScale
             else
             {
                 GeoPointRadio.IsChecked = true;
-                LatitudeInput.Text = d.Latitude.ToString(CultureInfo.InvariantCulture);
-                LongitudeInput.Text = d.Longitude.ToString(CultureInfo.InvariantCulture);
+                LatitudeInput.Text = d.Latitude.HasValue
+                    ? d.Latitude.Value.ToString(CultureInfo.InvariantCulture)
+                    : "";
+                LongitudeInput.Text = d.Longitude.HasValue
+                    ? d.Longitude.Value.ToString(CultureInfo.InvariantCulture)
+                    : "";
             }
 
             UpdateGeoPanels();
@@ -217,8 +242,6 @@ namespace AmenityScale
                 LocationWKT = wkt
             };
         }
-
-        // ===================== LOCATIONS =====================
 
         private void RefreshLocations()
         {
@@ -309,8 +332,22 @@ namespace AmenityScale
 
             try { LocationSubdivisionCombo.SelectedValue = d.SubdivisionID; } catch { }
 
-            LocationLatitudeInput.Text = d.Latitude.ToString(CultureInfo.InvariantCulture);
-            LocationLongitudeInput.Text = d.Longitude.ToString(CultureInfo.InvariantCulture);
+            if (string.Equals(d.GeometryType, "WKT", StringComparison.OrdinalIgnoreCase))
+            {
+                GeoWktRadio.IsChecked = true;
+                LocationWktInput.Text = d.LocationWKT ?? "";
+            }
+            else
+            {
+                GeoPointRadio.IsChecked = true;
+                LatitudeInput.Text = d.Latitude.HasValue
+                    ? d.Latitude.Value.ToString(CultureInfo.InvariantCulture)
+                    : "";
+                LongitudeInput.Text = d.Longitude.HasValue
+                    ? d.Longitude.Value.ToString(CultureInfo.InvariantCulture)
+                    : "";
+            }
+            UpdateGeoPanels();
         }
 
         private LocationDTO ReadLocationForm(int locationId)
@@ -336,8 +373,6 @@ namespace AmenityScale
                 Longitude = lng
             };
         }
-
-        // ===================== DRAWER =====================
 
         private void ShowAmenityDrawer()
         {
