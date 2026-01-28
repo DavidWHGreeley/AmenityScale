@@ -20,6 +20,8 @@ namespace AmenityScale.Models.Location
         public int SubdivisionID { get; set; }
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
+
+        // "Point" or "WKT"
         public string GeometryType { get; set; }
         public string LocationWKT { get; set; }
     }

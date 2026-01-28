@@ -64,7 +64,51 @@
                                 IsReadOnly="True"
                                 SelectionChanged="LocationsGrid_SelectionChanged"
                                 SelectionMode="Single"
-                                SelectionUnit="FullRow" />
+                                SelectionUnit="FullRow">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        Width="70"
+                                        Binding="{Binding LocationID}"
+                                        Header="ID" />
+                                    <DataGridTextColumn
+                                        Width="200"
+                                        Binding="{Binding LocationName}"
+                                        Header="Name" />
+                                    <DataGridTextColumn
+                                        Width="90"
+                                        Binding="{Binding StreetNumber}"
+                                        Header="Address Number" />
+                                    <DataGridTextColumn
+                                        Width="200"
+                                        Binding="{Binding Street}"
+                                        Header="Street" />
+                                    <DataGridTextColumn
+                                        Width="120"
+                                        Binding="{Binding City}"
+                                        Header="City" />
+                                    <DataGridTextColumn
+                                        Width="110"
+                                        Binding="{Binding SubdivisionID}"
+                                        Header="Subdivision" />
+                                    <DataGridTextColumn
+                                        Width="110"
+                                        Binding="{Binding Latitude}"
+                                        Header="Lat" />
+                                    <DataGridTextColumn
+                                        Width="110"
+                                        Binding="{Binding Longitude}"
+                                        Header="Lng" />
+                                    <DataGridTextColumn
+                                        Width="110"
+                                        Binding="{Binding GeometryType}"
+                                        Header="Geom" />
+                                    <DataGridTextColumn
+                                        Width="250"
+                                        Binding="{Binding LocationWKT}"
+                                        Header="WKT" />
+                                </DataGrid.Columns>
+
+                            </DataGrid>
                         </Grid>
                     </TabItem>
 

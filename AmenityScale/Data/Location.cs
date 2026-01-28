@@ -1,6 +1,7 @@
 ﻿/// <summary>
 /// Version         Date        Coder                   Remarks
 /// 0.1             2015-26-01  Greeley & Patrick       Did a session where we brought a clone of Amenity Into Locaiton.
+/// 0.2             2015-26-01  Greeley                 Forgot to do a map check for Geo type and WKT
 /// 
 
 
@@ -125,6 +126,8 @@ namespace AmenityScale.Data
                 Street = r["Street"]?.ToString() ?? "",
                 City = r["City"]?.ToString() ?? "",
                 SubdivisionID = Convert.ToInt32(r["SubdivisionID"]),
+                GeometryType = r["GeometryType"]?.ToString() ?? "",
+                LocationWKT = r["LocationWKT"]?.ToString() ?? ""
             };
 
             row.Latitude = r["Latitude"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(r["Latitude"]);
