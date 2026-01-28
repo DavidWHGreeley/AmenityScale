@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="AmenityScale.MainWindow" BaseTypeListCollapsed="true">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+  <Class Name="AmenityScale.MainWindow">
+    <Position X="2.5" Y="0.5" Width="3.75" />
     <NestedTypes>
       <Enum Name="AmenityScale.MainWindow.DrawerMode" Collapsed="true">
         <TypeIdentifier>
@@ -13,48 +13,59 @@
       <HashCode>gEAJgAAgIgAMEIAARAAAAMAAJGAAAIXAEJCIAACAgCA=</HashCode>
       <FileName>MainWindow.xaml.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.1" Collapsed="true" />
-  </Class>
-  <Class Name="AmenityScale.Data.LocationDataAccess">
-    <Position X="4.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AEQAAAAAAAAAAAAAEAAAAAgAAAEAAEAAAAAAAAAAEAA=</HashCode>
-      <FileName>Data\Location.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="AmenityScale.Data.AmenityDataAccess">
-    <Position X="6.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AEQAAAAAAAAAAAAAMAAAAAgAAAEAAEAAAAABAAAAAAA=</HashCode>
-      <FileName>Data\Amenity.cs</FileName>
-    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_amenityRepo" />
+      <Field Name="_locationRepo" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_amenities" />
+      <Field Name="_locations" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="AmenityScale.Models.Amenity.AmenityDTO">
-    <Position X="9.25" Y="0.5" Width="1.5" />
+    <Position X="12.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAACAEAAAAAIAAAIEAQAACAAAAAAAQIACAAAAAA=</HashCode>
       <FileName>Models\Amenity\AmenitiesDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AmenityScale.Models.Amenity.SubdivisionDTO">
-    <Position X="12.75" Y="0.5" Width="1.5" />
+  <Class Name="AmenityScale.Models.Category.CategoryDTO">
+    <Position X="15" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAgAAAAAAAAAEAAAAAAQAAAABAAAAAAAAAA=</HashCode>
-      <FileName>Models\Amenity\AmenitiesDTO.cs</FileName>
+      <HashCode>AAABAAACAAAAAAAAAAAAAAgAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Category\CategoryDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AmenityScale.Models.Location.LocationDTO">
-    <Position X="11" Y="0.5" Width="1.5" />
+    <Position X="12.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAACEAAAAAIAAIIEAAAAAAAAAAAAQIAAAAAAAA=</HashCode>
       <FileName>Models\Location\LocationDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AmenityScale.Models.Location.CategoryDTO">
-    <Position X="12.75" Y="2.5" Width="1.5" />
+  <Class Name="AmenityScale.Models.Subdivision.SubdivisionDTO">
+    <Position X="15" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAACAAAAAAAAAAAAAAgAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\Location\LocationDTO.cs</FileName>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAEAAAAAAQAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Models\Subdivision\SubdivisionDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AmenityScale.Data.AmenityDataAccess">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEQAAAAAAAAAAAAAMAAAAAgAAAEAAEAAAAABAAAAAAA=</HashCode>
+      <FileName>Data\Amenity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AmenityScale.Data.LocationDataAccess">
+    <Position X="9.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAAAAAAAAAAAAAEAAAAAgAAAEAAEAAAAAAAAAAEAA=</HashCode>
+      <FileName>Data\Location.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

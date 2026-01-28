@@ -210,6 +210,7 @@
     <Compile Include="Models\Amenity\AmenitiesDTO.cs" />
     <Compile Include="Models\Amenity\AmenityCreateDTO.cs" />
     <Compile Include="Models\Amenity\AmenityUpdateDTO.cs" />
+    <Compile Include="Models\Category\CategoryDTO.cs" />
     <Compile Include="Models\Country\CountryDTO.cs" />
     <Compile Include="Models\Location\LocationDTO.cs" />
     <Compile Include="Models\Subdivision\SubdivisionDTO.cs" />

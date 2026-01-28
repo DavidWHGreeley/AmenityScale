@@ -14,6 +14,8 @@ namespace AmenityScale.Models.Subdivision
     public class SubdivisionDTO
     {
         public int SubdivisionID { get; set; }
+        public int CountryID { get; set; }
+        public string SubdivisionCode { get; set; }
         public string SubdivisionName { get; set; }
     }
 }

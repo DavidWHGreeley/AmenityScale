@@ -16,7 +16,7 @@ using System.Windows.Media.Animation;
 
 namespace AmenityScale
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private readonly AmenityDataAccess _amenityRepo = new AmenityDataAccess();
         private readonly LocationDataAccess _locationRepo = new LocationDataAccess();

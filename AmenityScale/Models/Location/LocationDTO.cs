@@ -25,20 +25,4 @@ namespace AmenityScale.Models.Location
         public string GeometryType { get; set; }
         public string LocationWKT { get; set; }
     }
-    // TODO: Remove and put into it's own DTO File (Duplicated in Amentiy)
-    public class CategoryDTO
-    {
-        public int CategoryID { get; set; }
-        public string CategoryName { get; set; }
-        public int BaseWeight { get; set; }
-        public bool IsNegative { get; set; }
-    }
-    // TODO: Remove and put into it's own DTO File (Duplicated in Amentiy)
-    public class SubdivisionDTO
-    {
-        public int SubdivisionID { get; set; }
-        public int CountryID { get; set; }
-        public string SubdivisionCode { get; set; }
-        public string SubdivisionName { get; set; }
-    }
 }

@@ -7,6 +7,7 @@
 
 using AmenityScale.Models;
 using AmenityScale.Models.Location;
+using AmenityScale.Models.Subdivision;
 using System;
 using System.Collections.Generic;
 using System.Data;

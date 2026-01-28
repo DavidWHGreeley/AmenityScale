@@ -5,6 +5,8 @@
 
 using AmenityScale.Models;
 using AmenityScale.Models.Amenity;
+using AmenityScale.Models.Category;
+using AmenityScale.Models.Subdivision;
 using System;
 using System.Collections.Generic;
 using System.Linq;
