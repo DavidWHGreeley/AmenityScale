@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 
 
@@ -22,7 +23,7 @@ namespace AmenityScale.Data
     {
         private static String GetConnectionString()
         {
-            return @"Server=(localdb)\MSSQLLocalDB;Database=DB_AmeniScale;Trusted_Connection=Yes;";
+            return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
 
         public List<AmenityDTO> ReadAll()

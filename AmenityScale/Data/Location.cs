@@ -10,6 +10,7 @@ using AmenityScale.Models.Location;
 using AmenityScale.Models.Subdivision;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -17,9 +18,9 @@ namespace AmenityScale.Data
 {
     public class LocationDataAccess
     {
-        private static string GetConnectionString()
+        private static String GetConnectionString()
         {
-            return @"Server=(localdb)\MSSQLLocalDB;Database=DB_AmeniScale;Trusted_Connection=Yes;";
+            return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
 
         public List<LocationDTO> ReadAll()
