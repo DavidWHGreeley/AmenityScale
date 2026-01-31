@@ -1,18 +1,22 @@
-# Amenity Score App
-I think I got all the referncces and issues that may come up when pulling the project and possibly building.
+#  Building
+## Step 1) Database
+- Unzip the the folder `Project_AmeniScale.zip`. Navigate to the folder `Project_AmeniScale\Sprint 1\SQL\`. Inside the folder should be 4 files:AmeniScale_DDl.sql, AmeniScale_DML.sql, CRUD.sq1, and CRUD_Test.sql
+- From within SQL Server Management Studio 2X, open the following scripts and run them in this order:
+    - AmeniScale_DDl.sql
+    - AmeniScale_DML.sql
+    - CRUD.sq1
+ 
+  *Note:* `CRUD_Test.sql` is just a file for testing the SP inside CRUD.sql only. 
 
-Since the WPF side isn't done, to test the you can use the command-line application crud-tester-5000. Esnure that when you open the solution file (.sln) you change the build from Amenity Scale to Crud tester (Drop down located next to the Start button in Visual Studio 2022).
-
-If you need to build for release for some reason, Change "Debug" to "release" in the drop down (Next to Any Cpu)
-
-##  Building
-### Inside Visual Studio
-One that that will have to be changed like all of Clays projects is your Database connection. Go into the `DataTool.cs` find the string inside `private static String GetConnectionString()` and change the Server to match your SQL conenction. That's all you have to change.
-You should now be able to just either Debug OR  buld it. If you build the release, remember the exe is in `Crud_Tester_5000\bin\debug OR release folders`
-
-### Inside SQL Server Management Studio 21
-There are Three files you need to run that you can find on this Repo: https://github.com/DavidWHGreeley/AmeniScaleSQL
-
-In SSMS run the DDL, DML and CRUD.sql
+## Step 2) Visual Studio
+- Navigate to `Project_AmeniScale\Sprint 1\AmeniScale\AmenityScale`. Inside you should see a `.sln` folder. Open the solution. 
+- Only 2 Projects of the 4 in this solution are relavent to this Capstone: `AmenityScale` and `GeoTools_Objects`.
+- Expand the Node `AmenityScale` and locate the file `App.config`. Change the Connection string to match your local database where `DB_AmeniScale` is located.
+- From the toolbar click, Build -> Clean Solution. Again from Build -> Rebuild Solution.
+- Set `AmenityScale` as your default project if it  isn't already.
+- Now run the application.
+ **Note: IGNORE**: `DataAccess` and `Crud_Tester_5000`
 
 
+  # AmenityScaleWPF
+  Inside the WPF you have access to the basic CRUD For the Table Location and Amenties. You should be able to execute all stored procedures for these tables. 
