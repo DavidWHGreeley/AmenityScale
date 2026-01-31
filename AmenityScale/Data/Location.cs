@@ -2,6 +2,7 @@
 /// Version         Date        Coder                   Remarks
 /// 0.1             2015-26-01  Greeley & Patrick       Did a session where we brought a clone of Amenity Into Locaiton.
 /// 0.2             2015-26-01  Greeley                 Forgot to do a map check for Geo type and WKT
+/// 0.3             2015-31-01  Greeley                 Removed the OUT param from the SP. Removed the OUT from Create method
 /// 
 
 
@@ -43,11 +44,6 @@ namespace AmenityScale.Data
             if (dto == null) throw new ArgumentNullException(nameof(dto));
             if (dto.SubdivisionID <= 0) throw new Exception("Subdivision is required.");
 
-            var outId = new SqlParameter("@LocationID", SqlDbType.Int)
-            {
-                Direction = ParameterDirection.Output
-            };
-
             PDM.Data.SqlHelper.ExecuteNonQuery(
                 GetConnectionString(),
                 "sp_Location_Create",
@@ -57,13 +53,8 @@ namespace AmenityScale.Data
                 new SqlParameter("@City", dto.City ?? string.Empty),
                 new SqlParameter("@SubdivisionID", dto.SubdivisionID),
                 new SqlParameter("@Latitude", dto.Latitude),
-                new SqlParameter("@Longitude", dto.Longitude),
-                outId
+                new SqlParameter("@Longitude", dto.Longitude)
             );
-
-            // Optional: store the new ID back into the DTO if you want
-            if (outId.Value != DBNull.Value)
-                dto.LocationID = Convert.ToInt32(outId.Value);
         }
 
         public void Update(LocationDTO dto)
