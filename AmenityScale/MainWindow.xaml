@@ -60,7 +60,7 @@
                                 x:Name="LocationsGrid"
                                 Grid.Row="1"
                                 Margin="0,12,0,0"
-                                AutoGenerateColumns="True"
+                                AutoGenerateColumns="False"
                                 IsReadOnly="True"
                                 SelectionChanged="LocationsGrid_SelectionChanged"
                                 SelectionMode="Single"
@@ -268,18 +268,23 @@
                                         Margin="0,4,0,12"
                                         DisplayMemberPath="Name"
                                         SelectedValuePath="SubdivisionID" />
-                                    <TextBlock Margin="0,4,0,4" Text="Geometry Type" />
+                                    <TextBlock
+                                        Margin="0,4,0,4"
+                                        Text="Geometry Type"
+                                        Visibility="hidden" />
                                     <StackPanel Margin="0,0,0,12" Orientation="Horizontal">
                                         <RadioButton
                                             x:Name="GeoPointRadio"
                                             Margin="0,0,12,0"
                                             Checked="GeoType_Checked"
                                             Content="Point (Lat/Lng)"
-                                            IsChecked="True" />
+                                            IsChecked="True"
+                                            Visibility="hidden" />
                                         <RadioButton
                                             x:Name="GeoWktRadio"
                                             Checked="GeoType_Checked"
-                                            Content="WKT" />
+                                            Content="WKT"
+                                            Visibility="hidden" />
                                     </StackPanel>
                                     <StackPanel x:Name="LatLngPanel">
                                         <TextBlock Text="Latitude" />
