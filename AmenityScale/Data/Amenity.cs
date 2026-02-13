@@ -1,12 +1,14 @@
 ﻿/// <summary>
 /// Version         Date        Coder           Remarks
 /// 0.1             2015-26-01  Greeley         Connected to Database using similar logic to Clays DataAccess Project.
+/// 0.2             2026-07-02  Greeley         Added get amenties in radius SP call
 
 
 using AmenityScale.Models;
 using AmenityScale.Models.Amenity;
 using AmenityScale.Models.Category;
 using AmenityScale.Models.Subdivision;
+using AmenityScale.Models.AmenitiesInRadius;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +37,7 @@ namespace AmenityScale.Data
 
             while (r.Read())
             {
-                list.Add(MapAmenityDTO(r));
+                list.Add(MapAmenityDTO<AmenityDTO>(r));
             }
 
             return list;
@@ -142,10 +144,31 @@ namespace AmenityScale.Data
             return list;
         }
 
-        private AmenityDTO MapAmenityDTO(System.Data.SqlClient.SqlDataReader r)
+        // Untested code.
+        public List<AmenitiesInRadiusDTO> GetAmenitiesInRadius(decimal latitude, decimal longitude, decimal radiusMeters)
         {
+            var list = new List<AmenitiesInRadiusDTO>();
+            System.Data.SqlClient.SqlDataReader d =
+              PDM.Data.SqlHelper.ExecuteReader(
+                GetConnectionString(),
+                "sp_GetAmenitiesInRadius",
+                new System.Data.SqlClient.SqlParameter("@Latitude", latitude),
+                new System.Data.SqlClient.SqlParameter("@Longitude", longitude),
+                new System.Data.SqlClient.SqlParameter("@SearchRadiusMeters", radiusMeters)
+              );
+            while (d.Read())
+            {
+                list.Add(MapAmenityDTO<AmenitiesInRadiusDTO>(d));
+            }
+            return list;
+        }
 
-            var row = new AmenityDTO
+
+        // T is either AmenityDTO or AmenitiesInRadius, both of which share the same properties. This allows us to reuse the mapping logic.
+        // T = Generic Type 
+        private T MapAmenityDTO<T>(System.Data.SqlClient.SqlDataReader r) where T : AmenityDTO, new()
+        {
+            var row = new T
             {
                 AmenityID = Convert.ToInt32(r["AmenityID"]),
                 Name = r["Name"]?.ToString() ?? "",
@@ -161,8 +184,26 @@ namespace AmenityScale.Data
             row.Latitude = r["Latitude"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(r["Latitude"]);
             row.Longitude = r["Longitude"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(r["Longitude"]);
 
+            // Up till this point, the function was assuming the type was AmenityDTO. This is where the type might be different and allows us to 
+            // use a different type for our returned amenities.
+            if (row is AmenitiesInRadiusDTO searchResult && HasColumn(r, "DistanceInMeters"))
+            {
+                searchResult.DistanceInMeters = Convert.ToDouble(r["DistanceInMeters"]);
+            }
+
             return row;
         }
+
+        private bool HasColumn(System.Data.SqlClient.SqlDataReader r, string columnName)
+        {
+            for (int i = 0; i < r.FieldCount; i++)
+            {
+                if (r.GetName(i).Equals(columnName, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+
         private static object DbOrNull(object v) => v ?? DBNull.Value;
 
     }
