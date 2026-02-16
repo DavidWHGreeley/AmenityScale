@@ -24,7 +24,7 @@ namespace DataAccess
         //DO NOT CHANGE ANYTHING ELSE!
         private static String GetConnectionString()
         {
-            return @"Server=(localdb)\MSSQLLocalDB;Database=DB_AmeniScale;Trusted_Connection=Yes;";
+            return @"Server=Server=DESKTOP-F2RBVRA\MSSQLSERVER01;Database=DB_AmeniScale;Trusted_Connection=Yes;";
         }
 
 

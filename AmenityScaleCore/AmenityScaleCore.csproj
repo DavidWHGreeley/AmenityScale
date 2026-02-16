@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpKml.Core" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeoTools_Objects\GeoTools_Objects.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SITG_DATA_ACCESS_LIBRARY">
+      <HintPath>..\AmenityScale\lib\SITG_DATA_ACCESS_LIBRARY.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+
+</Project>

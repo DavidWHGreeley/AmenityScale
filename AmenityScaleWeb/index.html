@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmeniScaleWeb Basic Map</title>
+    <link rel="stylesheet", href="styles.css">
+</head>
+    <body>
+        <h1>Search Amenities by Location: </h1>
+
+        <button onclick="getAmenitiesInRadius(44.245019, -76.54911, 1000)">Find Amenities</button>
+
+        <div id="map"></div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=YOURAPIKEY&callback=initMap&loading=async" async></script>
+        <script src="script.js"></script>
+    </body>
+</html>
