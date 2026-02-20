@@ -4,16 +4,12 @@
 /// 0.2             2026-07-02  Greeley         Added get amenties in radius SP call
 
 
-using AmenityScaleCore.Models;
+using AmenityScaleCore.Models.AmenitiesInRadius;
 using AmenityScaleCore.Models.Amenity;
 using AmenityScaleCore.Models.Category;
 using AmenityScaleCore.Models.Subdivision;
-using AmenityScaleCore.Models.AmenitiesInRadius;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
 
 
@@ -145,16 +141,16 @@ namespace AmenityScaleCore.Data
         }
 
         // Untested code.
-        public List<AmenitiesInRadiusDTO> GetAmenitiesInRadius(decimal latitude, decimal longitude, decimal radiusMeters)
+        public List<AmenitiesInRadiusDTO> GetAmenitiesInRadius(userLocationRequestDTO userLocation)
         {
             var list = new List<AmenitiesInRadiusDTO>();
             System.Data.SqlClient.SqlDataReader d =
               PDM.Data.SqlHelper.ExecuteReader(
                 GetConnectionString(),
                 "sp_Amenity_GetInRadius",
-                new System.Data.SqlClient.SqlParameter("@Latitude", latitude),
-                new System.Data.SqlClient.SqlParameter("@Longitude", longitude),
-                new System.Data.SqlClient.SqlParameter("@SearchRadiusMeters", radiusMeters)
+                new System.Data.SqlClient.SqlParameter("@Latitude", userLocation.lat),
+                new System.Data.SqlClient.SqlParameter("@Longitude", userLocation.lng),
+                new System.Data.SqlClient.SqlParameter("@SearchRadiusMeters", userLocation.radius)
               );
             while (d.Read())
             {
