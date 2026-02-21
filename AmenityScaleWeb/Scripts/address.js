@@ -43,6 +43,7 @@ debugBtn.addEventListener('click', () => {
     form.requestSubmit()
 })
 
+// Calls the Nominatim API to convert a street address into lat / lon coordinates.
 async function geocodeAddress({ streetNumber, streetName, city, province }) {
     const query = `${streetNumber} ${streetName}, ${city}, ${province}, Canada`
     const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`
@@ -63,6 +64,8 @@ async function geocodeAddress({ streetNumber, streetName, city, province }) {
     }
 }
 
+// On valid form submission, geocodes the address, updates the shared addressData
+// object, and fires address:resolved so other functions can react.
 form.addEventListener('submit', async (e) => {
     e.preventDefault()
 

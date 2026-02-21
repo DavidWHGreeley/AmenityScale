@@ -40,6 +40,8 @@ function buildAmenityPin() {
     return pin.element
 }
 
+// Removes the previously placed location marker from the map.
+// Called before placing a new one to ensure only one active marker exists at a time.
 function clearActiveMarker() {
     if (activeMarker) {
         activeMarker.map = null
@@ -47,6 +49,8 @@ function clearActiveMarker() {
     }
 }
 
+// Draws a radius circle around the selected position to visually represent
+// the search area used when fetching amenities.
 function drawRadiusCircle(position) {
     if (radiusCircle) {
         radiusCircle.setMap(null)
@@ -64,6 +68,7 @@ function drawRadiusCircle(position) {
     })
 }
 
+// Builds a heatmap layer from amenity coordinates.
 function buildHeatmap(data) {
     const points = data.map((amenity) =>
         new google.maps.LatLng(amenity.Latitude, amenity.Longitude)
@@ -111,11 +116,11 @@ export function panToAddress({ lat, lon, displayName }) {
     map.panTo(position)
     map.setZoom(15)
 
-    console.log('[map] Panned to address:', position)
+    console.log('[Location] Panned to address:', position)
 }
 
 export function displayScore(score) {
-    console.log('[map] Score:', score)
+    console.log('[Location] Score:', score)
 }
 
 function main() {
@@ -162,6 +167,8 @@ function attachInfoWindow(marker, content) {
     })
 }
 
+// Clears all existing amenity markers, plots fresh ones from the result set,
+// attaches info windows, updates the score display, and rebuilds the heatmap.
 export function displayResults(data, score) {
     for (const m of markers) m.map = null
     markers = []

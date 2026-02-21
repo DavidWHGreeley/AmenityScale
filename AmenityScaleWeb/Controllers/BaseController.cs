@@ -10,8 +10,8 @@ namespace AmenityScaleWeb.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            // If your NOT using Windows Environment Variable, Edit the string after the ?? 
-            ViewBag.GoogleMapsKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ?? "Your Key Here";
+            // If your NOT using Windows Environment Variable, Edit the string after the ?? - "Your_Key_Here"
+            ViewBag.GoogleMapsKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ?? "Your_Key_Here";
             base.OnActionExecuting(filterContext);
         }
     }

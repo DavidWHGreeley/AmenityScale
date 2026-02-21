@@ -12,6 +12,8 @@ This file is for API specific task
 import { displayResults } from './map.js'
 import { DEFAULT_RADIUS } from './constants.js'
 
+// Fetches all amenities within the given radius of a lat/lng coordinate.
+
 export async function getAmenitiesInRadius(lat, lng, radius = DEFAULT_RADIUS) {
     if (lat == null || lng == null || radius == null) {
         console.error('Missing parameters for getAmenitiesInRadius')
