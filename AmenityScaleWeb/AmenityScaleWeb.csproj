@@ -206,8 +206,6 @@
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="index.html" />
-    <Content Include="script.js" />
     <Content Include="Scripts\address.js" />
     <Content Include="Scripts\api-requests.js" />
     <Content Include="Scripts\app.js" />
@@ -243,7 +241,6 @@
     <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
     <Content Include="Scripts\map.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="styles.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
