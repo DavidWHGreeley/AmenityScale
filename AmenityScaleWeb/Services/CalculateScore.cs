@@ -6,6 +6,7 @@ using System.Collections.Generic;
 /// Version         Date        Coder                   Remarks
 /// 0.1             26-02-16    Cody                    calculate Score.
 /// 
+
 namespace AmenityScaleWeb.Services
 {
     public class CalculateScore

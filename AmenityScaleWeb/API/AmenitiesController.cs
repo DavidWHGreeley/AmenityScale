@@ -8,6 +8,7 @@ using System.Web.Http;
 /// Version         Date        Coder                   Remarks
 /// 0.1             2026-02-16  Patrick                 Initial get amenties
 /// 0.2             26-02-16    Cody                    calculate Score.
+/// 0.3             26-02-20    Greeley                 Changed lat lng radius to use a DTO. 
 /// 
 
 

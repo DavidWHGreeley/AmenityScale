@@ -3,6 +3,10 @@
 /// 0.1             2026-16-02  Patrick & Greeley       Init Script
 ///
 
+/*
+Open Street Maps API to get the Address Information
+*/
+
 export const addressData = {
     streetNumber: null,
     streetName: null,

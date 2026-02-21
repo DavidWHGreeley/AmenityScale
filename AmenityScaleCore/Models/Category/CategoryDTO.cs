@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/// <summary>
+/// Version         Date        Coder                   Remarks
+/// 0.1             2015-26-01  Greeley                 Init DTO
+/// 
 
 namespace AmenityScaleCore.Models.Category
 {

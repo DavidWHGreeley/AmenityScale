@@ -1,20 +1,16 @@
 ﻿/// <summary>
 /// Version         Date        Coder                   Remarks
 /// 0.1             2026-16-02  Patrick                 Init Script
-/// 0.2             2026-20-02  Cody & Greeley          Refactor and added Save address function 
+/// 0.2             2026-20-02  Cody & Greeley          Refactor and added Save address function
 ///
 
+
+/*
+This file is for API specific task
+*/
+
 import { displayResults } from './map.js'
-
-const DEFAULT_RADIUS = 1000
-
-document.addEventListener('address:resolved', (e) => {
-    const addressData = e.detail
-    const { lat, lon } = addressData
-
-    getAmenitiesInRadius(lat, lon, DEFAULT_RADIUS)
-    saveAddress(addressData)
-})
+import { DEFAULT_RADIUS } from './constants.js'
 
 export async function getAmenitiesInRadius(lat, lng, radius = DEFAULT_RADIUS) {
     if (lat == null || lng == null || radius == null) {

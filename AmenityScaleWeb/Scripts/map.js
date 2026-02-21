@@ -4,11 +4,15 @@
 /// 0.2             2026-16-02  Greeley                 Isolated this to just for google maps logic
 /// 0.3				2026-19-02 	Cody					Heatmaps
 ///
-import { displayScore } from './app.js'
+
+
+/*
+This file is for Google maps specific task
+*/
+
+import { DEFAULT_RADIUS } from './constants.js'
 
 const kingstonCenter = { lat: 44.245019, lng: -76.54911 }
-
-const DEFAULT_RADIUS = 1000
 
 let map
 let markers = []
@@ -86,6 +90,34 @@ export function registerClickHandler(callback) {
     onLocationSelected = callback
 }
 
+/**
+ * Called by app.js when address:resolved fires.
+ * Pans the map to the resolved address and drops a marker.
+ */
+export function panToAddress({ lat, lon, displayName }) {
+    const position = { lat, lng: lon }
+
+    clearActiveMarker()
+
+    activeMarker = new google.maps.marker.AdvancedMarkerElement({
+        position,
+        map,
+        title: displayName,
+        content: buildLocationPin(),
+        zIndex: 999,
+    })
+
+    drawRadiusCircle(position)
+    map.panTo(position)
+    map.setZoom(15)
+
+    console.log('[map] Panned to address:', position)
+}
+
+export function displayScore(score) {
+    console.log('[map] Score:', score)
+}
+
 function main() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: kingstonCenter,
@@ -94,30 +126,6 @@ function main() {
     })
 
     attachMapClickListener()
-    listenForAddressResolved()
-}
-
-function listenForAddressResolved() {
-    document.addEventListener('address:resolved', (e) => {
-        const { lat, lon, displayName } = e.detail
-        const position = { lat, lng: lon }
-
-        clearActiveMarker()
-
-        activeMarker = new google.maps.marker.AdvancedMarkerElement({
-            position,
-            map,
-            title: displayName,
-            content: buildLocationPin(),
-            zIndex: 999,
-        })
-
-        drawRadiusCircle(position)
-        map.panTo(position)
-        map.setZoom(15)
-
-        console.log('[map] Panned to address:', position)
-    })
 }
 
 function attachMapClickListener() {
@@ -170,6 +178,7 @@ export function displayResults(data, score) {
         attachInfoWindow(amenityMarker, content)
         markers.push(amenityMarker)
     }
+
     displayScore(score)
     buildHeatmap(data)
 }
