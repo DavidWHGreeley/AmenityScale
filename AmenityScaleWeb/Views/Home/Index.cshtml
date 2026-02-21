@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "AmeniScaleWeb Basic Map";
+    Layout = null;
+}
+
+@*
+    /// <summary>
+    /// Version         Date        Coder                   Remarks
+    /// 0.1             2015-16-02  Patrict                 Google map Setup.
+    /// 0.2             2026-21-02  Greeley                 Added Address form, debug features, and other basic styling. Updated scripts.
+    /// 0.3             2026-21-02  Greeley                 API key using ViewBag
+*@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/Content/style.css">
+    <title>vite-project</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="navigation-bar">
+            <div class="logo-container">
+                <img src="~/Content/logoMin.png" alt="">
+            </div>
+            <div class="links"></div>
+        </div>
+
+        <div class="content-container">
+
+            <button id="toggle-slider" aria-label="Enter address">&#9776; Enter Address</button>
+            <button id="toggle-heatmap" aria-label="Toggle heatmap">&#x1F525; Heatmap</button>
+
+            <div class="right-slider" id="right-slider">
+                <h2>Your Address</h2>
+
+                <form id="address-form">
+                    <div class="form-group">
+                        <label for="street-number">Street Number</label>
+                        <input type="text" id="street-number" placeholder="123" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="street-name">Street Name</label>
+                        <input type="text" id="street-name" placeholder="Main St" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" placeholder="Kingston" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="province">Province</label>
+                        <select id="province" required>
+                            <option value="" disabled selected>Select province</option>
+                            <option value="ON">Ontario</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="find-amenities">Find Amenities</button>
+                    <p id="geocode-status" class="status-msg"></p>
+                </form>
+
+                <div class="debug-section">
+                    <p class="debug-label">&#x1F6E0; Debug</p>
+                    <button id="debug-fill" type="button">Use 216 Ontario St, Kingston</button>
+                </div>
+            </div>
+
+            <div id="map" class="map"></div>
+        </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleMapsKey&libraries=marker,visualization&loading=async" async></script>
+    <script type="module" src="~/Scripts/app.js"></script>
+    <script type="module" src="~/Scripts/map.js"></script>
+</body>
+
+</html>

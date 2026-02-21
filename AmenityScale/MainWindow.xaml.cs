@@ -3,10 +3,9 @@
 /// 0.1             2015-24-01  Greeley         Rewrite from RESTful to WPF
 
 
-
-using AmenityScale.Data;
-using AmenityScale.Models.Amenity;
-using AmenityScale.Models.Location;
+using AmenityScaleCore.Data;
+using AmenityScaleCore.Models.Amenity;
+using AmenityScaleCore.Models.Location;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;

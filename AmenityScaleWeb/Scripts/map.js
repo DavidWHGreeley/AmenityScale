@@ -1,0 +1,193 @@
+﻿/// <summary>
+/// Version         Date        Coder                   Remarks
+/// 0.1             2026-16-02  Patrick                 Init Script
+/// 0.2             2026-16-02  Greeley                 Isolated this to just for google maps logic
+/// 0.3				2026-19-02 	Cody					Heatmaps
+///
+
+
+/*
+This file is for Google maps specific task
+*/
+
+import { DEFAULT_RADIUS } from './constants.js'
+
+const kingstonCenter = { lat: 44.245019, lng: -76.54911 }
+
+let map
+let markers = []
+let activeMarker = null
+let radiusCircle = null
+let heatmap = null
+let heatmapVisible = false
+let onLocationSelected = null
+
+function buildLocationPin() {
+    const pin = new google.maps.marker.PinElement({
+        background: '#006cb5',
+        borderColor: '#004f8a',
+        glyphColor: '#ffffff',
+    })
+    return pin.element
+}
+
+function buildAmenityPin() {
+    const pin = new google.maps.marker.PinElement({
+        background: '#33b5bd',
+        borderColor: '#228a91',
+        glyphColor: '#ffffff',
+    })
+    return pin.element
+}
+
+// Removes the previously placed location marker from the map.
+// Called before placing a new one to ensure only one active marker exists at a time.
+function clearActiveMarker() {
+    if (activeMarker) {
+        activeMarker.map = null
+        activeMarker = null
+    }
+}
+
+// Draws a radius circle around the selected position to visually represent
+// the search area used when fetching amenities.
+function drawRadiusCircle(position) {
+    if (radiusCircle) {
+        radiusCircle.setMap(null)
+    }
+
+    radiusCircle = new google.maps.Circle({
+        map,
+        center: position,
+        radius: DEFAULT_RADIUS,
+        strokeColor: '#006cb5',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#006cb5',
+        fillOpacity: 0.08,
+    })
+}
+
+// Builds a heatmap layer from amenity coordinates.
+function buildHeatmap(data) {
+    const points = data.map((amenity) =>
+        new google.maps.LatLng(amenity.Latitude, amenity.Longitude)
+    )
+
+    if (heatmap) {
+        heatmap.setMap(null)
+    }
+
+    heatmap = new google.maps.visualization.HeatmapLayer({
+        data: points,
+        map: heatmapVisible ? map : null,
+        radius: 40,
+    })
+}
+
+export function toggleHeatmap() {
+    if (!heatmap) return
+    heatmapVisible = !heatmapVisible
+    heatmap.setMap(heatmapVisible ? map : null)
+}
+
+export function registerClickHandler(callback) {
+    onLocationSelected = callback
+}
+
+/**
+ * Called by app.js when address:resolved fires.
+ * Pans the map to the resolved address and drops a marker.
+ */
+export function panToAddress({ lat, lon, displayName }) {
+    const position = { lat, lng: lon }
+
+    clearActiveMarker()
+
+    activeMarker = new google.maps.marker.AdvancedMarkerElement({
+        position,
+        map,
+        title: displayName,
+        content: buildLocationPin(),
+        zIndex: 999,
+    })
+
+    drawRadiusCircle(position)
+    map.panTo(position)
+    map.setZoom(15)
+
+    console.log('[Location] Panned to address:', position)
+}
+
+export function displayScore(score) {
+    console.log('[Location] Score:', score)
+}
+
+function main() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: kingstonCenter,
+        zoom: 13,
+        mapId: 'YOUR_MAP_ID',
+    })
+
+    attachMapClickListener()
+}
+
+function attachMapClickListener() {
+    map.addListener('click', (event) => {
+        const lat = event.latLng.lat()
+        const lng = event.latLng.lng()
+        const position = { lat, lng }
+
+        clearActiveMarker()
+
+        activeMarker = new google.maps.marker.AdvancedMarkerElement({
+            position,
+            map,
+            title: 'Selected Location',
+            content: buildLocationPin(),
+            zIndex: 999,
+        })
+
+        drawRadiusCircle(position)
+
+        console.log('[map] Click location selected:', position)
+
+        if (typeof onLocationSelected === 'function') {
+            onLocationSelected(position)
+        }
+    })
+}
+
+function attachInfoWindow(marker, content) {
+    const infoWindow = new google.maps.InfoWindow({ content })
+
+    marker.addListener('click', () => {
+        infoWindow.open({ anchor: marker, map, shouldFocus: true })
+    })
+}
+
+// Clears all existing amenity markers, plots fresh ones from the result set,
+// attaches info windows, updates the score display, and rebuilds the heatmap.
+export function displayResults(data, score) {
+    for (const m of markers) m.map = null
+    markers = []
+
+    for (const amenity of data) {
+        const amenityMarker = new google.maps.marker.AdvancedMarkerElement({
+            position: { lat: amenity.Latitude, lng: amenity.Longitude },
+            map,
+            title: amenity.Name,
+            content: buildAmenityPin(),
+        })
+
+        const content = `<h2>${amenity.Name}</h2><p>Distance: ${amenity.DistanceInMeters} meters</p>`
+        attachInfoWindow(amenityMarker, content)
+        markers.push(amenityMarker)
+    }
+
+    displayScore(score)
+    buildHeatmap(data)
+}
+
+window.addEventListener('load', main)

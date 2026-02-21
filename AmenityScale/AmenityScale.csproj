@@ -198,24 +198,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Business\CalculateMetric.cs" />
-    <Compile Include="Data\Amenity.cs" />
-    <Compile Include="Data\Location.cs" />
-    <Compile Include="Data\Lookup.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\AmenitiesInRadius\AmenitiesInRadiusDTO.cs" />
-    <Compile Include="Models\Amenity\AmenitiesDTO.cs" />
-    <Compile Include="Models\Amenity\AmenityCreateDTO.cs" />
-    <Compile Include="Models\Amenity\AmenityUpdateDTO.cs" />
-    <Compile Include="Models\Amenity\AmenitiesInRadiusDTO.cs" />
-    <Compile Include="Models\Category\CategoryDTO.cs" />
-    <Compile Include="Models\Country\CountryDTO.cs" />
-    <Compile Include="Models\Location\LocationDTO.cs" />
-    <Compile Include="Models\Subdivision\SubdivisionDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -243,7 +231,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\AmenityScaleCore\AmenityScaleCore.csproj">
+      <Project>{034dc922-048d-47a6-83be-6178cef10737}</Project>
+      <Name>AmenityScaleCore</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.6.0.2\build\net462\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.6.0.2\build\net462\Microsoft.Data.SqlClient.SNI.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
