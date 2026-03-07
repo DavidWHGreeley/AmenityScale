@@ -1,38 +1,60 @@
 ﻿using AmenityScaleCore.Models.AmenitiesInRadius;
 using AmenityScaleWeb.MathHelpers;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Version         Date        Coder                   Remarks
 /// 0.1             26-02-16    Cody                    calculate Score.
-/// 
+/// 0.2             26-03-07    Patrick                 updated for isochrones
 
 namespace AmenityScaleWeb.Services
 {
     public class CalculateScore
     {
-        public static double? CalcuateAmenityScore(List<AmenitiesInRadiusDTO> amenities, double radiusInMeters)
+        // Dictionary to store 
+        private static readonly Dictionary<int, double> decayMultipliers = new Dictionary<int, double>
         {
-            double positiveBaseValue = 10;
-            double positiveScore = 0;
-            double negativeScore = 0;
+            { 1, 1.0 },
+            { 2, 0.8 },
+            { 3, 0.6 },
+            { 4, 0.4 }
+        };
 
-            if (amenities == null || amenities.Count == 0) return null;
+        public static double CalculateTotalScore(Dictionary<int, List<AmenitiesInRadiusDTO>> rings)
+        {
+            double finalScore = 0.0;
+            // Use a hash set instead of a list to prevent counting the same amenity twice
+            HashSet<int> processedIds = new HashSet<int>();
 
-            foreach (var amenity in amenities)
+            // Sort the keys in rings before converting them to a list just to double check
+            var sortedMinutes = rings.Keys.OrderBy(m => m).ToList();
+
+            foreach (var isochroneNumber in sortedMinutes)
             {
-                double distance = (double)amenity.DistanceInMeters;
-                double decay = Mathhelper.Clamp(1 - (distance / radiusInMeters), 0, 1);
-                if (amenity.IsNegative == 0)
+                // Set multiplier to 0 if the ring number is not in the decayMultipliers dictionary 
+                double decay = decayMultipliers.ContainsKey(isochroneNumber) ? decayMultipliers[isochroneNumber] : 0;
+
+                foreach (var amenity in rings[isochroneNumber])
                 {
-                    positiveScore += positiveBaseValue * decay;
-                }
-                else
-                {
-                    // Calcuate your Negative Amenties here
+                    // Skip amenities that have already been counted
+                    if (processedIds.Contains(amenity.AmenityID)) continue;
+
+                    double contribution = (double)amenity.BaseWeight * decay;
+
+                    // For good vs bad amenities
+                    if (amenity.IsNegative == 0)
+                        finalScore += contribution;
+                    else
+                        finalScore -= contribution;
+
+                    processedIds.Add(amenity.AmenityID);
                 }
             }
-            return positiveScore;
+
+            return finalScore;
         }
+        
     }
 }

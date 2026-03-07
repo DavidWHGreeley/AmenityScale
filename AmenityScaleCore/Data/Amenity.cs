@@ -2,6 +2,7 @@
 /// Version         Date        Coder           Remarks
 /// 0.1             2015-26-01  Greeley         Connected to Database using similar logic to Clays DataAccess Project.
 /// 0.2             2026-07-02  Greeley         Added get amenties in radius SP call
+/// 0.3             2026-07-03  Patrick         Added get amenties in isochrone SP call
 
 
 using AmenityScaleCore.Models.AmenitiesInRadius;
@@ -158,6 +159,25 @@ namespace AmenityScaleCore.Data
             }
             return list;
         }
+
+
+        // Getting amenities within a isochrone
+        public List<AmenitiesInRadiusDTO> GetAmenitiesInIsochrone(string wkt)
+        {
+            var list = new List<AmenitiesInRadiusDTO>();
+            System.Data.SqlClient.SqlDataReader d =
+              PDM.Data.SqlHelper.ExecuteReader(
+                GetConnectionString(),
+                "sp_Amenity_GetInIsochrone",
+                new System.Data.SqlClient.SqlParameter("@PolygonWKT", wkt)
+              );
+            while (d.Read())
+            {
+                list.Add(MapAmenityDTO<AmenitiesInRadiusDTO>(d));
+            }
+            return list;
+        }
+
 
 
         // T is either AmenityDTO or AmenitiesInRadius, both of which share the same properties. This allows us to reuse the mapping logic.
