@@ -10,18 +10,63 @@ This file is for API specific task
 */
 
 import { displayResults } from './map.js'
-import { DEFAULT_RADIUS } from './constants.js'
 
-// Fetches all amenities within the given radius of a lat/lng coordinate.
 
-export async function getAmenitiesInRadius(lat, lng, radius = DEFAULT_RADIUS) {
-    if (lat == null || lng == null || radius == null) {
-        console.error('Missing parameters for getAmenitiesInRadius')
-        return
+export async function whenLocationSelected(wktData) {
+
+    const url = `/api/GetFullNeighborhoodScore`;
+
+    try {
+        // Need to use POST because there isnt enough room in a url to send the 4 polygon shapes
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // Convert to JSON string
+            body: JSON.stringify({
+                wkt1: wktData.wkt1,
+                wkt2: wktData.wkt2,
+                wkt3: wktData.wkt3,
+                wkt4: wktData.wkt4
+            })
+        
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Server call failed: `, response.status);
+        }
+
+        const data = await response.json();
+
+        // Display the results
+        if (data.amenities) {
+            displayResults(data.amenities, data.totalScore);
+        }
+    } catch (error) {
+        console.error('[api] Scoring fetch failed:', error);
+    }
+}
+
+
+// Fetches all amenities within the generated isochrone polygons
+
+export async function getAmenitiesInIsochrone(wkt) {
+
+    if (!wkt) {
+        console.error('Missing parameter for getAmenitiesInIsochrone');
+        return;
     }
 
-    const params = new URLSearchParams({ lat, lng, radius })
-    const url = `/api/GetAmenitiesInRadius?${params}`
+    if (typeof wkt != 'string') {
+        console.error('WKT is not a string.', wkt);
+        return;
+    }
+
+
+    const param = new URLSearchParams({ wkt: wkt });
+    const url = `/api/getAmenitiesInIsochrone?${param}`;
 
     try {
         const response = await fetch(url)
@@ -32,9 +77,10 @@ export async function getAmenitiesInRadius(lat, lng, radius = DEFAULT_RADIUS) {
             displayResults(amenities, score)
         }
     } catch (error) {
-        console.error('[api] Amenity fetch failed:', error)
+        console.error('[api] Amenity fetch failed (isochronal):', error)
     }
 }
+
 
 export async function saveAddress(addressData) {
     const payload = {

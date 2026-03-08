@@ -3,21 +3,23 @@
 /// 0.1             2026-16-02  Patrick                 Init Script
 /// 0.2             2026-16-02  Greeley                 Isolated this to just for google maps logic
 /// 0.3				2026-19-02 	Cody					Heatmaps
-///
+/// 0.4             2026-07-03  Patrick                 Changes from radius to isochrone
 
 
 /*
 This file is for Google maps specific task
 */
 
-import { DEFAULT_RADIUS } from './constants.js'
+import { TRAVEL_TIMES } from './constants.js'
+import { generateIsochroneWKT } from './isochrones.js';
+
 
 const kingstonCenter = { lat: 44.245019, lng: -76.54911 }
 
 let map
 let markers = []
+let isochronePolygons = [];
 let activeMarker = null
-let radiusCircle = null
 let heatmap = null
 let heatmapVisible = false
 let onLocationSelected = null
@@ -49,24 +51,30 @@ function clearActiveMarker() {
     }
 }
 
-// Draws a radius circle around the selected position to visually represent
-// the search area used when fetching amenities.
-function drawRadiusCircle(position) {
-    if (radiusCircle) {
-        radiusCircle.setMap(null)
-    }
+function drawIsochronePolygons(pathList = []) {
 
-    radiusCircle = new google.maps.Circle({
-        map,
-        center: position,
-        radius: DEFAULT_RADIUS,
-        strokeColor: '#006cb5',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: '#006cb5',
-        fillOpacity: 0.08,
-    })
+    isochronePolygons.forEach(isoPoly => {
+        if (isoPoly) isoPoly.setMap(null);
+    });
+
+    isochronePolygons = [];
+
+    pathList.forEach(isoPath => {
+        const newIsoPoly = new google.maps.Polygon({
+            paths: isoPath,
+            map: map,
+            strokeColor: '#006cb5',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#006cb5',
+            fillOpacity: 0.08,
+        });
+
+        isochronePolygons.push(newIsoPoly);
+
+    });
 }
+    
 
 // Builds a heatmap layer from amenity coordinates.
 function buildHeatmap(data) {
@@ -134,7 +142,7 @@ function main() {
 }
 
 function attachMapClickListener() {
-    map.addListener('click', (event) => {
+    map.addListener('click', async (event) => {
         const lat = event.latLng.lat()
         const lng = event.latLng.lng()
         const position = { lat, lng }
@@ -149,13 +157,32 @@ function attachMapClickListener() {
             zIndex: 999,
         })
 
-        drawRadiusCircle(position)
 
-        console.log('[map] Click location selected:', position)
+        try {
+            // Call the function in isochrones.js to create isochrone polygons
+            const allIsochrones = await generateIsochroneWKT(event.latLng, TRAVEL_TIMES);
 
-        if (typeof onLocationSelected === 'function') {
-            onLocationSelected(position)
+            // Add each polygon to the map from largest to smallest
+            const sortedIsochrones = [...allIsochrones].sort((a, b) => b.minutes - a.minutes);
+            drawIsochronePolygons(sortedIsochrones.map(iso => iso.paths));
+
+            // Format the polygons inside the sorted list
+            if (typeof onLocationSelected === 'function') {
+                let wktData = {}
+                let counter = 1;
+
+                for (let i = sortedIsochrones.length - 1; i >=0; i--) {
+                    wktData["wkt" + counter] = sortedIsochrones[i].wkt;
+                    counter++;
+                }
+
+                onLocationSelected(wktData);
+            }
+
+        } catch (error) {
+            console.error("Isochrone calculation failed:", error);
         }
+
     })
 }
 
