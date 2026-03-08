@@ -24,8 +24,8 @@ namespace AmenityScaleWeb.Controllers
         // Origin coordinates and minutes are the inputs
         public async Task<IHttpActionResult> GetIsochrone(string lng, string lat, string minutes)
         {
-            // My api key (just for now, we can add our own as environment variables if we would like to soon)
-            string apiKey = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjE4NzkxOTlmYmU1MjQyMzk5ODEyZjFkZTc2ZjYyMTAxIiwiaCI6Im11cm11cjY0In0=";
+            // Enter your ORS api key here
+            string apiKey = "YOUR_ORS_API_KEY";
             // Specific ORS url for walking
             string url = "https://api.openrouteservice.org/v2/isochrones/foot-walking";
 
