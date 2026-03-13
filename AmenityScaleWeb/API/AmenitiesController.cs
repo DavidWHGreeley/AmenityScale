@@ -73,10 +73,7 @@ namespace AmenityScaleWeb.Controllers
             
             _locationDataAccess.Create(new LocationDTO
             {
-                Latitude = (decimal)request.lat,
-                Longitude = (decimal)request.lng,
-                CalculatedScore = totalScore,
-                SubdivisionID = 1
+                // CODY TODO: Following the DTO, Submit your new score
             });
             // Round score to 2 decimal places
             return Ok(new { amenities = uniqueAmenities, totalScore = System.Math.Round(totalScore, 2)} );
