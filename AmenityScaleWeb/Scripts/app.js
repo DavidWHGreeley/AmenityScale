@@ -2,6 +2,7 @@
 /// Version         Date        Coder                   Remarks
 /// 0.1             2026-16-02  Cody & Greeley          Generic Script created
 /// 0.2             2026-07-03  Patrick                 Changed calls for radius to isochrone
+/// 0.3             2026-12-03  Cody                    Added save-location-score event handler
 
 /*
 File is mostly for UI related tasks.
@@ -32,3 +33,30 @@ registerClickHandler((wkt) => {
 document.getElementById('toggle-heatmap').addEventListener('click', () => {
     toggleHeatmap()
 })
+
+function SaveLocationRequest(locaitonData) {
+    //TODO - HELP WITH CREATING THIS FUNCTION
+}
+
+document.getElementById('save-location-score').addEventListener('click', () => {
+    if (!currentLocation || currentScore === null) {
+        alert('No location or score data available to save.');
+        return;
+    }
+
+    const locationData = {
+        LocationName: currentLocation.name || '',
+        StreetNumber: document.getElementById('street-number').value,
+        Street: document.getElementById('street-name').value,
+        City: document.getElementById('city').value,
+        SubdivisionID: currentLocation.subdivisionId || 0, // adjust as needed
+        Latitude: currentLocation.Latitude,
+        Longitude: currentLocation.Longitude,
+        LocationWKT: currentLocation.LocationWKT || '',
+        GeometryType: currentLocation.GeometryType || 'POINT',
+        CalculatedScore: currentScore,
+        CreatedDate: new Date().toISOString()
+    };
+
+    SaveLocationRequest(locationData);
+});

@@ -1,12 +1,12 @@
-﻿using AmenityScaleCore.Data;
-using AmenityScaleCore.Models.AmenitiesInRadius;
-using AmenityScaleWeb.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
+using AmenityScaleCore.Data;
+using AmenityScaleCore.Models.AmenitiesInRadius;
+using AmenityScaleWeb.Services;
 
 /// <summary>
 /// Version         Date        Coder                   Remarks

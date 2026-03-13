@@ -4,6 +4,7 @@
 /// 0.2             2026-16-02  Greeley                 Isolated this to just for google maps logic
 /// 0.3				2026-19-02 	Cody					Heatmaps
 /// 0.4             2026-07-03  Patrick                 Changes from radius to isochrone
+/// 0.4.1           2026-12-03  Cody                    Added location score to the initial pin
 
 
 /*
@@ -129,6 +130,16 @@ export function panToAddress({ lat, lon, displayName }) {
 
 export function displayScore(score) {
     console.log('[Location] Score:', score)
+
+    if (!activeMarker) return
+
+    const content = `
+        <div>
+            <h3>Location Score</h3>
+            <p><strong>Score:</strong> ${score}</p>
+        </div>`
+
+    attachInfoWindow(activeMarker, content)
 }
 
 function main() {

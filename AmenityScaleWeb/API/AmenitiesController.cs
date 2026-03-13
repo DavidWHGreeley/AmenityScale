@@ -1,11 +1,12 @@
-﻿using AmenityScaleCore.Data;
-using AmenityScaleCore.Models.AmenitiesInRadius;
-using AmenityScaleWeb.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using AmenityScaleCore.Data;
+using AmenityScaleCore.Models.AmenitiesInRadius;
+using AmenityScaleCore.Models.Location;
+using AmenityScaleWeb.Services;
 
 /// <summary>
 /// Version         Date        Coder                   Remarks
@@ -75,8 +76,32 @@ namespace AmenityScaleWeb.Controllers
             }
 
             // Round score to 2 decimal places
-            return Ok(new { amenities = uniqueAmenities, totalScore = System.Math.Round(totalScore, 2)} );
+            return Ok(new { amenities = uniqueAmenities, totalScore = System.Math.Round(totalScore, 2) });
+        }
+
+        [HttpPost]
+        [Route("api/SaveLocation")]
+        public IHttpActionResult SaveLocation([FromBody] LocationWithScoreDTO request)
+        {
+            if (request == null) return BadRequest("Invalid Request");
+
+            var location = new LocationWithScoreDTO
+            {
+                LocationName = request.LocationName,
+                Latitude = (decimal?)request.Latitude,
+                Longitude = (decimal?)request.Longitude,
+                GeometryType = "POINT",
+                LocationWKT = $"POINT({request.Longitude} {request.Latitude})",
+                CalculatedScore = request.CalculatedScore,
+                CreatedDate = DateTime.Now
+            };
+
+            // Save to database
+            _amenityDataAccess.InsertLocation(location);
+
+            return Ok(new { success = true });
         }
 
     }
+
 }

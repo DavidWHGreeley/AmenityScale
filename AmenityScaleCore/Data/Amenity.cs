@@ -3,15 +3,19 @@
 /// 0.1             2015-26-01  Greeley         Connected to Database using similar logic to Clays DataAccess Project.
 /// 0.2             2026-07-02  Greeley         Added get amenties in radius SP call
 /// 0.3             2026-07-03  Patrick         Added get amenties in isochrone SP call
+/// 0.4             2026-12-03  Cody            Added and fixed the baseweight not being read, Added insertlocation for created point
 
 
-using AmenityScaleCore.Models.AmenitiesInRadius;
-using AmenityScaleCore.Models.Amenity;
-using AmenityScaleCore.Models.Category;
-using AmenityScaleCore.Models.Subdivision;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
+using System.Runtime.InteropServices;
+using AmenityScaleCore.Models.AmenitiesInRadius;
+using AmenityScaleCore.Models.Amenity;
+using AmenityScaleCore.Models.Category;
+using AmenityScaleCore.Models.Location;
+using AmenityScaleCore.Models.Subdivision;
 
 
 
@@ -202,9 +206,17 @@ namespace AmenityScaleCore.Data
 
             // Up till this point, the function was assuming the type was AmenityDTO. This is where the type might be different and allows us to 
             // use a different type for our returned amenities.
-            if (row is AmenitiesInRadiusDTO searchResult && HasColumn(r, "DistanceInMeters"))
+            //if (row is AmenitiesInRadiusDTO searchResult && HasColumn(r, "DistanceInMeters"))
+            //{
+            //    searchResult.DistanceInMeters = Convert.ToDouble(r["DistanceInMeters"]);
+            //}
+            if (row is AmenitiesInRadiusDTO searchResult)
             {
-                searchResult.DistanceInMeters = Convert.ToDouble(r["DistanceInMeters"]);
+                if (HasColumn(r, "DistanceInMeters"))
+                    searchResult.DistanceInMeters = Convert.ToDouble(r["DistanceInMeters"]);
+
+                if (HasColumn(r, "BaseWeight"))
+                    searchResult.BaseWeight = Convert.ToInt32(r["BaseWeight"]);
             }
 
             return row;
@@ -221,7 +233,27 @@ namespace AmenityScaleCore.Data
         }
 
         private static object DbOrNull(object v) => v ?? DBNull.Value;
+        public void InsertLocation(LocationWithScoreDTO loc)
+        {
+            var parameters = new[]
+            {
+                new System.Data.SqlClient.SqlParameter("@LocationName", loc.LocationName ?? string.Empty),
+                new System.Data.SqlClient.SqlParameter("@StreetNumber", loc.StreetNumber ?? string.Empty),
+                new System.Data.SqlClient.SqlParameter("@Street", loc.Street ?? string.Empty),
+                new System.Data.SqlClient.SqlParameter("@City", loc.City ?? string.Empty),
+                new System.Data.SqlClient.SqlParameter("@SubdivisionID", loc.SubdivisionID),
+                new System.Data.SqlClient.SqlParameter("@Latitude", loc.Latitude ?? 0),
+                new System.Data.SqlClient.SqlParameter("@Longitude", loc.Longitude ?? 0),
+                new System.Data.SqlClient.SqlParameter("@LocationWKT", loc.LocationWKT ?? string.Empty),
+                new System.Data.SqlClient.SqlParameter("@GeometryType", loc.GeometryType ?? "POINT"),
+                new System.Data.SqlClient.SqlParameter("@CalculatedScore", loc.CalculatedScore),
+                new System.Data.SqlClient.SqlParameter("@CreatedDate", loc.CreatedDate),
+            };
 
+            // Call sp_Location_Create
+            PDM.Data.SqlHelper.ExecuteNonQuery(GetConnectionString(), "sp_Location_Create", parameters);
+        }
     }
+
 
 }
