@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using AmenityScaleCore.Models.Location;
 
 /// <summary>
 /// Version         Date        Coder                   Remarks
@@ -20,6 +21,7 @@ namespace AmenityScaleWeb.Controllers
     public class AmenitiesController : ApiController
     {
         private readonly AmenityDataAccess _amenityDataAccess = new AmenityDataAccess();
+        private readonly LocationDataAccess _locationDataAccess = new LocationDataAccess();
 
         // Helps organize input WKT strings
         public class WKTRequest
@@ -28,6 +30,9 @@ namespace AmenityScaleWeb.Controllers
             public string wkt2 { get; set; }
             public string wkt3 { get; set; }
             public string wkt4 { get; set; }
+            
+            public double lat { get; set; }
+            public  double lng { get; set; }
         }
 
         [HttpPost]
@@ -62,18 +67,17 @@ namespace AmenityScaleWeb.Controllers
             double totalScore = CalculateScore.CalculateTotalScore(rings);
 
             // Remove duplicate amenities between rings
-            var uniqueAmenities = new List<AmenitiesInRadiusDTO>();
-            var processedIds = new HashSet<int>();
-
-            foreach (var ring in rings.Values)
+            var uniqueAmenities = rings.OrderBy(ring => ring.Key).SelectMany(ring => ring.Value).Distinct().ToList();
+            
+            // Save User Score to Location Table
+            
+            _locationDataAccess.Create(new LocationDTO
             {
-                foreach (var a in ring)
-                {
-                    // If the amenity ID can be added into the hash set, add the amenity to the output list
-                    if (processedIds.Add(a.AmenityID)) uniqueAmenities.Add(a);
-                }
-            }
-
+                Latitude = (decimal)request.lat,
+                Longitude = (decimal)request.lng,
+                CalculatedScore = totalScore,
+                SubdivisionID = 1
+            });
             // Round score to 2 decimal places
             return Ok(new { amenities = uniqueAmenities, totalScore = System.Math.Round(totalScore, 2)} );
         }

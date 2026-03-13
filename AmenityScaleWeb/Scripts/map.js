@@ -120,7 +120,7 @@ export function panToAddress({ lat, lon, displayName }) {
         zIndex: 999,
     })
 
-    drawRadiusCircle(position)
+//    drawRadiusCircle(position)
     map.panTo(position)
     map.setZoom(15)
 
@@ -176,6 +176,9 @@ function attachMapClickListener() {
                     counter++;
                 }
 
+                wktData.lat = lat;
+                wktData.lng = lng;
+                
                 onLocationSelected(wktData);
             }
 
