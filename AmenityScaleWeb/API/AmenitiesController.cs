@@ -81,7 +81,7 @@ namespace AmenityScaleWeb.Controllers
                 StreetNumber = request.streetNumber,
                 Street = request.street,
                 City = request.city,
-                SubdivisionID = 0,
+                SubdivisionID = 1,
                 Latitude = (decimal)request.lat,
                 Longitude = (decimal)(request.lng),
                 CalculatedScore = totalScore
