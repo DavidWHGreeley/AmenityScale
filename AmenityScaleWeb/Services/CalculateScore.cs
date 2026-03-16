@@ -1,8 +1,8 @@
-﻿using AmenityScaleCore.Models.AmenitiesInRadius;
-using AmenityScaleWeb.MathHelpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmenityScaleCore.Models.AmenitiesInRadius;
+using AmenityScaleWeb.MathHelpers;
 
 /// <summary>
 /// Version         Date        Coder                   Remarks
@@ -43,6 +43,8 @@ namespace AmenityScaleWeb.Services
 
                     double contribution = (double)amenity.BaseWeight * decay;
 
+                    // System.Diagnostics.Debug.WriteLine($"AmenityID: {amenity.AmenityID}, BaseWeight: {amenity.BaseWeight}, Decay: {decay}, Contribution: {contribution}");
+
                     // For good vs bad amenities
                     if (amenity.IsNegative == 0)
                         finalScore += contribution;
@@ -55,6 +57,6 @@ namespace AmenityScaleWeb.Services
 
             return finalScore;
         }
-        
+
     }
 }
