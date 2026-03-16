@@ -42,7 +42,6 @@ namespace AmenityScaleCore.Data
         public void Create(LocationDTO dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
-            if (dto.SubdivisionID <= 0) throw new Exception("Subdivision is required.");
 
             PDM.Data.SqlHelper.ExecuteNonQuery(
                 GetConnectionString(),
@@ -53,7 +52,9 @@ namespace AmenityScaleCore.Data
                 new SqlParameter("@City", dto.City ?? string.Empty),
                 new SqlParameter("@SubdivisionID", dto.SubdivisionID),
                 new SqlParameter("@Latitude", dto.Latitude),
-                new SqlParameter("@Longitude", dto.Longitude)
+                new SqlParameter("@Longitude", dto.Longitude),
+                new SqlParameter("@CalculatedScore", dto.CalculatedScore)
+
             );
         }
 

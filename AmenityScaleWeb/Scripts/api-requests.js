@@ -13,7 +13,6 @@ import { displayResults } from './map.js'
 
 
 export async function whenLocationSelected(wktData) {
-
     const url = `/api/GetFullNeighborhoodScore`;
 
     try {
@@ -24,11 +23,16 @@ export async function whenLocationSelected(wktData) {
                 'Content-Type': 'application/json'
             },
             // Convert to JSON string
+            
+            // TODO: If your saving an Address you'll have to also add in all the params that make up an address (look at tbl_Location table)
+            // TODO: That also means any DTO used in GetFullNeighborhoodScore MIGHT have to change as well.
             body: JSON.stringify({
                 wkt1: wktData.wkt1,
                 wkt2: wktData.wkt2,
                 wkt3: wktData.wkt3,
-                wkt4: wktData.wkt4
+                wkt4: wktData.wkt4,
+                lat: wktData.lat,
+                lng: wktData.lng
             })
         
         });

@@ -4,6 +4,7 @@
 /// 0.2             2026-16-02  Greeley                 Isolated this to just for google maps logic
 /// 0.3				2026-19-02 	Cody					Heatmaps
 /// 0.4             2026-07-03  Patrick                 Changes from radius to isochrone
+/// 0.4.1           2026-12-03  Cody                    Added location score to the initial pin
 
 
 /*
@@ -12,6 +13,7 @@ This file is for Google maps specific task
 
 import { TRAVEL_TIMES } from './constants.js'
 import { generateIsochroneWKT } from './isochrones.js';
+import { reverseGeocode } from "./address.js";
 
 
 const kingstonCenter = { lat: 44.245019, lng: -76.54911 }
@@ -120,7 +122,7 @@ export function panToAddress({ lat, lon, displayName }) {
         zIndex: 999,
     })
 
-    drawRadiusCircle(position)
+//    drawRadiusCircle(position)
     map.panTo(position)
     map.setZoom(15)
 
@@ -129,9 +131,19 @@ export function panToAddress({ lat, lon, displayName }) {
 
 export function displayScore(score) {
     console.log('[Location] Score:', score)
+
+    if (!activeMarker) return
+
+    const content = `
+        <div>
+            <h3>Location Score</h3>
+            <p><strong>Score:</strong> ${score}</p>
+        </div>`
+
+    attachInfoWindow(activeMarker, content)
 }
 
-function main() {
+async function main() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: kingstonCenter,
         zoom: 13,
@@ -140,6 +152,8 @@ function main() {
 
     attachMapClickListener()
 }
+
+window.main = main
 
 function attachMapClickListener() {
     map.addListener('click', async (event) => {
@@ -159,6 +173,9 @@ function attachMapClickListener() {
 
 
         try {
+            // Gets address from coordinates
+            const address = await reverseGeocode({ lat: lat, lon: lng });
+
             // Call the function in isochrones.js to create isochrone polygons
             const allIsochrones = await generateIsochroneWKT(event.latLng, TRAVEL_TIMES);
 
@@ -176,6 +193,14 @@ function attachMapClickListener() {
                     counter++;
                 }
 
+                wktData.lat = lat;
+                wktData.lng = lng;
+
+                // Address data
+                wktData.streetNumber = address.streetNumber
+                wktData.street = address.street
+                wktData.city = address.city
+                
                 onLocationSelected(wktData);
             }
 
@@ -217,4 +242,4 @@ export function displayResults(data, score) {
     buildHeatmap(data)
 }
 
-window.addEventListener('load', main)
+//window.addEventListener('load', main)
