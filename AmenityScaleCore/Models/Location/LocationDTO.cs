@@ -26,6 +26,8 @@ namespace AmenityScaleCore.Models.Location
         // "Point" or "WKT"
         public string GeometryType { get; set; }
         public string LocationWKT { get; set; }
+        
+        public double CalculatedScore { get; set; }
     }
 
     public class LocationWithScoreDTO : LocationDTO

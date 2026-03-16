@@ -205,18 +205,24 @@ namespace AmenityScaleCore.Data
             row.Longitude = r["Longitude"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(r["Longitude"]);
 
             // Up till this point, the function was assuming the type was AmenityDTO. This is where the type might be different and allows us to 
-            // use a different type for our returned amenities.
-            //if (row is AmenitiesInRadiusDTO searchResult && HasColumn(r, "DistanceInMeters"))
-            //{
-            //    searchResult.DistanceInMeters = Convert.ToDouble(r["DistanceInMeters"]);
-            //}
+            // use a different type for our returned amenities in a radius.
             if (row is AmenitiesInRadiusDTO searchResult)
             {
                 if (HasColumn(r, "DistanceInMeters"))
+                {
                     searchResult.DistanceInMeters = Convert.ToDouble(r["DistanceInMeters"]);
+                }
 
+                if (HasColumn(r, "IsNegative"))
+                {
+                    searchResult.IsNegative = Convert.ToInt32(r["IsNegative"]);
+                }
+                
                 if (HasColumn(r, "BaseWeight"))
-                    searchResult.BaseWeight = Convert.ToInt32(r["BaseWeight"]);
+                {
+                    searchResult.BaseWeight = Convert.ToDouble(r["BaseWeight"]);
+                }
+                
             }
 
             return row;

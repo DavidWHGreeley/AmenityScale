@@ -14,6 +14,7 @@ using AmenityScaleWeb.Services;
 /// 0.2             26-02-16    Cody                    calculate Score.
 /// 0.3             26-02-20    Greeley                 Changed lat lng radius to use a DTO. 
 /// 0.4             2026-02-16  Patrick                 Updated for isochrones
+/// 0.5             2026-03-14  Cody                    GetFullNeighbourhoodScore sending click data to db
 
 
 namespace AmenityScaleWeb.Controllers
@@ -21,6 +22,7 @@ namespace AmenityScaleWeb.Controllers
     public class AmenitiesController : ApiController
     {
         private readonly AmenityDataAccess _amenityDataAccess = new AmenityDataAccess();
+        private readonly LocationDataAccess _locationDataAccess = new LocationDataAccess();
 
         // Helps organize input WKT strings
         public class WKTRequest
@@ -29,6 +31,12 @@ namespace AmenityScaleWeb.Controllers
             public string wkt2 { get; set; }
             public string wkt3 { get; set; }
             public string wkt4 { get; set; }
+
+            public double lat { get; set; }
+            public double lng { get; set; }
+            public string streetNumber { get; set; }
+            public string street { get; set; }
+            public string city { get; set; }
         }
 
         [HttpPost]
@@ -63,43 +71,23 @@ namespace AmenityScaleWeb.Controllers
             double totalScore = CalculateScore.CalculateTotalScore(rings);
 
             // Remove duplicate amenities between rings
-            var uniqueAmenities = new List<AmenitiesInRadiusDTO>();
-            var processedIds = new HashSet<int>();
+            var uniqueAmenities = rings.OrderBy(ring => ring.Key).SelectMany(ring => ring.Value).Distinct().ToList();
 
-            foreach (var ring in rings.Values)
+            // Save User Score to Location Table
+
+            _locationDataAccess.Create(new LocationDTO
             {
-                foreach (var a in ring)
-                {
-                    // If the amenity ID can be added into the hash set, add the amenity to the output list
-                    if (processedIds.Add(a.AmenityID)) uniqueAmenities.Add(a);
-                }
-            }
-
+                LocationName = $"{request.streetNumber} {request.street}",
+                StreetNumber = request.streetNumber,
+                Street = request.street,
+                City = request.city,
+                SubdivisionID = 0,
+                Latitude = (decimal)request.lat,
+                Longitude = (decimal)(request.lng),
+                CalculatedScore = totalScore
+            });
             // Round score to 2 decimal places
             return Ok(new { amenities = uniqueAmenities, totalScore = System.Math.Round(totalScore, 2) });
-        }
-
-        [HttpPost]
-        [Route("api/SaveLocation")]
-        public IHttpActionResult SaveLocation([FromBody] LocationWithScoreDTO request)
-        {
-            if (request == null) return BadRequest("Invalid Request");
-
-            var location = new LocationWithScoreDTO
-            {
-                LocationName = request.LocationName,
-                Latitude = (decimal?)request.Latitude,
-                Longitude = (decimal?)request.Longitude,
-                GeometryType = "POINT",
-                LocationWKT = $"POINT({request.Longitude} {request.Latitude})",
-                CalculatedScore = request.CalculatedScore,
-                CreatedDate = DateTime.Now
-            };
-
-            // Save to database
-            _amenityDataAccess.InsertLocation(location);
-
-            return Ok(new { success = true });
         }
 
     }

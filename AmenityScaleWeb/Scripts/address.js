@@ -1,6 +1,7 @@
 /// <summary>
 /// Version         Date        Coder                   Remarks
 /// 0.1             2026-16-02  Patrick & Greeley       Init Script
+/// 0.2             2026-14-03  Cody                    Reverse geocode
 ///
 
 /*
@@ -98,4 +99,31 @@ form.addEventListener('submit', async (e) => {
 function setStatus(msg, type) {
     statusMsg.textContent = msg
     statusMsg.className = `status-msg ${type}`
+}
+
+// Sends lat/long data to Nominatim to pull address data
+export async function reverseGeocode({ lat, lon }) {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+
+    const response = await fetch(url, {
+        headers: {
+            "User-Agent": "AmeniScale/1.0 (student project)"
+        }
+    })
+
+    if (!response.ok) {
+        throw new Error("Reverse geocoding failed")
+    }
+
+    const result = await response.json()
+
+    if (!result.address) {
+        throw new Error("No address found")
+    }
+
+    return {
+        streetNumber: result.address.house_number || "",
+        street: result.address.road || "",
+        city: result.address.city || result.address.town || result.address.village || "",
+    }
 }
