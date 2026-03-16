@@ -12,6 +12,7 @@ This file is for Google maps specific task
 
 import { TRAVEL_TIMES } from './constants.js'
 import { generateIsochroneWKT } from './isochrones.js';
+import { reverseGeocode } from "./address.js";
 
 
 const kingstonCenter = { lat: 44.245019, lng: -76.54911 }
@@ -131,7 +132,7 @@ export function displayScore(score) {
     console.log('[Location] Score:', score)
 }
 
-function main() {
+async function main() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: kingstonCenter,
         zoom: 13,
@@ -140,6 +141,8 @@ function main() {
 
     attachMapClickListener()
 }
+
+window.main = main
 
 function attachMapClickListener() {
     map.addListener('click', async (event) => {
@@ -159,6 +162,9 @@ function attachMapClickListener() {
 
 
         try {
+            // Gets address from coordinates
+            const address = await reverseGeocode({ lat: lat, lon: lng });
+
             // Call the function in isochrones.js to create isochrone polygons
             const allIsochrones = await generateIsochroneWKT(event.latLng, TRAVEL_TIMES);
 
@@ -178,6 +184,11 @@ function attachMapClickListener() {
 
                 wktData.lat = lat;
                 wktData.lng = lng;
+
+                // Address data
+                wktData.streetNumber = address.streetNumber
+                wktData.street = address.street
+                wktData.city = address.city
                 
                 onLocationSelected(wktData);
             }
@@ -220,4 +231,4 @@ export function displayResults(data, score) {
     buildHeatmap(data)
 }
 
-window.addEventListener('load', main)
+//window.addEventListener('load', main)

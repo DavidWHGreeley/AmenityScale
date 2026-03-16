@@ -1,12 +1,12 @@
-﻿using AmenityScaleCore.Data;
-using AmenityScaleCore.Models.AmenitiesInRadius;
-using AmenityScaleWeb.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
+using AmenityScaleCore.Data;
+using AmenityScaleCore.Models.AmenitiesInRadius;
+using AmenityScaleWeb.Services;
 
 /// <summary>
 /// Version         Date        Coder                   Remarks
@@ -25,7 +25,7 @@ namespace AmenityScaleWeb.Controllers
         public async Task<IHttpActionResult> GetIsochrone(string lng, string lat, string minutes)
         {
             // Enter your ORS api key here
-            string apiKey = "YOUR_ORS_API_KEY";
+            string apiKey = "ORS_API_KEY";
             // Specific ORS url for walking
             string url = "https://api.openrouteservice.org/v2/isochrones/foot-walking";
 
