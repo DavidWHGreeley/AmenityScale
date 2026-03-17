@@ -74,6 +74,7 @@ namespace AmenityScaleWeb.Controllers
             var uniqueAmenities = rings.OrderBy(ring => ring.Key).SelectMany(ring => ring.Value).Distinct().ToList();
 
             // Save User Score to Location Table
+            System.Diagnostics.Debug.WriteLine($"Saving location: {request.streetNumber} {request.street}");
 
             _locationDataAccess.Create(new LocationDTO
             {
@@ -87,7 +88,15 @@ namespace AmenityScaleWeb.Controllers
                 CalculatedScore = totalScore
             });
             // Round score to 2 decimal places
-            return Ok(new { amenities = uniqueAmenities, totalScore = System.Math.Round(totalScore, 2) });
+            //return Ok(new { amenities = uniqueAmenities, totalScore = System.Math.Round(totalScore, 2) });
+            return Ok(new
+            {
+                amenities = uniqueAmenities,
+                totalScore = System.Math.Round(totalScore, 2),
+                streetNumber = request.streetNumber,
+                street = request.street,
+                city = request.city
+            });
         }
 
     }
