@@ -2,6 +2,7 @@
 /// Version         Date        Coder                   Remarks
 /// 0.1             2026-16-02  Patrick                 Init Script
 /// 0.2             2026-20-02  Cody & Greeley          Refactor and added Save address function
+/// 0.2.1           2026-16-03  Cody                    Added Street address to JSON payload
 ///
 
 
@@ -24,7 +25,6 @@ export async function whenLocationSelected(wktData) {
             },
             // Convert to JSON string
             
-            // TODO: If your saving an Address you'll have to also add in all the params that make up an address (look at tbl_Location table)
             // TODO: That also means any DTO used in GetFullNeighborhoodScore MIGHT have to change as well.
             body: JSON.stringify({
                 wkt1: wktData.wkt1,
@@ -32,7 +32,12 @@ export async function whenLocationSelected(wktData) {
                 wkt3: wktData.wkt3,
                 wkt4: wktData.wkt4,
                 lat: wktData.lat,
-                lng: wktData.lng
+                lng: wktData.lng,
+
+                // Street address info added
+                streetNumber: wktData.streetNumber,
+                street: wktData.street,
+                city: wktData.city
             })
         
         });
