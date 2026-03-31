@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmenityScale", "AmenityScale\AmenityScale.csproj", "{6D8CA850-7CEC-476E-A53A-B1A8D72324DE}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F6A29092-67B2-4B2A-9A35-62EE3814968C} = {F6A29092-67B2-4B2A-9A35-62EE3814968C}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoTools_Objects", "GeoTools_Objects\GeoTools_Objects.csproj", "{F6A29092-67B2-4B2A-9A35-62EE3814968C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmenityScaleCore", "AmenityScaleCore\AmenityScaleCore.csproj", "{034DC922-048D-47A6-83BE-6178CEF10737}"
@@ -20,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6D8CA850-7CEC-476E-A53A-B1A8D72324DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D8CA850-7CEC-476E-A53A-B1A8D72324DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D8CA850-7CEC-476E-A53A-B1A8D72324DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D8CA850-7CEC-476E-A53A-B1A8D72324DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6A29092-67B2-4B2A-9A35-62EE3814968C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6A29092-67B2-4B2A-9A35-62EE3814968C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6A29092-67B2-4B2A-9A35-62EE3814968C}.Release|Any CPU.ActiveCfg = Release|Any CPU
