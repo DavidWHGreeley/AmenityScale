@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace AmenityScaleCore.Data
 {
-    class BattleDataAccess
+    public class BattleDataAccess
     {
         private static string GetConnectionString()
         {

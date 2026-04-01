@@ -1,6 +1,6 @@
 ﻿namespace AmenityScaleCore.Models.Battle
 {
-    class BattleParticipantDTO
+    public class BattleParticipantDTO
     {
         public string DisplayName { get; set; }
         public string LocationName { get; set; }

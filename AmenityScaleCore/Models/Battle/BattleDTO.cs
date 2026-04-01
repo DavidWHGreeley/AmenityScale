@@ -2,7 +2,7 @@
 
 namespace AmenityScaleCore.Models.Battle
 {
-    class BattleDTO
+    public class BattleDTO
     {
         public int BattleID { get; set; }
         public Guid BattleCode { get; set; }
