@@ -6,13 +6,11 @@
 /// 
 
 
-using AmenityScaleCore.Models;
 using AmenityScaleCore.Models.Location;
 using AmenityScaleCore.Models.Subdivision;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
 
 namespace AmenityScaleCore.Data
@@ -39,11 +37,11 @@ namespace AmenityScaleCore.Data
             return list;
         }
 
-        public void Create(LocationDTO dto)
+        public int Create(LocationDTO dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
-            PDM.Data.SqlHelper.ExecuteNonQuery(
+            SqlDataReader results = PDM.Data.SqlHelper.ExecuteReader(
                 GetConnectionString(),
                 "sp_Location_Create",
                 new SqlParameter("@LocationName", dto.LocationName ?? string.Empty),
@@ -56,6 +54,8 @@ namespace AmenityScaleCore.Data
                 new SqlParameter("@CalculatedScore", dto.CalculatedScore)
 
             );
+            results.Read();
+            return Convert.ToInt32(results["LocationID"]);
         }
 
         public void Update(LocationDTO dto)
