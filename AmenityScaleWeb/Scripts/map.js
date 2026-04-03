@@ -76,7 +76,7 @@ function drawIsochronePolygons(pathList = []) {
 
     });
 }
-    
+
 
 // Builds a heatmap layer from amenity coordinates.
 function buildHeatmap(data) {
@@ -122,7 +122,7 @@ export function panToAddress({ lat, lon, displayName }) {
         zIndex: 999,
     })
 
-//    drawRadiusCircle(position)
+    //    drawRadiusCircle(position)
     map.panTo(position)
     map.setZoom(15)
 
@@ -144,16 +144,19 @@ export function displayScore(score) {
 }
 
 async function main() {
+    await google.maps.importLibrary("maps");
+    await google.maps.importLibrary("marker");
+    await google.maps.importLibrary("visualization");
+
     map = new google.maps.Map(document.getElementById('map'), {
         center: kingstonCenter,
         zoom: 13,
-        mapId: 'YOUR_MAP_ID',
+        mapId: 'SomeID',
     })
 
     attachMapClickListener()
 }
 
-window.main = main
 
 function attachMapClickListener() {
     map.addListener('click', async (event) => {
@@ -188,7 +191,7 @@ function attachMapClickListener() {
                 let wktData = {}
                 let counter = 1;
 
-                for (let i = sortedIsochrones.length - 1; i >=0; i--) {
+                for (let i = sortedIsochrones.length - 1; i >= 0; i--) {
                     wktData["wkt" + counter] = sortedIsochrones[i].wkt;
                     counter++;
                 }
@@ -200,7 +203,7 @@ function attachMapClickListener() {
                 wktData.streetNumber = address.streetNumber
                 wktData.street = address.street
                 wktData.city = address.city
-                
+
                 onLocationSelected(wktData);
             }
 
@@ -242,4 +245,4 @@ export function displayResults(data, score) {
     buildHeatmap(data)
 }
 
-//window.addEventListener('load', main)
+window.addEventListener('load', main)

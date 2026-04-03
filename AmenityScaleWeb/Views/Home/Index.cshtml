@@ -23,6 +23,8 @@
 
 <body>
     <div id="app">
+        <div id="battle-banner" style="display:none; background:#006cb5; color:white; padding:10px; text-align:center;"></div>
+
         <div class="navigation-bar">
             <div class="logo-container">
                 <img src="~/Content/logoMin.png" alt="">
@@ -34,6 +36,9 @@
 
             <button id="toggle-slider" aria-label="Enter address">&#9776; Enter Address</button>
             <button id="toggle-heatmap" aria-label="Toggle heatmap">&#x1F525; Heatmap</button>
+
+            <button id="start-battle">⚔️ Start Battle</button>
+            <input type="text" id="share-url" style="display:none; width:300px;" readonly />
 
             <div class="right-slider" id="right-slider">
                 <h2>Your Address</h2>
@@ -75,11 +80,17 @@
             </div>
 
             <div id="map" class="map"></div>
+            <div id="leaderboard" style="display:none; padding:10px;"></div>
+
         </div>
     </div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleMapsKey&libraries=marker,visualization,geometry&callback=main" async defer></script>
-    <script type="module" src="~/Scripts/app.js"></script>
+    <script>
+  (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+    key: "@ViewBag.GoogleMapsKey",
+    v: "weekly",
+  });
+    </script>    <script type="module" src="~/Scripts/app.js"></script>
     <script type="module" src="~/Scripts/map.js"></script>
 </body>
 

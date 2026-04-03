@@ -1,4 +1,8 @@
-﻿using AmenityScaleCore.Models.Battle;
+﻿/// <summary>
+/// Version         Date        Coder           Remarks
+/// 0.1             2026-01-04  Greeley         Created Battle Data access layer
+
+using AmenityScaleCore.Models.Battle;
 using AmenityScaleCore.Models.User;
 using System;
 using System.Collections.Generic;

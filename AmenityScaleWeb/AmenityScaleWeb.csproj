@@ -142,6 +142,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\BattleController.cs" />
     <Compile Include="API\ORSController.cs" />
     <Compile Include="API\UsersController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -212,6 +213,7 @@
     <Content Include="Scripts\address.js" />
     <Content Include="Scripts\api-requests.js" />
     <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\Battle.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -237,8 +239,10 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Scripts\usernames.json" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\Constants.js" />
+    <Content Include="Scripts\helperUtil.js" />
     <Content Include="Scripts\isochrones.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -246,6 +250,7 @@
     <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
     <Content Include="Scripts\map.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\user.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
