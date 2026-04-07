@@ -254,7 +254,7 @@ html, body {
             }
 
         #app .content-container .map-container {
-            height: calc(100% - 75px);
+            height: calc(100% - 45px);
             position: relative;
             width: 100%
         }

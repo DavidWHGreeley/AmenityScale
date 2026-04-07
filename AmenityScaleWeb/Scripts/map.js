@@ -14,8 +14,7 @@ This file is for Google maps specific task
 import { TRAVEL_TIMES } from './constants.js'
 import { generateIsochroneWKT } from './isochrones.js';
 import { reverseGeocode } from "./address.js";
-import { isLoadingFn, showScoreFn, endLoadingFn } from './ui.js'
-import { amenityState } from './ui.js'
+import { isLoadingFn, showScoreFn, endLoadingFn, setLocationSelected, amenityState, locationSelected } from './ui.js'
 
 const kingstonCenter = { lat: 44.245019, lng: -76.54911 }
 
@@ -100,6 +99,10 @@ function buildHeatmap(data) {
 }
 
 export function toggleHeatmap() {
+    if (!locationSelected) {
+        new bootstrap.Modal(document.getElementById('noLocationModal')).show()
+        return
+    }
     if (!heatmap) return
     heatmapVisible = !heatmapVisible
     heatmap.setMap(heatmapVisible ? map : null)
@@ -117,6 +120,7 @@ export function panToAddress({ lat, lon, displayName }) {
     const position = { lat, lng: lon }
 
     clearActiveMarker()
+
 
     activeMarker = new google.maps.marker.AdvancedMarkerElement({
         position,
@@ -165,6 +169,7 @@ function attachMapClickListener() {
         const position = { lat, lng }
 
         clearActiveMarker()
+        setLocationSelected(true)
 
         activeMarker = new google.maps.marker.AdvancedMarkerElement({
             position,
