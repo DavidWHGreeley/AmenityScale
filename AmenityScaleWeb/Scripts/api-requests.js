@@ -104,7 +104,6 @@ export async function saveAddress(addressData) {
         lon: addressData.lon,
     }
 
-    console.log('[api] TODO saveAddress — would POST to /api/SaveAddress:', payload)
 }
 
 export async function createUser(DisplayName) {

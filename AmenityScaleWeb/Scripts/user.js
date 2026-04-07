@@ -9,9 +9,10 @@ export async function getOrCreateUser() {
     console.log('username: ', storedUser)
     if (storedUser) return JSON.parse(storedUser)
 
-    const response = await fetch('/Scripts/usernames.json')
-    const names = await response.json()
+    const response = await fetch('./src/usernames.json')
 
+    const names = await response.json()
+    console.log('username: ', names)
     const randomName = names[Math.floor(Math.random() * names.length)];
     const user = await createUser(randomName)
 

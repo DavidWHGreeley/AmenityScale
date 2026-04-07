@@ -1,4 +1,4 @@
-/// <summary>
+ï»¿/// <summary>
 /// Version         Date        Coder                   Remarks
 /// 0.1             2026-16-02  Cody & Greeley          Generic Script created
 /// 0.2             2026-07-03  Patrick                 Changed calls for radius to isochrone
@@ -44,7 +44,7 @@ function renderLeaderboard(participants) {
 
     board.innerHTML = '<h3> Battle Leaderboard</h3>';
     participants.forEach((p, i) => {
-        board.innerHTML += `<div>${i + 1}. ${p.DisplayName} — ${p.Score}</div>`;
+        board.innerHTML += `<div>${i + 1}. ${p.DisplayName} ï¿½ ${p.Score}</div>`;
     });
     board.style.display = 'block';
 }
@@ -60,12 +60,16 @@ document.addEventListener('address:resolved', (e) => {
 
 // Triggered on direct map clicks, allowing users to explore amenities
 // for any location without entering an address.
-registerClickHandler(async (wkt) => {
-    const result = await whenLocationSelected(wkt);
+registerClickHandler(async (wktData) => {
+    const result = await whenLocationSelected(wktData);
+    console.log('[battle] result:', result);
+    console.log('[battle] activeBattleCode:', activeBattleCode);
+    console.log(activeBattleCode && result?.locationID)
 
     if (activeBattleCode && result?.locationID) {
         try {
             const leaderboard = await joinBattle(activeBattleCode, currentUser.UserID, result.locationID);
+            console.log('Leaderboard', leaderboard)
             renderLeaderboard(leaderboard);
         } catch (err) {
             console.error('[battle] Join failed:', err);
@@ -73,36 +77,36 @@ registerClickHandler(async (wkt) => {
     }
 });
 
-document.getElementById('toggle-heatmap').addEventListener('click', () => {
-    toggleHeatmap()
-})
+ document.getElementById('toggle-heatmap').addEventListener('click', () => {
+     toggleHeatmap()
+ })
 
 function SaveLocationRequest(locaitonData) {
     //TODO - HELP WITH CREATING THIS FUNCTION
 }
 
-document.getElementById('save-location-score').addEventListener('click', () => {
-    if (!currentLocation || currentScore === null) {
-        alert('No location or score data available to save.');
-        return;
-    }
+// document.getElementById('save-location-score').addEventListener('click', () => {
+//     if (!currentLocation || currentScore === null) {
+//         alert('No location or score data available to save.');
+//         return;
+//     }
 
-    const locationData = {
-        LocationName: currentLocation.name || '',
-        StreetNumber: document.getElementById('street-number').value,
-        Street: document.getElementById('street-name').value,
-        City: document.getElementById('city').value,
-        SubdivisionID: currentLocation.subdivisionId || 0, // adjust as needed
-        Latitude: currentLocation.Latitude,
-        Longitude: currentLocation.Longitude,
-        LocationWKT: currentLocation.LocationWKT || '',
-        GeometryType: currentLocation.GeometryType || 'POINT',
-        CalculatedScore: currentScore,
-        CreatedDate: new Date().toISOString()
-    };
+//     const locationData = {
+//         LocationName: currentLocation.name || '',
+//         StreetNumber: document.getElementById('street-number').value,
+//         Street: document.getElementById('street-name').value,
+//         City: document.getElementById('city').value,
+//         SubdivisionID: currentLocation.subdivisionId || 0, // adjust as needed
+//         Latitude: currentLocation.Latitude,
+//         Longitude: currentLocation.Longitude,
+//         LocationWKT: currentLocation.LocationWKT || '',
+//         GeometryType: currentLocation.GeometryType || 'POINT',
+//         CalculatedScore: currentScore,
+//         CreatedDate: new Date().toISOString()
+//     };
 
-    SaveLocationRequest(locationData);
-});
+//     SaveLocationRequest(locationData);
+// });
 
 document.getElementById('start-battle')?.addEventListener('click', async () => {
     const { shareUrl } = await startBattle(currentUser.UserID);

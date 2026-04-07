@@ -14,9 +14,11 @@ This file is for Google maps specific task
 import { TRAVEL_TIMES } from './constants.js'
 import { generateIsochroneWKT } from './isochrones.js';
 import { reverseGeocode } from "./address.js";
-
+import { isLoadingFn, showScoreFn, endLoadingFn } from './ui.js'
+import { amenityState } from './ui.js'
 
 const kingstonCenter = { lat: 44.245019, lng: -76.54911 }
+
 
 let map
 let markers = []
@@ -25,6 +27,8 @@ let activeMarker = null
 let heatmap = null
 let heatmapVisible = false
 let onLocationSelected = null
+let amenities = null
+
 
 function buildLocationPin() {
     const pin = new google.maps.marker.PinElement({
@@ -121,8 +125,8 @@ export function panToAddress({ lat, lon, displayName }) {
         content: buildLocationPin(),
         zIndex: 999,
     })
-
-    //    drawRadiusCircle(position)
+    const content = `<h2>${displayName}</h2>`
+    attachInfoWindow(activeMarker, content)
     map.panTo(position)
     map.setZoom(15)
 
@@ -134,13 +138,7 @@ export function displayScore(score) {
 
     if (!activeMarker) return
 
-    const content = `
-        <div>
-            <h3>Location Score</h3>
-            <p><strong>Score:</strong> ${score}</p>
-        </div>`
-
-    attachInfoWindow(activeMarker, content)
+    showScoreFn(score)
 }
 
 async function main() {
@@ -152,6 +150,8 @@ async function main() {
         center: kingstonCenter,
         zoom: 13,
         mapId: 'SomeID',
+        mapTypeControl: false,
+        fullscreenControl: false
     })
 
     attachMapClickListener()
@@ -174,8 +174,9 @@ function attachMapClickListener() {
             zIndex: 999,
         })
 
-
         try {
+            isLoadingFn()
+            amenities = null
             // Gets address from coordinates
             const address = await reverseGeocode({ lat: lat, lon: lng });
 
@@ -209,6 +210,7 @@ function attachMapClickListener() {
 
         } catch (error) {
             console.error("Isochrone calculation failed:", error);
+            endLoadingFn()
         }
 
     })
@@ -227,8 +229,11 @@ function attachInfoWindow(marker, content) {
 export function displayResults(data, score) {
     for (const m of markers) m.map = null
     markers = []
+    amenities = data
 
-    for (const amenity of data) {
+    for (const amenity of amenities) {
+        if (!amenityState[amenity.CategoryName]) continue
+
         const amenityMarker = new google.maps.marker.AdvancedMarkerElement({
             position: { lat: amenity.Latitude, lng: amenity.Longitude },
             map,
@@ -241,8 +246,29 @@ export function displayResults(data, score) {
         markers.push(amenityMarker)
     }
 
+    endLoadingFn()
     displayScore(score)
     buildHeatmap(data)
 }
 
+export function redrawMarkers() {
+    if (!amenities) return
+    for (const m of markers) m.map = null
+    markers = []
+
+    for (const amenity of amenities) {
+        if (!amenityState[amenity.CategoryName]) continue
+
+        const amenityMarker = new google.maps.marker.AdvancedMarkerElement({
+            position: { lat: amenity.Latitude, lng: amenity.Longitude },
+            map,
+            title: amenity.Name,
+            content: buildAmenityPin(),
+        })
+
+        const content = `<h2>${amenity.Name}</h2><p>Distance: ${amenity.DistanceInMeters} meters</p>`
+        attachInfoWindow(amenityMarker, content)
+        markers.push(amenityMarker)
+    }
+}
 window.addEventListener('load', main)
