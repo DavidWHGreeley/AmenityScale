@@ -114,5 +114,32 @@ namespace AmenityScaleCore.Data
 
             return list;
         }
+
+        public List<BattleDTO> GetBattlesByUser(int userID)
+        {
+            SqlDataReader r = PDM.Data.SqlHelper.ExecuteReader(
+                GetConnectionString(),
+                "sp_Battle_GetByUser",
+                new SqlParameter("@UserID", userID)
+            );
+
+            return MapBattles(r);
+        }
+
+        private List<BattleDTO> MapBattles(SqlDataReader r)
+        {
+            var list = new List<BattleDTO>();
+            while (r.Read())
+            {
+                list.Add(new BattleDTO
+                {
+                    BattleID = Convert.ToInt32(r["BattleID"]),
+                    BattleCode = (Guid)r["BattleCode"],
+                    ExpiresAt = Convert.ToDateTime(r["ExpiresAt"]),
+                    Status = r["Status"].ToString()
+                });
+            }
+            return list;
+        }
     }
 }

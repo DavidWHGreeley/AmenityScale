@@ -58,5 +58,13 @@ namespace AmenityScaleWeb.API
             var leaderboard = _battleDataAccess.GetLeaderboard(code);
             return Ok(leaderboard);
         }
+
+        [HttpGet]
+        [Route("api/battles/user/{userID}")]
+        public IHttpActionResult GetBattlesByUser(int userID)
+        {
+            var battles = _battleDataAccess.GetBattlesByUser(userID);
+            return Ok(battles);
+        }
     }
 }

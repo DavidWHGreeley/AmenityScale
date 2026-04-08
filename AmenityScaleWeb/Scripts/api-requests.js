@@ -143,3 +143,8 @@ export async function getLeaderboard(battleCode) {
     const response = await fetch(`/api/battles/${battleCode}/leaderboard`);
     return await response.json();
 }
+
+export async function getBattlesByUser(userID) {
+    const response = await fetch(`/api/battles/user/${userID}`);
+    return await response.json();
+}

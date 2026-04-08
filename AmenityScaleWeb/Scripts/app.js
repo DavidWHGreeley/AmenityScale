@@ -16,21 +16,26 @@ import { saveAddress, getAmenitiesInIsochrone, whenLocationSelected, startBattle
 import { getOrCreateUser } from './user.js'
 import { getBattleCodeFromURL } from './battle.js'
 import { registerClickHandler, toggleHeatmap, panToAddress } from './map.js'
+import { renderBattlesList } from './ui.js'
 
-let currentUser = null
-let activeBattleCode = getBattleCodeFromURL()
+export let currentUser = null
+export let activeBattleCode = getBattleCodeFromURL()
 
 async function init() {
-    console.log('testing')
-
     currentUser = await getOrCreateUser()
+    console.log(' Active user:', currentUser)
+
+    await renderBattlesList(currentUser.UserID)
 
     if (activeBattleCode) {
-        console.log('Battle Code Deteched!')
+        console.log('Battle Code Detected!')
+        document.getElementById('battle-invite-banner').style.display = 'block'
+        document.getElementById('battle-start-section').style.display = 'none'
+        document.getElementById('battle-ribbon').style.display = 'block'
     }
 }
 
-function showShareURL(shareUrl) {
+export function showShareURL(shareUrl) {
     const box = document.getElementById('share-url');
     if (box) {
         box.value = shareUrl;
@@ -38,7 +43,7 @@ function showShareURL(shareUrl) {
     }
 }
 
-function renderLeaderboard(participants) {
+export function renderLeaderboard(participants) {
     const board = document.getElementById('leaderboard');
     if (!board) return;
 
@@ -62,24 +67,30 @@ document.addEventListener('address:resolved', (e) => {
 // for any location without entering an address.
 registerClickHandler(async (wktData) => {
     const result = await whenLocationSelected(wktData);
-    console.log('[battle] result:', result);
-    console.log('[battle] activeBattleCode:', activeBattleCode);
-    console.log(activeBattleCode && result?.locationID)
+
+    if (result?.locationID && currentUser && !activeBattleCode) {
+        const { shareUrl, battle } = await startBattle(currentUser.UserID);
+        showShareURL(shareUrl);
+        activeBattleCode = battle.BattleCode;
+    }
 
     if (activeBattleCode && result?.locationID) {
         try {
             const leaderboard = await joinBattle(activeBattleCode, currentUser.UserID, result.locationID);
             console.log('Leaderboard', leaderboard)
-            renderLeaderboard(leaderboard);
+            renderLeaderboard(leaderboard)
+            await renderBattlesList(currentUser.UserID)
+            window.history.replaceState({}, '', window.location.pathname)
+            activeBattleCode = null
         } catch (err) {
-            console.error('[battle] Join failed:', err);
+            console.error('Join failed:', err);
         }
     }
 });
 
- document.getElementById('toggle-heatmap').addEventListener('click', () => {
-     toggleHeatmap()
- })
+document.getElementById('toggle-heatmap').addEventListener('click', () => {
+    toggleHeatmap()
+})
 
 function SaveLocationRequest(locaitonData) {
     //TODO - HELP WITH CREATING THIS FUNCTION
@@ -107,10 +118,5 @@ function SaveLocationRequest(locaitonData) {
 
 //     SaveLocationRequest(locationData);
 // });
-
-document.getElementById('start-battle')?.addEventListener('click', async () => {
-    const { shareUrl } = await startBattle(currentUser.UserID);
-    showShareURL(shareUrl);
-});
 
 init();

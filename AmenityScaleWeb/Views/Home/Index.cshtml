@@ -12,36 +12,103 @@
 
 <div class="content-container">
 
-    <input type="text" id="share-url" style="display:none; width:300px;" readonly />
-
     <div class="map-container">
+        <div id="battle-ribbon" style="display:none;">
+            <span>BATTLE MODE</span>
+            <div class="battle-tooltip">
+                Click the map to score your location and join the fight. May the best neighborhood win!
+            </div>
+        </div>
         <div id="amenity-panel" class="amenity-panel">
-            <div class="gauges">
-                <div id="gauge3" class="gauge-container two">
-                </div>
+            <div class="nav nav-tabs" id="amenity-tab" role="tablist">
+                <button class="nav-link active" id="tab-amenities" data-bs-toggle="tab"
+                        data-bs-target="#panel-amenities" type="button" role="tab" aria-controls="panel-amenities"
+                        aria-selected="true">
+                    Amenities
+                </button>
+                <button class="nav-link" id="tab-battle" data-bs-toggle="tab" data-bs-target="#panel-battle"
+                        type="button" role="tab" aria-controls="panel-battle" aria-selected="false">
+                    Battle
+                    Mode
+                </button>
             </div>
-            <div class="info-container">
-                Amenity Score
-            </div>
-            <div class="actions">
-                <button id="toggle-heatmap" aria-label="Toggle heatmap">Toggle Heatmap</button>
-            </div>
-            <h3>Amenities</h3>
-            <hr>
-            <div class="actions">
-                <button id="show-all">Show all</button>
-                <button id="hide-all">Hide all</button>
-            </div>
-            <hr>
+            <div class="tab-content" id="amenity-tab-content">
 
-            <div class="amenity-grid" id="amenity-grid"></div>
+                <div class="tab-pane fade show active" id="panel-amenities" role="tabpanel"
+                     aria-labelledby="tab-amenities">
+                    <div class="gauges">
+                        <div id="gauge3" class="gauge-container two"></div>
+                    </div>
+                    <div class="info-container">Amenity Score</div>
+                    <div class="actions">
+                        <button id="toggle-heatmap" aria-label="Toggle heatmap">Toggle Heatmap</button>
+                    </div>
+                    <h3>Amenities</h3>
+                    <hr>
+                    <div class="actions">
+                        <button id="show-all">Show all</button>
+                        <button id="hide-all">Hide all</button>
+                    </div>
+                    <hr>
+                    <div class="amenity-grid" id="amenity-grid"></div>
+                </div>
+
+                <div class="tab-pane fade" id="panel-battle" role="tabpanel" aria-labelledby="tab-battle">
+                    <div class="battle-container">
+                        <div id="battle-start-section" class="battle-start-section">
+                            <h3>Share Battle ID</h3>
+                            <p>
+                                Click anywhere on the map to score your location, this generates a shareable
+                                link.
+                                Send it to your friends! Whoever has the best neighborhood wins! <br> - Plebs!
+                            </p>
+                            <div class="input-container">
+                                <input type="text" id="share-url" class="share-url" readonly
+                                       placeholder="Click Map to Generate Link" />
+                                <span id="copied" class="copied">Copied</span>
+                            </div>
+                        </div>
+                        <div id="battle-invite-banner" class="battle-invite-banner" style="display:none;">
+                            <h3>You're in a Battle!</h3>
+                            <p>
+                                Click the map to score your location and join the fight. May the best
+                                neighbourhood win!
+                            </p>
+                        </div>
+                        <br>
+                        <h3>My Past Battles</h3>
+                        <div id="battles-view">
+
+                            <div id="battles-list">
+                                <p class="battles-empty">No battles yet. Click the map to start one!</p>
+                            </div>
+                        </div>
+
+                        <div id="leaderboard-view" style="display:none;">
+                            <div class="leaderboard-header">
+                                <button id="back-to-battles">&#8592; Back</button>
+                                <span id="leaderboard-status" class="battle-status-badge"></span>
+                            </div>
+                            <div id="leaderboard-list"></div>
+                            <div class="input-container">
+                                <input type="text" id="leaderboard-share-url" class="share-url" readonly
+                                       placeholder="Battle Link" />
+                                <span id="leaderboard-copied" class="copied">Copied</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
         </div>
         <div id="map" class="map"></div>
         <div class="sidebar">
             <div class="menu-items">
-                <div class="item">
+                <div class="item" id="toggle-panel">
                     <img src="~/Content/gauge-high(1).svg" alt="">
-                    <span class="text">Details</span>
+                    <span class="text" id="panel-toggle-text">Show Details</span>
                 </div>
             </div>
             <div class="menu__border" id="bulge"></div>

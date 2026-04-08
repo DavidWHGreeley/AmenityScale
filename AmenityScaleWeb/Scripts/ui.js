@@ -1,6 +1,8 @@
 ﻿import Gauge from 'https://esm.sh/svg-gauge'
 import { AMENITIES } from './constants.js'
 import { redrawMarkers } from './map.js'
+import { getLeaderboard, getBattlesByUser } from './api-requests.js'
+import { getBattleCodeFromURL } from './battle.js'
 
 const btn = document.getElementById('hammy-btn')
 const menu = document.getElementById('menu-container')
@@ -9,8 +11,20 @@ const map = document.getElementById('map')
 const loadingEl = document.getElementById('loading')
 const scorePopupEl = document.getElementById('score-popup')
 const closeScoreEl = document.getElementById('close-score')
+const battlesView = document.getElementById('battles-view')
+const leaderboardView = document.getElementById('leaderboard-view')
+const battlesList = document.getElementById('battles-list')
+const leaderboardList = document.getElementById('leaderboard-list')
+const leaderboardStatus = document.getElementById('leaderboard-status')
+const leaderboardShareUrl = document.getElementById('leaderboard-share-url')
+const backToBattles = document.getElementById('back-to-battles')
 let isOpen = false
 let showScore = false
+let showCopied = false
+const togglePanel = document.getElementById('toggle-panel')
+const amenityPanel = document.getElementById('amenity-panel')
+const panelToggleText = document.getElementById('panel-toggle-text')
+let panelOpen = true
 
 export let locationSelected = false
 export function setLocationSelected(val) { locationSelected = val }
@@ -112,5 +126,107 @@ document.getElementById('hide-all').addEventListener('click', () => {
     redrawMarkers()
 });
 
+document.getElementById('share-url')?.addEventListener('click', async () => {
+    document.getElementById('copied').classList.add('show')
+    setTimeout(() => {
+        document.getElementById('copied').classList.remove('show')
+    }, 3000);
+});
+document.getElementById('leaderboard-share-url')?.addEventListener('click', async () => {
+    document.getElementById('leaderboard-copied').classList.add('show')
+    setTimeout(() => {
+        document.getElementById('leaderboard-copied').classList.remove('show')
+    }, 3000);
+});
+
+function showBattlesView() {
+    battlesView.style.display = 'block'
+    leaderboardView.style.display = 'none'
+}
+
+async function showLeaderboardView(battleCode, status) {
+    battlesView.style.display = 'none'
+    leaderboardView.style.display = 'block'
+
+    leaderboardStatus.textContent = status
+    leaderboardStatus.className = `battle-status-badge ${status}`
+
+    const shareUrl = `${window.location.origin}?code=${battleCode}`
+    leaderboardShareUrl.value = shareUrl
+
+    const participants = await getLeaderboard(battleCode)
+    renderLeaderboard(participants)
+}
+
+function renderLeaderboard(participants) {
+    leaderboardList.innerHTML = ''
+
+    if (!participants.length) {
+        leaderboardList.innerHTML = '<p class="battles-empty">No participants yet.</p>'
+        return
+    }
+
+    participants.forEach((p, i) => {
+        const row = document.createElement('div')
+        row.classList.add('leaderboard-row')
+        row.innerHTML = `
+            <span class="leaderboard-rank ${i === 0 ? 'gold' : ''}">${i + 1}</span>
+            <div style="flex:1;">
+                <div class="leaderboard-name">${p.DisplayName}</div>
+                <div class="leaderboard-location">${p.LocationName || ''}</div>
+            </div>
+            <span class="leaderboard-score">${p.Score}</span>
+        `
+        leaderboardList.appendChild(row)
+    })
+}
+
+export async function renderBattlesList(userID) {
+    if (!userID) return
+
+    const battles = await getBattlesByUser(userID)
+
+    if (!battles.length) {
+        battlesList.innerHTML = '<p class="battles-empty">No battles yet. Click the map to start one!</p>'
+        return
+    }
+
+    battlesList.innerHTML = ''
+    battles.forEach(b => {
+        const item = document.createElement('button')
+        item.classList.add('battle-history-item')
+
+        const isExpired = new Date(b.ExpiresAt) < new Date()
+        const status = isExpired ? 'expired' : b.Status
+
+        const shortCode = b.BattleCode.substring(0, 13) + '...'
+        const date = new Date(b.ExpiresAt).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })
+        item.innerHTML = `
+    <div class="battle-item-row">
+        <span class="battle-item-code">${shortCode}</span>
+        <span class="battle-status-badge ${status}">${status}</span>
+    </div>
+    <div class="battle-item-meta">Expires ${date}</div>
+`
+        item.addEventListener('click', () => showLeaderboardView(b.BattleCode, status))
+        battlesList.appendChild(item)
+    })
+}
+
+backToBattles.addEventListener('click', showBattlesView)
+
+leaderboardShareUrl?.addEventListener('click', () => {
+    navigator.clipboard.writeText(leaderboardShareUrl.value)
+    document.getElementById('leaderboard-copied').classList.add('show')
+    setTimeout(() => {
+        document.getElementById('leaderboard-copied').classList.remove('show')
+    }, 3000)
+})
+
+togglePanel.addEventListener('click', () => {
+    panelOpen = !panelOpen
+    amenityPanel.classList.toggle('hidden', !panelOpen)
+    panelToggleText.textContent = panelOpen ? 'Hide Details' : 'Show Details'
+})
 
 renderAmenityPanel();

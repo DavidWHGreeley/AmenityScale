@@ -1,10 +1,11 @@
 @import"https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap";
 
-html, body {
+html,
+body {
     background-color: #006cb5;
     border: 0;
     box-sizing: border-box;
-    font-family: Roboto,Arial,Helvetica,sans-serif;
+    font-family: Roboto, Arial, Helvetica, sans-serif;
     font-size: 16px;
     height: 100vh;
     line-height: 1;
@@ -14,12 +15,15 @@ html, body {
     width: 100vw
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
     box-sizing: inherit
 }
 
 .navigation-bar {
     align-items: center;
+    background-color: #006cb5;
     display: flex;
     flex-shrink: 0;
     justify-content: space-between;
@@ -88,7 +92,8 @@ html, body {
                         top: px
                     }
 
-                    .navigation-bar .hammy-container .bg .nav-hamburger span:nth-child(2), .navigation-bar .hammy-container .bg .nav-hamburger span:nth-child(3) {
+                    .navigation-bar .hammy-container .bg .nav-hamburger span:nth-child(2),
+                    .navigation-bar .hammy-container .bg .nav-hamburger span:nth-child(3) {
                         top: 12px
                     }
 
@@ -145,7 +150,7 @@ html, body {
     transform-origin: top right;
     width: 50px;
     z-index: 20;
-    transition: transform .5s cubic-bezier(.34,1.6,.64,1),width .5s cubic-bezier(.34,1.6,.64,1),height .5s cubic-bezier(.34,1.6,.64,1),top .5s cubic-bezier(.34,1.6,.64,1),right .5s cubic-bezier(.34,1.6,.64,1),border-radius .6s cubic-bezier(.34,1.3,.64,1)
+    transition: transform .5s cubic-bezier(.34, 1.6, .64, 1), width .5s cubic-bezier(.34, 1.6, .64, 1), height .5s cubic-bezier(.34, 1.6, .64, 1), top .5s cubic-bezier(.34, 1.6, .64, 1), right .5s cubic-bezier(.34, 1.6, .64, 1), border-radius .6s cubic-bezier(.34, 1.3, .64, 1)
 }
 
     .navigation-bar .hammy-container .menu-container.open {
@@ -164,14 +169,14 @@ html, body {
 
         .navigation-bar .hammy-container .menu-container ul li {
             color: #006cb5;
-            font-family: Bebas Neue,sans-serif;
+            font-family: Bebas Neue, sans-serif;
             font-weight: 700;
             letter-spacing: .75rem;
             opacity: 0;
             padding: 20px 0;
             text-align: center;
             transform: translateY(12px);
-            transition: opacity .22s ease,transform .22s ease
+            transition: opacity .22s ease, transform .22s ease
         }
 
             .navigation-bar .hammy-container .menu-container ul li:nth-child(1) {
@@ -194,7 +199,8 @@ html, body {
                 text-decoration: none
             }
 
-                .navigation-bar .hammy-container .menu-container ul li a:link, .navigation-bar .hammy-container .menu-container ul li a:visited {
+                .navigation-bar .hammy-container .menu-container ul li a:link,
+                .navigation-bar .hammy-container .menu-container ul li a:visited {
                     color: #006cb5
                 }
 
@@ -245,7 +251,7 @@ html, body {
                 border-radius: 10px;
                 bottom: 0;
                 color: #fff;
-                font-family: Bebas Neue,sans-serif;
+                font-family: Bebas Neue, sans-serif;
                 font-size: 2.5rem;
                 left: 50%;
                 padding: 5px 10px;
@@ -254,24 +260,75 @@ html, body {
             }
 
         #app .content-container .map-container {
-            height: calc(100% - 45px);
+            height: calc(100% - 75px);
             position: relative;
             width: 100%
         }
 
+            #app .content-container .map-container #battle-ribbon {
+                cursor: default;
+                height: 120px;
+                left: -10px;
+                pointer-events: all;
+                position: absolute;
+                top: 0;
+                width: 120px;
+                z-index: 25
+            }
+
+                #app .content-container .map-container #battle-ribbon span {
+                    background-color: #f05a2a;
+                    color: #fff;
+                    display: block;
+                    font-family: Bebas Neue, sans-serif;
+                    font-size: .85rem;
+                    left: -30px;
+                    letter-spacing: .1em;
+                    padding: 6px 35px;
+                    position: absolute;
+                    text-align: center;
+                    top: 22px;
+                    transform: rotate(-45deg);
+                    width: 150px
+                }
+
+                #app .content-container .map-container #battle-ribbon .battle-tooltip {
+                    background-color: #006cb5;
+                    border-radius: 6px;
+                    color: #fff;
+                    display: none;
+                    font-size: .8rem;
+                    left: 10px;
+                    line-height: 1.4;
+                    padding: 8px 10px;
+                    position: absolute;
+                    top: 110px;
+                    width: 200px;
+                    z-index: 30
+                }
+
+                #app .content-container .map-container #battle-ribbon:hover .battle-tooltip {
+                    display: block
+                }
+
             #app .content-container .map-container .amenity-panel {
                 background-color: #fff;
+                border: 1px solid #006cb5;
+                border-bottom-left-radius: 10px;
+                border-top-left-radius: 10px;
                 height: 100%;
+                overflow-y: auto;
                 padding: 16px;
                 position: absolute;
                 right: 50px;
+                transition: right .35s ease;
                 width: 404px;
-                z-index: 20;
-                border-top-left-radius: 10px;
-                border-bottom-left-radius: 10px;
-                border: 1px solid #006cb5;
-                overflow-y: auto
+                z-index: 20
             }
+
+                #app .content-container .map-container .amenity-panel.hidden {
+                    right: -354px
+                }
 
                 #app .content-container .map-container .amenity-panel .actions {
                     display: flex;
@@ -280,13 +337,13 @@ html, body {
                 }
 
                     #app .content-container .map-container .amenity-panel .actions button {
-                        flex: 1;
-                        font-size: 13px;
-                        padding: 6px 0;
                         background-color: #006cb533;
                         border-color: #006cb5;
+                        border-radius: 6px;
                         color: #000;
-                        border-radius: 6px
+                        flex: 1;
+                        font-size: 13px;
+                        padding: 6px 0
                     }
 
                         #app .content-container .map-container .amenity-panel .actions button:hover {
@@ -295,24 +352,24 @@ html, body {
 
                 #app .content-container .map-container .amenity-panel .amenity-grid {
                     display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 4px
+                    gap: 4px;
+                    grid-template-columns: 1fr 1fr
                 }
 
                 #app .content-container .map-container .amenity-panel .amenity-item {
-                    padding: 7px 10px;
-                    border-radius: 6px;
-                    border: 1px solid rgba(0,108,181,.15);
                     background-color: #006cb514;
+                    border: 1px solid rgba(0, 108, 181, .15);
+                    border-radius: 6px;
                     color: #00000080;
-                    font-size: 13px;
                     cursor: pointer;
+                    font-size: 13px;
+                    overflow: hidden;
+                    padding: 7px 10px;
+                    text-overflow: ellipsis;
                     -webkit-user-select: none;
                     user-select: none;
-                    transition: background-color .15s ease,border-color .15s ease,color .15s ease;
                     white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis
+                    transition: background-color .15s ease, border-color .15s ease, color .15s ease
                 }
 
                     #app .content-container .map-container .amenity-panel .amenity-item:hover {
@@ -366,14 +423,14 @@ html, body {
     #app .content-container .map-container .sidebar .menu__border {
         background-color: #006cb5;
         clip-path: url(#bulge-clip);
-        height: 1rem;
+        height: 1.5rem;
         position: absolute;
-        right: -3.95rem;
-        top: calc(50% - 16px);
+        right: -5.95rem;
+        top: calc(50% - 36px);
         transform: translate(-50%) rotate(-90deg) scaleY(0);
         transform-origin: bottom center;
-        transition: transform .6s cubic-bezier(.34,1.5,.64,1);
-        width: 7rem
+        transition: transform .6s cubic-bezier(.34, 1.5, .64, 1);
+        width: 9rem
     }
 
     #app .content-container .map-container .sidebar .menu-items {
@@ -387,19 +444,20 @@ html, body {
         }
 
         #app .content-container .map-container .sidebar .menu-items .item {
-            cursor: pointer
+            cursor: pointer;
+            text-align: center
         }
 
             #app .content-container .map-container .sidebar .menu-items .item img {
                 filter: invert(1);
                 height: auto;
-                transition: transform .4s cubic-bezier(.34,1.5,.64,1);
+                transition: transform .4s cubic-bezier(.34, 1.5, .64, 1);
                 width: 40px
             }
 
             #app .content-container .map-container .sidebar .menu-items .item span {
                 color: #fff;
-                font-size: .8rem
+                font-size: .7rem
             }
 
 #app .content-container .map-container .score-container {
@@ -410,7 +468,7 @@ html, body {
     color: #fff;
     display: flex;
     flex-direction: column;
-    font-family: Bebas Neue,sans-serif;
+    font-family: Bebas Neue, sans-serif;
     height: 150px;
     left: 50%;
     opacity: .95;
@@ -480,14 +538,14 @@ html, body {
 
     #app .content-container .map-container .gauge-container.two > .gauge .value-text {
         fill: #006cb5;
-        font-family: Bebas Neue,sans-serif;
+        font-family: Bebas Neue, sans-serif;
         font-size: 1em;
         font-weight: 100
     }
 
 #app .content-container .map-container .info-container {
     color: #006cb5;
-    font-family: Bebas Neue,sans-serif;
+    font-family: Bebas Neue, sans-serif;
     font-size: 2rem;
     text-align: center
 }
@@ -496,13 +554,180 @@ html, body {
     column-gap: 10px;
     display: flex;
     flex-wrap: wrap;
-    padding: 10px;
-    row-gap: 10px;
+    font-size: 2rem;
     justify-content: center;
-    font-size: 2rem
+    padding: 10px;
+    row-gap: 10px
 }
 
- #app .content-container #toggle-slider {
+#app .content-container .map-container .input-container {
+    position: relative;
+    overflow: hidden;
+    height: 90px
+}
+
+    #app .content-container .map-container .input-container .share-url {
+        font-size: .75rem;
+        padding: 10px;
+        text-align: center;
+        width: 100%
+    }
+
+    #app .content-container .map-container .input-container .copied {
+        display: block;
+        font-size: 1.25rem;
+        margin: 0 auto;
+        position: absolute;
+        width: 100%;
+        bottom: -150px;
+        transition: all .25s ease-in-out
+    }
+
+        #app .content-container .map-container .input-container .copied.show {
+            bottom: 0
+        }
+
+#app .content-container .map-container .battle-container {
+    color: #006cb5;
+    font-family: Roboto, sans-serif;
+    text-align: center
+}
+
+    #app .content-container .map-container .battle-container .battle-start-section h3 {
+        font-family: Bebas Neue, sans-serif;
+        margin-bottom: 0;
+        padding: 10px
+    }
+
+    #app .content-container .map-container .battle-container .battle-invite-banner {
+        background-color: #33b5bd1a;
+        border: 1px solid rgba(51, 181, 189, .3);
+        border-radius: 8px;
+        padding: 12px 14px;
+        text-align: center
+    }
+
+        #app .content-container .map-container .battle-container .battle-invite-banner h3 {
+            color: #33b5bd
+        }
+
+        #app .content-container .map-container .battle-container .battle-invite-banner p {
+            font-size: .85rem;
+            opacity: .8
+        }
+
+#app .content-container .map-container .battles-empty {
+    font-size: .85rem;
+    opacity: .6;
+    padding: 12px 0;
+    text-align: center
+}
+
+#app .content-container .map-container .battle-history-item {
+    background-color: #006cb514;
+    border: 1px solid rgba(0, 108, 181, .2);
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    text-align: left;
+    transition: background-color .15s ease;
+    width: 100%
+}
+
+    #app .content-container .map-container .battle-history-item:hover {
+        background-color: #006cb526
+    }
+
+    #app .content-container .map-container .battle-history-item .battle-item-row {
+        align-items: center;
+        display: flex;
+        justify-content: space-between
+    }
+
+    #app .content-container .map-container .battle-history-item .battle-item-code {
+        font-family: Roboto Mono, monospace;
+        font-size: .75rem;
+        opacity: .7
+    }
+
+    #app .content-container .map-container .battle-history-item .battle-item-meta {
+        font-size: .75rem;
+        margin-top: 4px;
+        opacity: .6
+    }
+
+#app .content-container .map-container .battle-status-badge {
+    border-radius: 4px;
+    font-size: .7rem;
+    padding: 2px 8px
+}
+
+    #app .content-container .map-container .battle-status-badge.open {
+        background-color: #33b5bd33;
+        color: #33b5bd
+    }
+
+    #app .content-container .map-container .battle-status-badge.expired {
+        background-color: #0000001a;
+        color: #00000080
+    }
+
+#app .content-container .map-container .leaderboard-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px
+}
+
+    #app .content-container .map-container .leaderboard-header button {
+        background: none;
+        border: none;
+        color: #006cb5;
+        cursor: pointer;
+        font-size: .85rem;
+        padding: 0
+    }
+
+        #app .content-container .map-container .leaderboard-header button:hover {
+            opacity: .7
+        }
+
+#app .content-container .map-container .leaderboard-row {
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 108, 181, .1);
+    display: flex;
+    gap: 10px;
+    padding: 8px 0
+}
+
+    #app .content-container .map-container .leaderboard-row .leaderboard-rank {
+        font-family: Bebas Neue, sans-serif;
+        font-size: 1.1rem;
+        min-width: 24px
+    }
+
+        #app .content-container .map-container .leaderboard-row .leaderboard-rank.gold {
+            color: #ba7517
+        }
+
+    #app .content-container .map-container .leaderboard-row .leaderboard-name {
+        flex: 1;
+        font-size: .9rem;
+        font-weight: 500
+    }
+
+    #app .content-container .map-container .leaderboard-row .leaderboard-location {
+        font-size: .75rem;
+        opacity: .6
+    }
+
+    #app .content-container .map-container .leaderboard-row .leaderboard-score {
+        font-family: Bebas Neue, sans-serif;
+        font-size: 1.1rem
+    }
+
+#app .content-container #toggle-slider {
     background-color: #006cb5;
     border: none;
     border-radius: 6px;
@@ -517,7 +742,7 @@ html, body {
     z-index: 10
 }
 
-     #app .content-container #toggle-slider:hover {
+    #app .content-container #toggle-slider:hover {
         background-color: #0084de
     }
 
@@ -527,6 +752,18 @@ html, body {
     visibility: hidden
 }
 
+#app .content-container #toggle-heatmap {
+    right: 10rem;
+    top: 1rem
+}
+
+    #app .content-container #toggle-heatmap.active {
+        background-color: #f05a2a
+    }
+
+        #app .content-container #toggle-heatmap.active:hover {
+            background-color: #e14310
+        }
 
 #app .content-container .right-slider {
     background-color: #006cb5;
@@ -547,7 +784,7 @@ html, body {
     }
 
     #app .content-container .right-slider h2 {
-        font-family: Bebas Neue,sans-serif;
+        font-family: Bebas Neue, sans-serif;
         font-size: 1.75rem;
         letter-spacing: .05em;
         margin: 0 0 1.25rem
@@ -573,9 +810,10 @@ html, body {
                 text-transform: uppercase
             }
 
-            #app .content-container .right-slider #address-form .form-group input, #app .content-container .right-slider #address-form .form-group select {
+            #app .content-container .right-slider #address-form .form-group input,
+            #app .content-container .right-slider #address-form .form-group select {
                 background-color: #ffffff1f;
-                border: 1px solid rgba(255,255,255,.3);
+                border: 1px solid rgba(255, 255, 255, .3);
                 border-radius: 4px;
                 color: #fff;
                 font-family: inherit;
@@ -585,15 +823,18 @@ html, body {
                 transition: border-color .2s
             }
 
-                #app .content-container .right-slider #address-form .form-group input::placeholder, #app .content-container .right-slider #address-form .form-group select::placeholder {
+                #app .content-container .right-slider #address-form .form-group input::placeholder,
+                #app .content-container .right-slider #address-form .form-group select::placeholder {
                     color: #ffffff73
                 }
 
-                #app .content-container .right-slider #address-form .form-group input:focus, #app .content-container .right-slider #address-form .form-group select:focus {
+                #app .content-container .right-slider #address-form .form-group input:focus,
+                #app .content-container .right-slider #address-form .form-group select:focus {
                     border-color: #33b5bd
                 }
 
-                #app .content-container .right-slider #address-form .form-group input option, #app .content-container .right-slider #address-form .form-group select option {
+                #app .content-container .right-slider #address-form .form-group input option,
+                #app .content-container .right-slider #address-form .form-group select option {
                     background-color: #006cb5;
                     color: #fff
                 }
@@ -637,7 +878,7 @@ html, body {
             }
 
     #app .content-container .right-slider .debug-section {
-        border-top: 1px dashed rgba(255,255,255,.2);
+        border-top: 1px dashed rgba(255, 255, 255, .2);
         margin-top: 2rem;
         padding-top: 1rem
     }
@@ -652,7 +893,7 @@ html, body {
 
         #app .content-container .right-slider .debug-section #debug-fill {
             background-color: #ffffff14;
-            border: 1px dashed rgba(255,255,255,.25);
+            border: 1px dashed rgba(255, 255, 255, .25);
             border-radius: 4px;
             color: #fff9;
             cursor: pointer;
@@ -660,7 +901,7 @@ html, body {
             font-size: .8rem;
             padding: .5rem .75rem;
             width: 100%;
-            transition: background-color .2s,color .2s
+            transition: background-color .2s, color .2s
         }
 
             #app .content-container .right-slider .debug-section #debug-fill:hover {

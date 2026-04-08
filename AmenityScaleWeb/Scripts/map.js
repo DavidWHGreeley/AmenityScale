@@ -231,7 +231,7 @@ function attachInfoWindow(marker, content) {
 
 // Clears all existing amenity markers, plots fresh ones from the result set,
 // attaches info windows, updates the score display, and rebuilds the heatmap.
-export function displayResults(data, score) {
+export async function displayResults(data, score) {
     for (const m of markers) m.map = null
     markers = []
     amenities = data
