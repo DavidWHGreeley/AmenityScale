@@ -16,6 +16,8 @@ import { generateIsochroneWKT } from './isochrones.js';
 import { reverseGeocode } from "./address.js";
 import { isLoadingFn, showScoreFn, endLoadingFn, setLocationSelected, amenityState, locationSelected } from './ui.js'
 
+let battleMarkers = []
+
 const kingstonCenter = { lat: 44.245019, lng: -76.54911 }
 
 
@@ -30,6 +32,7 @@ let amenities = null
 
 
 function buildLocationPin() {
+    console.log('testing')
     const pin = new google.maps.marker.PinElement({
         background: '#006cb5',
         borderColor: '#004f8a',
@@ -164,11 +167,13 @@ async function main() {
 
 function attachMapClickListener() {
     map.addListener('click', async (event) => {
+
         const lat = event.latLng.lat()
         const lng = event.latLng.lng()
         const position = { lat, lng }
 
         clearActiveMarker()
+        clearBattleMarkers()
         setLocationSelected(true)
 
         activeMarker = new google.maps.marker.AdvancedMarkerElement({
@@ -276,4 +281,44 @@ export function redrawMarkers() {
         markers.push(amenityMarker)
     }
 }
+
+export function clearBattleMarkers() {
+    for (const marker of battleMarkers) marker.map = null
+}
+
+export function displayBattleMarkers(participants, currentUserID, showAll = false) {
+    clearBattleMarkers()
+
+    for (const participant of participants) {
+        if (!participant.Latitude || !participant.Longitude) continue
+
+        const isCurrentUser = participant.UserID === currentUserID
+        if (isCurrentUser && !showAll) continue
+
+        const pin = new google.maps.marker.PinElement({
+            background: isCurrentUser ? '#006cb5' : '#f05a2a',
+            borderColor: isCurrentUser ? '#004f8a' : '#c43d0e',
+            glyphColor: '#ffffff',
+        })
+
+        const marker = new google.maps.marker.AdvancedMarkerElement({
+            position: { lat: Number(participant.Latitude), lng: Number(participant.Longitude) },
+            map,
+            title: participant.DisplayName,
+            content: pin.element,
+            zIndex: 998,
+        })
+
+        const content = `
+            <div>
+                <h3>${participant.DisplayName}${isCurrentUser ? ' (You)' : ''}</h3>
+                <p>Score: <strong>${participant.Score}</strong></p>
+                <p>${participant.LocationName || ''}</p>
+            </div>`
+
+        attachInfoWindow(marker, content)
+        battleMarkers.push(marker)
+    }
+}
+
 window.addEventListener('load', main)

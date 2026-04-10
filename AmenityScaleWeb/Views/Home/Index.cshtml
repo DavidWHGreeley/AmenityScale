@@ -55,25 +55,21 @@
 
                 <div class="tab-pane fade" id="panel-battle" role="tabpanel" aria-labelledby="tab-battle">
                     <div class="battle-container">
+
                         <div id="battle-start-section" class="battle-start-section">
-                            <h3>Share Battle ID</h3>
-                            <p>
-                                Click anywhere on the map to score your location, this generates a shareable
-                                link.
-                                Send it to your friends! Whoever has the best neighborhood wins! <br> - Plebs!
-                            </p>
+                            <h3>Start a Battle</h3>
+                            <p>Click anywhere on the map to score your location, then start a battle and share the link with friends. Whoever has the best neighborhood wins!</p>
+                            <button id="start-battle-btn" class="btn btn-primary" style="margin: 10px 0px;" disabled>Start Battle</button>
                             <div class="input-container">
                                 <input type="text" id="share-url" class="share-url" readonly
-                                       placeholder="Click Map to Generate Link" />
+                                       placeholder="Score a location first..." />
                                 <span id="copied" class="copied">Copied</span>
                             </div>
                         </div>
                         <div id="battle-invite-banner" class="battle-invite-banner" style="display:none;">
                             <h3>You're in a Battle!</h3>
-                            <p>
-                                Click the map to score your location and join the fight. May the best
-                                neighbourhood win!
-                            </p>
+                            <p>Click the map to score your location and join the fight. May the best neighbourhood win!</p>
+                            <button id="submit-location-btn" class="btn btn-primary">Submit My Location</button>
                         </div>
                         <br>
                         <h3>My Past Battles</h3>

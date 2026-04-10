@@ -7,5 +7,8 @@
         public double Score { get; set; }
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
+
+        public int UserID { get; set; }
+
     }
 }

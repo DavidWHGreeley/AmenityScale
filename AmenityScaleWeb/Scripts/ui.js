@@ -1,6 +1,6 @@
 ﻿import Gauge from 'https://esm.sh/svg-gauge'
 import { AMENITIES } from './constants.js'
-import { redrawMarkers } from './map.js'
+import { redrawMarkers, displayBattleMarkers } from './map.js'
 import { getLeaderboard, getBattlesByUser } from './api-requests.js'
 import { getBattleCodeFromURL } from './battle.js'
 
@@ -127,17 +127,22 @@ document.getElementById('hide-all').addEventListener('click', () => {
 });
 
 document.getElementById('share-url')?.addEventListener('click', async () => {
+    const box = document.getElementById('share-url')
+    await navigator.clipboard.writeText(box.value)
     document.getElementById('copied').classList.add('show')
     setTimeout(() => {
         document.getElementById('copied').classList.remove('show')
-    }, 3000);
-});
+    }, 3000)
+})
+
 document.getElementById('leaderboard-share-url')?.addEventListener('click', async () => {
+    const box = document.getElementById('leaderboard-share-url')
+    await navigator.clipboard.writeText(box.value)
     document.getElementById('leaderboard-copied').classList.add('show')
     setTimeout(() => {
         document.getElementById('leaderboard-copied').classList.remove('show')
-    }, 3000);
-});
+    }, 3000)
+})
 
 function showBattlesView() {
     battlesView.style.display = 'block'
@@ -145,20 +150,29 @@ function showBattlesView() {
 }
 
 async function showLeaderboardView(battleCode, status) {
+    const { currentUser } = await import('./app.js')
+
     battlesView.style.display = 'none'
     leaderboardView.style.display = 'block'
 
     leaderboardStatus.textContent = status
     leaderboardStatus.className = `battle-status-badge ${status}`
 
-    const shareUrl = `${window.location.origin}?code=${battleCode}`
-    leaderboardShareUrl.value = shareUrl
+    const shareContainer = leaderboardView.querySelector('.input-container')
+    if (status === 'expired') {
+        shareContainer.style.display = 'none'
+    } else {
+        shareContainer.style.display = 'block'
+        const shareUrl = `${window.location.origin}?code=${battleCode}`
+        leaderboardShareUrl.value = shareUrl
+    }
 
     const participants = await getLeaderboard(battleCode)
-    renderLeaderboard(participants)
+    renderLeaderboard(participants, currentUser?.UserID)
+    displayBattleMarkers(participants, currentUser?.UserID, true)
 }
 
-function renderLeaderboard(participants) {
+function renderLeaderboard(participants, currentUserID) {
     leaderboardList.innerHTML = ''
 
     if (!participants.length) {
@@ -167,12 +181,13 @@ function renderLeaderboard(participants) {
     }
 
     participants.forEach((p, i) => {
+        const isYou = p.UserID === currentUserID
         const row = document.createElement('div')
         row.classList.add('leaderboard-row')
         row.innerHTML = `
             <span class="leaderboard-rank ${i === 0 ? 'gold' : ''}">${i + 1}</span>
             <div style="flex:1;">
-                <div class="leaderboard-name">${p.DisplayName}</div>
+                <div class="leaderboard-name">${p.DisplayName} ${isYou ? '<span class="you-badge">YOU</span>' : ''}</div>
                 <div class="leaderboard-location">${p.LocationName || ''}</div>
             </div>
             <span class="leaderboard-score">${p.Score}</span>

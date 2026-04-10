@@ -913,6 +913,18 @@ body {
     margin: 0 auto;
     width: 100%
 }
+.you-badge {
+    background-color: rgba($primary, 0.15);
+    border: 1px solid rgba($primary, 0.3);
+    border-radius: 4px;
+    color: $primary;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 1px 6px;
+    vertical-align: middle;
+}
+
 
 @media(min-width:640px) {
     .container {
@@ -941,5 +953,39 @@ body {
 @media(min-width:1536px) {
     .container {
         max-width: 1536px
+    }
+}
+
+.location-pin-pulse {
+    width: 20px;
+    height: 20px;
+    background: #006cb5;
+    border: 3px solid #004f8a;
+    border-radius: 50%;
+    position: relative;
+}
+    .location-pin-pulse::after {
+    animation: pulse 1.5s ease-out infinite;
+    background: rgba(0, 108, 181, 0.3);
+    border-radius: 50%;
+    content: '';
+    height: 32px;
+    left: -9px;
+    position: absolute;
+    top: -9px;
+    width: 32px;
+}
+
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
     }
 }

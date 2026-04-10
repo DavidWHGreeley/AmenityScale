@@ -104,6 +104,7 @@ namespace AmenityScaleCore.Data
             {
                 list.Add(new BattleParticipantDTO
                 {
+                    UserID = Convert.ToInt32(r["UserID"]),
                     DisplayName = r["DisplayName"].ToString(),
                     LocationName = r["LocationName"]?.ToString() ?? "",
                     Score = Convert.ToDouble(r["Score"]),

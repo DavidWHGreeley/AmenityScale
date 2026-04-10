@@ -244,6 +244,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Scripts\ui.js" />
     <Content Include="Scripts\usernames.json" />
+    <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\Constants.js" />
     <Content Include="Scripts\helperUtil.js" />
@@ -270,6 +271,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_NoLocationModal.cshtml" />
+    <Content Include="Views\Shared\_BattleModal.cshtml" />
+    <Content Include="Views\Shared\_BattleTabModal.cshtml" />
+    <Content Include="Views\Shared\_AlreadyInBattleModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
