@@ -14,6 +14,7 @@ using System.Web.Http;
 /// 0.3             26-02-20    Greeley                 Changed lat lng radius to use a DTO. 
 /// 0.4             2026-02-16  Patrick                 Updated for isochrones
 /// 0.5             2026-03-14  Cody                    GetFullNeighbourhoodScore sending click data to db
+/// 0.6             2026-03-14  Greeley                 Admin panel hookups for CRUD amenities.
 
 
 namespace AmenityScaleWeb.Controllers
@@ -98,7 +99,7 @@ namespace AmenityScaleWeb.Controllers
             });
         }
 
-
+        //CRUD Amenities from Admin panel.
         [HttpGet]
         [Route("api/amenities/categories")]
         public IHttpActionResult GetCategories()

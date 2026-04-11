@@ -1,4 +1,8 @@
-﻿using AmenityScaleCore.Data;
+﻿/// <summary>
+/// Version         Date        Coder           Remarks
+/// 0.1             2026-01-04  Greeley         Admin panel hookups with exisitng SP 
+
+using AmenityScaleCore.Data;
 using AmenityScaleCore.Models.Location;
 using System.Web.Http;
 

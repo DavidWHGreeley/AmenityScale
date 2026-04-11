@@ -3,7 +3,11 @@
 /// 0.1             2026-16-02  Cody & Greeley          Generic Script created
 /// 0.2             2026-07-03  Patrick                 Changed calls for radius to isochrone
 /// 0.3             2026-12-03  Cody                    Added save-location-score event handler
-/// 0.4             2026-02-04  Greeley                 Time to dual! 
+/// 0.4             2026-02-04  Greeley                 Battle mode start battle, join battle, leaderboard
+/// 0.5             2026-04-02  Greeley                 Auto-join as first participant on battle start
+/// 0.6             2026-04-02  Greeley                 Detect existing battle participant on share link open
+/// 0.7             2026-04-02  Greeley                 Track lastLocationID to enable Start Battle button
+/// 0.8             2026-04-02  Greeley                 Clean URL and hide battle UI after join 
 
 /*
 File is mostly for UI related tasks.
@@ -12,7 +16,7 @@ to the appropriate modules.
 */
 
 import './address.js'
-import { saveAddress, whenLocationSelected, startBattle, joinBattle, getLeaderboard } from './api-requests.js'
+import { saveAddress, whenLocationSelected, startBattle, joinBattle, getLeaderboard, saveIsochrones } from './api-requests.js'
 import { getOrCreateUser } from './user.js'
 import { getBattleCodeFromURL } from './battle.js'
 import { registerClickHandler, toggleHeatmap, panToAddress, displayBattleMarkers } from './map.js'
@@ -45,7 +49,11 @@ async function init() {
         document.getElementById('battle-ribbon').style.display = 'block'
     }
 }
-
+//TODO: Move to UI.JS?
+/**
+ * Shows the share URL input and populates it with the given URL
+ * @param {string} shareUrl - The full battle share URL to display
+ */
 export function showShareURL(shareUrl) {
     const box = document.getElementById('share-url')
     if (box) {
@@ -54,6 +62,10 @@ export function showShareURL(shareUrl) {
     }
 }
 
+/**
+ * Renders the leaderboard to the floating leaderboard div on the map
+ * @param {Array} participants
+ */
 export function renderLeaderboard(participants) {
     const board = document.getElementById('leaderboard')
     if (!board) return
@@ -76,6 +88,7 @@ registerClickHandler(async (wktData) => {
     if (result?.locationID) {
         lastLocationID = result.locationID
         document.getElementById('start-battle-btn').disabled = false
+        await saveIsochrones(result.locationID, wktData)
     }
 
     if (activeBattleCode && result?.locationID) {
@@ -96,6 +109,11 @@ registerClickHandler(async (wktData) => {
     }
 })
 
+//TODO: Move to UI.JS?
+/**
+ * Creates a new battle, auto-joins with the last scored location,
+ * and displays the share URL and leaderboard
+ */
 document.getElementById('start-battle-btn').addEventListener('click', async () => {
     if (!currentUser) {
         console.error('No user found')
@@ -112,6 +130,7 @@ document.getElementById('start-battle-btn').addEventListener('click', async () =
     await renderBattlesList(currentUser.UserID)
 })
 
+//TODO: Can probably be removed
 document.getElementById('submit-location-btn').addEventListener('click', () => {
     new bootstrap.Tab(document.getElementById('tab-amenities')).show()
 })

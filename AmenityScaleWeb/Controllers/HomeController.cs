@@ -8,5 +8,9 @@ namespace AmenityScaleWeb.Controllers
         {
             return View();
         }
+        public ActionResult About()
+        {
+            return View();
+        }
     }
 }

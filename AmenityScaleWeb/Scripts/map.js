@@ -2,10 +2,12 @@
 /// Version         Date        Coder                   Remarks
 /// 0.1             2026-16-02  Patrick                 Init Script
 /// 0.2             2026-16-02  Greeley                 Isolated this to just for google maps logic
-/// 0.3				2026-19-02 	Cody					Heatmaps
+/// 0.3				2026-19-02 	Greeley					Heatmaps
 /// 0.4             2026-07-03  Patrick                 Changes from radius to isochrone
 /// 0.4.1           2026-12-03  Cody                    Added location score to the initial pin
-
+/// 0.5             2026-04-02  Greeley                 Added battle markers 
+/// 0.6             2026-04-02  Greeley                 clearBattleMarkers on new map click
+/// 0.7             2026-04-02  Greeley                 displayBattleMarkers supports showAll flag for past battles
 
 /*
 This file is for Google maps specific task
@@ -30,9 +32,13 @@ let heatmapVisible = false
 let onLocationSelected = null
 let amenities = null
 
+let hoverIsochronePolygons = []
 
+/**
+ *  clears existing polygons and redraws them from a new path list
+ * @param {any} pathList
+ */
 function buildLocationPin() {
-    console.log('testing')
     const pin = new google.maps.marker.PinElement({
         background: '#006cb5',
         borderColor: '#004f8a',
@@ -41,6 +47,10 @@ function buildLocationPin() {
     return pin.element
 }
 
+/**
+ *  clears existing polygons and redraws them from a new path list
+ * @param {any} pathList
+ */
 function buildAmenityPin() {
     const pin = new google.maps.marker.PinElement({
         background: '#33b5bd',
@@ -50,15 +60,17 @@ function buildAmenityPin() {
     return pin.element
 }
 
-// Removes the previously placed location marker from the map.
-// Called before placing a new one to ensure only one active marker exists at a time.
 function clearActiveMarker() {
     if (activeMarker) {
         activeMarker.map = null
         activeMarker = null
     }
 }
-
+/**
+ *  clears existing polygons and redraws them from a new path list
+ * @param {any} pathList
+ * Original Auth: Patrick
+ */
 function drawIsochronePolygons(pathList = []) {
 
     isochronePolygons.forEach(isoPoly => {
@@ -84,7 +96,6 @@ function drawIsochronePolygons(pathList = []) {
 }
 
 
-// Builds a heatmap layer from amenity coordinates.
 function buildHeatmap(data) {
     const points = data.map((amenity) =>
         new google.maps.LatLng(amenity.Latitude, amenity.Longitude)
@@ -100,6 +111,7 @@ function buildHeatmap(data) {
         radius: 40,
     })
 }
+
 
 export function toggleHeatmap() {
     if (!locationSelected) {
@@ -140,6 +152,11 @@ export function panToAddress({ lat, lon, displayName }) {
     console.log('[Location] Panned to address:', position)
 }
 
+/**
+ * Calls the function that also calls the UI function to show the score
+ * @param {any} score
+ * @returns
+ */
 export function displayScore(score) {
     console.log('[Location] Score:', score)
 
@@ -165,6 +182,12 @@ async function main() {
 }
 
 
+/**
+ * Attaches a click listener to the map.
+ * On click: drops a marker, reverse geocodes the position, generates isochrone
+ * polygons sorted largest to smallest, and fires the onLocationSelected callback
+ * with the WKT data and address info.
+ */
 function attachMapClickListener() {
     map.addListener('click', async (event) => {
 
@@ -187,17 +210,13 @@ function attachMapClickListener() {
         try {
             isLoadingFn()
             amenities = null
-            // Gets address from coordinates
             const address = await reverseGeocode({ lat: lat, lon: lng });
 
-            // Call the function in isochrones.js to create isochrone polygons
             const allIsochrones = await generateIsochroneWKT(event.latLng, TRAVEL_TIMES);
 
-            // Add each polygon to the map from largest to smallest
             const sortedIsochrones = [...allIsochrones].sort((a, b) => b.minutes - a.minutes);
             drawIsochronePolygons(sortedIsochrones.map(iso => iso.paths));
 
-            // Format the polygons inside the sorted list
             if (typeof onLocationSelected === 'function') {
                 let wktData = {}
                 let counter = 1;
@@ -210,7 +229,6 @@ function attachMapClickListener() {
                 wktData.lat = lat;
                 wktData.lng = lng;
 
-                // Address data
                 wktData.streetNumber = address.streetNumber
                 wktData.street = address.street
                 wktData.city = address.city
@@ -226,6 +244,12 @@ function attachMapClickListener() {
     })
 }
 
+/**
+ * Attaches a click-triggered info window to a marker.
+ * @param {google.maps.marker.AdvancedMarkerElement} marker
+ * @param {string} content - HTML string to display in the info window.
+ * Auth Greeley
+ */
 function attachInfoWindow(marker, content) {
     const infoWindow = new google.maps.InfoWindow({ content })
 
@@ -234,8 +258,12 @@ function attachInfoWindow(marker, content) {
     })
 }
 
-// Clears all existing amenity markers, plots fresh ones from the result set,
-// attaches info windows, updates the score display, and rebuilds the heatmap.
+/**
+ * Attaches a click-triggered info window to a marker.
+ * @param {google.maps.marker.AdvancedMarkerElement} marker
+ * @param {string} content - HTML string to display in the info window.
+ * Auth Greeley
+ */
 export async function displayResults(data, score) {
     for (const m of markers) m.map = null
     markers = []
@@ -261,6 +289,11 @@ export async function displayResults(data, score) {
     buildHeatmap(data)
 }
 
+/**
+ * Re-renders markers used when filtering amenities.
+ * @returns
+ * Auth Greeley
+ */
 export function redrawMarkers() {
     if (!amenities) return
     for (const m of markers) m.map = null
@@ -282,10 +315,22 @@ export function redrawMarkers() {
     }
 }
 
+/**
+ * Removes all battle markers from the map.
+ * Auth: Greeley
+ * 
+ */
 export function clearBattleMarkers() {
     for (const marker of battleMarkers) marker.map = null
 }
 
+/**
+ * Plots markers for all battle participants on the map. Color code them. Skips the current user of marker if show all is true (Leaderboard view for example)
+ * @param {any} participants
+ * @param {any} currentUserID
+ * @param {any} showAll
+ * Auth: Greeley
+ */
 export function displayBattleMarkers(participants, currentUserID, showAll = false) {
     clearBattleMarkers()
 
@@ -319,6 +364,41 @@ export function displayBattleMarkers(participants, currentUserID, showAll = fals
         attachInfoWindow(marker, content)
         battleMarkers.push(marker)
     }
+}
+
+export function clearHoverIsochrones() {
+    hoverIsochronePolygons.forEach(p => p.setMap(null))
+    hoverIsochronePolygons = []
+}
+
+export function drawHoverIsochrones(wktList) {
+    console.log('[map] drawHoverIsochrones called with:', wktList)
+    clearHoverIsochrones()
+
+    wktList.forEach(iso => {
+        const polygon = new google.maps.Polygon({
+            paths: parseWKTToLatLng(iso.PolygonWKT),
+            map: map,
+            strokeColor: '#f05a2a',
+            strokeOpacity: 0.6,
+            strokeWeight: 2,
+            fillColor: '#f05a2a',
+            fillOpacity: 0.05,
+        })
+        hoverIsochronePolygons.push(polygon)
+    })
+}
+
+function parseWKTToLatLng(wkt) {
+    const coords = wkt.replace('POLYGON((', '').replace('))', '').split(', ')
+    return coords
+        .map(coord => {
+            const parts = coord.trim().split(' ')
+            const lng = parseFloat(parts[0])
+            const lat = parseFloat(parts[1])
+            return { lat, lng }
+        })
+        .filter(point => isFinite(point.lat) && isFinite(point.lng))
 }
 
 window.addEventListener('load', main)

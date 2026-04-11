@@ -7,33 +7,12 @@
     @Styles.Render("~/Content/bootstrap.min.css")
     @Styles.Render("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css")
     @Styles.Render("~/Content/style.css")
+    @Styles.Render("~/Content/navbar.css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
 
-    <nav class="navigation-bar">
-        <div class="logo-container">
-            <img src="~/Content/logoMin.png" alt="">
-        </div>
-
-        <div class="hammy-container">
-            <div id="hammy-btn" class="bg">
-                <div id="nav-hamburger" class="nav-hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-            <div id="menu-container" class="menu-container">
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Profile</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @Html.Partial("_Navbar")
     <div id="app" class="body-content">
         @RenderBody()
         <hr />

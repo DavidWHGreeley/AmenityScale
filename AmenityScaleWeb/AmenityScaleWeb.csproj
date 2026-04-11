@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\BattleController.cs" />
+    <Compile Include="API\IsochronesController.cs" />
     <Compile Include="API\LocationController.cs" />
     <Compile Include="API\ORSController.cs" />
     <Compile Include="API\UsersController.cs" />
@@ -191,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\about.css" />
     <Content Include="Content\admin.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -212,6 +214,7 @@
     <Content Include="Content\gears-spinner.svg" />
     <Content Include="Content\logo.png" />
     <Content Include="Content\logoMin.png" />
+    <Content Include="Content\navbar.css" />
     <Content Include="Content\panel-fire.svg" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
@@ -280,6 +283,9 @@
     <Content Include="Views\Shared\_AlreadyInBattleModal.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Shared\_About.cshtml" />
+    <Content Include="Views\Shared\_Navbar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
