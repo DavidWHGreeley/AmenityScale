@@ -12,9 +12,9 @@ import { getBattleCodeFromURL } from './battle.js'
 import { drawHoverIsochrones, clearHoverIsochrones } from './map.js'
 import { getIsochrones } from './api-requests.js'
 
-const btn = document.getElementById('hammy-btn')
-const menu = document.getElementById('menu-container')
-const navIcon = document.getElementById('nav-hamburger')
+//const btn = document.getElementById('hammy-btn')
+//const menu = document.getElementById('menu-container')
+//const navIcon = document.getElementById('nav-hamburger')
 const map = document.getElementById('map')
 const loadingEl = document.getElementById('loading')
 const scorePopupEl = document.getElementById('score-popup')
@@ -26,7 +26,7 @@ const leaderboardList = document.getElementById('leaderboard-list')
 const leaderboardStatus = document.getElementById('leaderboard-status')
 const leaderboardShareUrl = document.getElementById('leaderboard-share-url')
 const backToBattles = document.getElementById('back-to-battles')
-let isOpen = false
+//let isOpen = false
 let showScore = false
 let showCopied = false
 const togglePanel = document.getElementById('toggle-panel')
@@ -156,12 +156,12 @@ UI interactions, menu toggles, loading states, trigger for popups etc etc.
 */
 
 
-btn.addEventListener('click', () => {
-    isOpen = !isOpen
-    menu.classList.toggle('open', isOpen)
-    btn.classList.toggle('open', isOpen)
-    navIcon.classList.toggle('open', isOpen)
-})
+//btn.addEventListener('click', () => {
+//    isOpen = !isOpen
+//    menu.classList.toggle('open', isOpen)
+//    btn.classList.toggle('open', isOpen)
+//    navIcon.classList.toggle('open', isOpen)
+//})
 
 export function isLoadingFn() {
     map.classList.add('loading')

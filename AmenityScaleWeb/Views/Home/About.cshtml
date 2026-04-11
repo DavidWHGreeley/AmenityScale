@@ -1,0 +1,339 @@
+﻿@{
+    Layout = "~/Views/Shared/_About.cshtml";
+}
+
+@Html.Partial("_Navbar")
+<div class="about-container">
+    <section class="hero">
+        <div class="container">
+            <p class="hero-eyebrow">AmeniScale - Documentation</p>
+            <h1 class="hero-title">
+                <span class="underline-span">Vision</span>
+            </h1>
+            <p class="hero-subtitle">
+                Pick a place, see the best amenities around and gives a score to the local area so everyone can see
+                how
+                your place is better than that place over there.
+            </p>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <h2 class="section-heading">What is AmeniScale?</h2>
+            <hr class="section-rule" />
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7">
+                    <blockquote class="vision-quote">
+                        AmeniScale is an application that will allow users to provide a location
+                        and give a quantitative assessment of the location's general
+                        <strong>"desirability"</strong>. We analyze the proximity of a specific
+                        address to nearby amenities (Points of Interest) and calculate a score
+                        that reflects the quality and convenience of the user's location within
+                        a specific radius.
+                    </blockquote>
+                    <p class="vision-body">
+                        Whether you're hunting for your next home, curious about your current neighborhood,
+                        or just want to settle a debate with a friend, AmeniScale gives your location a
+                        number and lets you fight about it (with friends).
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="isochrone-container">
+                    <h4>Walking Distance Decay</h4>
+                    <p>
+                        Scores are based on walking distance, visualized as <strong>Isochrones</strong> on the
+                        map. We apply a distance decay function based on the distance from your location to the
+                        amenity. All scores and isochrones are stored within the database for battle use and
+                        analysis.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section alt">
+        <div class="container">
+            <h2 class="section-heading underline">Amenities & Scoring</h2>
+            <hr class="section-rule" />
+            <p class="mb-2" style="max-width:720px;">
+                Amenities were pulled from multiple sources such as the <a href="https://maps-cityofkingston.hub.arcgis.com/">Kingston Open Data Portal</a> and the
+                Overpass API as
+                point data and are assigned a base weight from <strong>1–10</strong> based on sources such as:
+            </p>
+            <ul class="source-links mb-4" style="max-width:720px;">
+                <li>
+                    <a href="https://www150.statcan.gc.ca/n1/pub/71-607-x/71-607-x2020011-eng.htm" target="_blank">
+                        Proximity Measures Data Viewer ↗
+                    </a>
+                </li>
+                <li>
+                    <a href="https://healthyplan.city/en" target="_blank">
+                        HealthyPlan.City ↗
+                    </a>
+                </li>
+                <li>
+                    <a href="https://can-ale.ca" target="_blank">
+                        CAN-ALE ↗
+                    </a>
+                </li>
+            </ul>
+
+            <p>
+                The scores for each amenity are given based on premises such as
+                coverage of the city, and proximity to population. These scores are then used when a user clicks on
+                the map to calculate the AmeniScore for the selected location.
+            </p>
+
+            <h5 class="sub-heading">Primary Data Sources</h5>
+            <div class="row g-3 mb-5">
+                <div class="col-md-4">
+                    <div class="source-card">
+                        <div class="source-tag">Open Data Portal</div>
+                        <div class="source-title">City of Kingston Open Data</div>
+                        <div class="source-desc mb-2">
+                            Municipal point-of-interest data including parks, community centres,
+                            transit stops, and civic facilities within Kingston.
+                        </div>
+                        <a href="https://maps-cityofkingston.hub.arcgis.com/" target="_blank">
+                            maps-cityofkingston.hub.arcgis.com ↗
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="source-card">
+                        <div class="source-tag">API</div>
+                        <div class="source-title">Overpass API</div>
+                        <div class="source-desc mb-2">
+                            OpenStreetMap-derived amenity data queried via the Overpass API
+                            to supplement municipal datasets with broader POI coverage.
+                        </div>
+                        <a href="https://overpass-api.de/" target="_blank">overpass-api.de ↗</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="source-card">
+                        <div class="source-tag">Scoring Basis</div>
+                        <div class="source-title">Scoring Frameworks</div>
+                        <div class="source-desc mb-2">
+                            Per-amenity weights derived from established urban proximity
+                            and liveability research:
+                        </div>
+                        <a href="https://www150.statcan.gc.ca/n1/pub/71-607-x/71-607-x2020011-eng.htm"
+                           target="_blank" class="d-block mb-1">StatCan Proximity Measures ↗</a>
+                        <a href="https://healthyplan.city/en" target="_blank" class="d-block mb-1">
+                            HealthyPlan.City
+                            ↗
+                        </a>
+                        <a href="https://can-ale.ca" target="_blank" class="d-block">CAN-ALE ↗</a>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="sub-heading">Amenity Categories</h5>
+            <div class="mb-5">
+                <span class="data-tag"><i class="fa-solid fa-graduation-cap"></i> Schools</span>
+                <span class="data-tag"><i class="fa-solid fa-hospital"></i> Hospitals</span>
+                <span class="data-tag"><i class="fa-solid fa-bus"></i> Transit Stops</span>
+                <span class="data-tag"><i class="fa-solid fa-cart-shopping"></i> Grocery Stores</span>
+                <span class="data-tag"><i class="fa-solid fa-tree"></i> Parks</span>
+                <span class="data-tag"><i class="fa-solid fa-dumbbell"></i> Recreation Centres</span>
+                <span class="data-tag"><i class="fa-solid fa-utensils"></i> Restaurants</span>
+                <span class="data-tag"><i class="fa-solid fa-prescription-bottle-medical"></i> Pharmacies</span>
+                <span class="data-tag"><i class="fa-solid fa-book"></i> Libraries</span>
+                <span class="data-tag"><i class="fa-solid fa-bicycle"></i> Bike Infrastructure</span>
+                <span class="data-tag"><i class="fa-solid fa-building-columns"></i> Financial Services</span>
+                <span class="data-tag">& more</span>
+            </div>
+
+            <div class="score-calc-section">
+                <h5 class="sub-heading">Score Calculation &amp; Normalization</h5>
+                <p class="score-calc-intro">
+                    The AmeniScore is calculated using a <strong>weighted decay model</strong> across four
+                    isochrone rings, each representing a walking time band from the selected point.
+                    Each amenity carries a <code>BaseWeight</code> (1–10) assigned from our data sources.
+                </p>
+
+                <div class="row g-4 mb-4">
+
+                    <div class="col-lg-5">
+                        <div class="calc-card">
+                            <div class="label">Formula</div>
+                            <div class="formula">
+                                Score &nbsp;=&nbsp; &Sigma; ( BaseWeight &times; DecayMultiplier )
+                            </div>
+                            <p class="note">
+                                Summed across all unique amenities. If an amenity appears in multiple rings,
+                                only the <strong>closest ring</strong> is counted.
+                                Negative amenities <strong>subtract</strong> from the total.
+                            </p>
+                            <div class="formula formula norm">
+                                AmeniScore &nbsp;=&nbsp; CLAMP&thinsp;
+                                <span class="frac">
+                                    <span class="num">RawScore</span>
+                                    <span class="den">TMax</span>
+                                </span>
+                                &nbsp;&times;&nbsp;100
+                            </div>
+                            <p class="note">
+                                Normalized against the <strong>theoretical max</strong> score, the sum of every amenity's base weight
+                                in the dataset, representing a perfect score where all amenities fall within
+                                the closest walking ring. The result is clamped between <strong>0</strong> and
+                                <strong>100</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="calc-card">
+                            <div class="label">Isochrone Decay Multipliers</div>
+                            <p class="note mb-3">
+                                Scores decay the further an amenity is from the origin point,
+                                visualized as isochrone rings on the map. Amenities beyond ring 4
+                                receive a multiplier of <strong>0</strong> and do not contribute to the score.
+                            </p>
+                            <table class="decay-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ring</th>
+                                        <th>Isochrone</th>
+                                        <th>Multiplier</th>
+                                        <th>Contribution</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="decay-table__row--1">
+                                        <td><span class="ring-badge ring-badge ring1">1</span></td>
+                                        <td>Closest</td>
+                                        <td><strong>1.0</strong></td>
+                                        <td>
+                                            <div class="decay-bar" style="--pct: 100%"></div>
+                                        </td>
+                                    </tr>
+                                    <tr class="decay-table__row--2">
+                                        <td><span class="ring-badge ring-badge ring2">2</span></td>
+                                        <td>&nbsp;</td>
+                                        <td><strong>0.8</strong></td>
+                                        <td>
+                                            <div class="decay-bar" style="--pct: 80%"></div>
+                                        </td>
+                                    </tr>
+                                    <tr class="decay-table__row--3">
+                                        <td><span class="ring-badge ring-badge ring3">3</span></td>
+                                        <td>&nbsp;</td>
+                                        <td><strong>0.6</strong></td>
+                                        <td>
+                                            <div class="decay-bar" style="--pct: 60%"></div>
+                                        </td>
+                                    </tr>
+                                    <tr class="decay-table__row--4">
+                                        <td><span class="ring-badge ring-badge ring4">4</span></td>
+                                        <td>Furthest</td>
+                                        <td><strong>0.4</strong></td>
+                                        <td>
+                                            <div class="decay-bar" style="--pct: 40%"></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <h2 class="section-heading">How to Play</h2>
+            <hr class="section-rule" />
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <p class="mb-4" style="color:#555;">
+                        AmeniScore battles are the competitive heart of the app. Challenge anyone,
+                        anywhere, the better neighborhood wins.
+                    </p>
+                    <ol class="steps-list">
+                        <li>
+                            <div class="step-num">01</div>
+                            <div class="step-body">
+                                <strong>Generate your score</strong>
+                                <span>
+                                    Click anywhere on the map to drop a marker and calculate the AmeniScore for
+                                    that location.
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-num">02</div>
+                            <div class="step-body">
+                                <strong>Share your Battle ID</strong>
+                                <span>
+                                    Once a location is selected, a Battle ID is generated. Copy and and send your
+                                    Battle ID to a friend. This is asynchronous multiplayer so that friend who never
+                                    responds and leaves you on read can play if they remember.
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-num">03</div>
+                            <div class="step-body">
+                                <strong>Friend places their marker</strong>
+                                <span>
+                                    Your opponent loads the battle link and clicks on the map to generate their
+                                    own AmeniScore.
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-num">04</div>
+                            <div class="step-body">
+                                <strong>Higher score wins</strong>
+                                <span>
+                                    The player with the higher AmeniScore wins the battle. Results are saved to
+                                    the leaderboard. Be sure to check back often.
+                                </span>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="gamify-banner">
+        <div class="container">
+            <h2 class="section-heading section-heading--light">Gamify the System</h2>
+            <hr class="section-rule section-rule--light" />
+            <p class="mb-5">
+                AmeniScale isn't just an analysis tool, it's a game. Every click is a challenge and every score is a
+                statement. Prove your neighborhood is the best.
+            </p>
+            <div class="row g-0 align-items-center">
+                <div class="col-4 col-md-3">
+                    <div class="gamify-stat">
+                        <div class="stat-num">100</div>
+                        <div class="stat-label">Max Score</div>
+                    </div>
+                </div>
+                <div class="col-4 col-md-3">
+                    <div class="gamify-stat">
+                        <div class="stat-num">4</div>
+                        <div class="stat-label">Battle Steps</div>
+                    </div>
+                </div>
+                <div class="col-4 col-md-3">
+                    <div class="gamify-stat">
+                        <div class="stat-num">∞</div>
+                        <div class="stat-label">Battles</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3 mt-4 mt-md-0 d-flex align-items-center justify-content-center">
+                    <a href="#" class="gamify-cta">Start a Battle <i class="fa-solid fa-arrow-right-long"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <img src="~/Content/logoMin.png" alt="" class="logo-footer">
+    </footer>
+</div>

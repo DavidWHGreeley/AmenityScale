@@ -1,0 +1,35 @@
+﻿
+<nav class="navigation-bar">
+    <div class="logo-container">
+        <img src="~/Content/logoMin.png" alt="">
+    </div>
+    <div class="hammy-container">
+        <div id="hammy-btn" class="bg">
+            <div id="nav-hamburger" class="nav-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div id="menu-container" class="menu-container">
+            <ul>
+                <li><a href="/" class="@(Request.Url.AbsolutePath == "/" ? "active" : "")">Home</a></li>
+                <li><a href="/about" class="@(Request.Url.AbsolutePath == "/about" ? "active" : "")">About</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+const btn = document.getElementById('hammy-btn')
+    const menu = document.getElementById('menu-container')
+    const navIcon = document.getElementById('nav-hamburger')
+    let isOpen = false
+
+    btn.addEventListener('click', () => {
+        isOpen = !isOpen
+        menu.classList.toggle('open', isOpen)
+        btn.classList.toggle('open', isOpen)
+        navIcon.classList.toggle('open', isOpen)
+    })</script>

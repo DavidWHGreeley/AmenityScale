@@ -1,0 +1,495 @@
+﻿@import"https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap";
+
+.about-container {
+    height: 100%;
+
+}
+
+    .about-container .hero {
+        background-color: #006cb5;
+        color: #fff;
+        overflow: hidden;
+        padding: 5rem 0 4rem;
+        position: relative
+    }
+
+        .about-container .hero:before {
+            content: "";
+            inset: 0;
+            pointer-events: none;
+            position: absolute;
+            background-image: repeating-linear-gradient(-45deg, rgba(255, 255, 255, .03) 0px, rgba(255, 255, 255, .03) 1px, transparent 1px, transparent 12px)
+        }
+
+        .about-container .hero .hero-eyebrow {
+            color: #33b5bd;
+            font-family: Roboto Mono, monospace;
+            font-size: .8rem;
+            letter-spacing: .25em;
+            margin-bottom: 1rem;
+            text-transform: uppercase
+        }
+
+        .about-container .hero .hero-title {
+            font-family: Bebas Neue, sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            letter-spacing: .05em;
+            line-height: 1;
+            margin-bottom: 1rem
+        }
+
+            .about-container .hero .hero-title .underline-span {
+                text-decoration: underline;
+                text-decoration-color: #33b5bd;
+                text-underline-offset: 6px
+            }
+
+        .about-container .hero .hero-subtitle {
+            font-size: 1.15rem;
+            font-style: italic;
+            max-width: 640px;
+            opacity: .85
+        }
+
+    .about-container .section {
+        padding: 5rem 0 0
+    }
+
+        .about-container .section.alt {
+            background-color: #fff
+        }
+
+    .about-container .section-heading {
+        color: #006cb5;
+        font-family: Bebas Neue, sans-serif;
+        font-size: 2.5rem;
+        letter-spacing: .08em;
+        margin-bottom: .25rem
+    }
+
+        .about-container .section-heading.underline {
+            text-decoration: underline;
+            text-decoration-color: #f05a2a;
+            text-underline-offset: 5px
+        }
+
+        .about-container .section-heading.light {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-color: #ffffff80;
+            text-underline-offset: 6px
+        }
+
+    .about-container .section-rule {
+        border: none;
+        border-top: 3px solid #33b5bd;
+        margin: .5rem 0 2rem;
+        width: 60px
+    }
+
+    .about-container .section-rule--light {
+        border-top-color: #fff6
+    }
+
+    .about-container .vision-quote {
+        border-left: 4px solid #33b5bd;
+        color: #1a1a2e;
+        font-size: 1.35rem;
+        font-weight: 300;
+        line-height: 1.7;
+        margin: 0;
+        padding-left: 1.5rem
+    }
+
+    .about-container .vision-body {
+        color: #555;
+        margin-top: 1.5rem
+    }
+
+    .about-container .isochrone-container {
+        background-color: #006cb5;
+        border-radius: 10px;
+        color: #fff;
+        padding: 1.75rem 2rem
+    }
+
+        .about-container .isochrone-container h4 {
+            color: #33b5bd;
+            font-family: Bebas Neue, sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: .08em;
+            margin-bottom: .5rem
+        }
+
+        .about-container .isochrone-container p {
+            font-size: .95rem;
+            margin: 0;
+            opacity: .85
+        }
+
+    .about-container .source-card {
+        background-color: #e7ecf7;
+        border: 1px solid rgba(0, 108, 181, .15);
+        border-radius: 10px;
+        height: 100%;
+        padding: 1.25rem 1.5rem;
+        transition: border-color .2s, box-shadow .2s;
+        word-break: break-all
+    }
+
+        .about-container .source-card:hover {
+            border-color: #33b5bd;
+            box-shadow: 0 4px 16px #006cb51a
+        }
+
+        .about-container .source-card .source-tag {
+            color: #f05a2a;
+            font-family: Roboto Mono, monospace;
+            font-size: .7rem;
+            letter-spacing: .15em;
+            margin-bottom: .5rem;
+            text-transform: uppercase
+        }
+
+        .about-container .source-card .source-title {
+            color: #006cb5;
+            font-weight: 600;
+            margin-bottom: .25rem
+        }
+
+        .about-container .source-card .source-desc {
+            color: #555;
+            font-size: .9rem
+        }
+
+        .about-container .source-card a {
+            color: #33b5bd;
+            font-family: Roboto Mono, monospace;
+            font-size: .8rem;
+            text-decoration: none
+        }
+
+            .about-container .source-card a:hover {
+                color: #2a969d;
+                text-decoration: underline
+            }
+
+    .about-container .data-tag {
+        background-color: #006cb51a;
+        border: 1px solid rgba(0, 108, 181, .2);
+        border-radius: 20px;
+        color: #006cb5;
+        display: inline-block;
+        font-family: Roboto Mono, monospace;
+        font-size: .75rem;
+        margin: .25rem;
+        padding: .25rem .85rem;
+        transition: background-color .2s
+    }
+
+        .about-container .data-tag:hover {
+            background-color: #006cb52e
+        }
+
+    .about-container .steps-list {
+        counter-reset: step-counter;
+        list-style: none;
+        margin: 0;
+        padding: 0
+    }
+
+        .about-container .steps-list li {
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(0, 108, 181, .1);
+            display: flex;
+            gap: 1.25rem;
+            padding: 1.25rem 0
+        }
+
+            .about-container .steps-list li:last-child {
+                border-bottom: none
+            }
+
+        .about-container .steps-list .step-num {
+            color: #006cb5;
+            font-family: Bebas Neue, sans-serif;
+            font-size: 2.25rem;
+            letter-spacing: .05em;
+            line-height: 1;
+            min-width: 48px
+        }
+
+        .about-container .steps-list .step-body strong {
+            color: #006cb5;
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: .2rem
+        }
+
+        .about-container .steps-list .step-body span {
+            color: #555;
+            font-size: .9rem
+        }
+
+    .about-container .battle-badge {
+        background-color: #f05a2a;
+        border-radius: 4px;
+        color: #fff;
+        display: inline-block;
+        font-family: Bebas Neue, sans-serif;
+        font-size: .9rem;
+        letter-spacing: .12em;
+        margin-left: .5rem;
+        padding: .2rem .75rem;
+        vertical-align: middle
+    }
+
+    .about-container .gamify-banner {
+        background: linear-gradient(135deg, #f05a2a, #e14310);
+        color: #fff;
+        padding: 5rem 0
+    }
+
+        .about-container .gamify-banner p {
+            color: #ffffffe0;
+            max-width: 600px
+        }
+
+        .about-container .gamify-banner .gamify-stat {
+            padding: 1.5rem;
+            text-align: center
+        }
+
+            .about-container .gamify-banner .gamify-stat .stat-num {
+                color: #fff;
+                font-family: Bebas Neue, sans-serif;
+                font-size: 4rem;
+                line-height: 1
+            }
+
+            .about-container .gamify-banner .gamify-stat .stat-label {
+                color: #ffffffbf;
+                font-family: Roboto Mono, monospace;
+                font-size: .85rem;
+                letter-spacing: .1em;
+                text-transform: uppercase
+            }
+
+        .about-container .gamify-banner .gamify-cta {
+            background: #fff;
+            border-radius: 6px;
+            color: #f05a2a;
+            display: inline-block;
+            font-family: Bebas Neue, sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: .12em;
+            padding: .75rem 2rem;
+            text-decoration: none;
+            transition: opacity .2s
+        }
+
+            .about-container .gamify-banner .gamify-cta:hover {
+                opacity: .9
+            }
+
+    .about-container .sub-heading {
+        color: #006cb5;
+        font-family: Bebas Neue, sans-serif;
+        font-size: 1.25rem;
+        letter-spacing: .08em;
+        margin-bottom: .75rem
+    }
+
+    .about-container .site-footer {
+        background-color: #006cb5;
+        color: #ffffffb3;
+        padding: 2rem 0;
+        text-align: center
+    }
+
+        .about-container .site-footer .logo-footer {
+            color: #fff;
+            font-family: Bebas Neue, sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: .15em;
+            margin-bottom: .5rem;
+            height: 130px;
+            width: auto;
+        }
+
+        .about-container .site-footer small {
+            font-size: .75rem;
+            opacity: .6
+        }
+
+    .about-container .score-calc-section {
+        margin-top: 2rem
+    }
+
+        .about-container .score-calc-section .score-calc-intro {
+            color: #444;
+            margin-bottom: 1.75rem;
+            max-width: 780px
+        }
+
+            .about-container .score-calc-section .score-calc-intro code {
+                background-color: #006cb514;
+                border-radius: 4px;
+                color: #006cb5;
+                font-family: Roboto Mono, monospace;
+                font-size: .85em;
+                padding: .1em .4em
+            }
+
+        .about-container .score-calc-section .calc-card {
+            background-color: #e7ecf7;
+            border: 1px solid rgba(0, 108, 181, .15);
+            border-radius: 10px;
+            height: 100%;
+            padding: 1.5rem
+        }
+
+            .about-container .score-calc-section .calc-card .label {
+                color: #f05a2a;
+                font-family: Roboto Mono, monospace;
+                font-size: .7rem;
+                letter-spacing: .18em;
+                margin-bottom: 1rem;
+                text-transform: uppercase
+            }
+
+            .about-container .score-calc-section .calc-card .formula {
+                background-color: #006cb5;
+                border-radius: 8px;
+                color: #fff;
+                font-family: Roboto Mono, monospace;
+                font-size: 1rem;
+                margin-bottom: 1rem;
+                padding: 1rem 1.25rem;
+                text-align: center
+            }
+
+                .about-container .score-calc-section .calc-card .formula.norm {
+                    align-items: center;
+                    background-color: #006cb514;
+                    border: 1px solid rgba(0, 108, 181, .2);
+                    color: #006cb5;
+                    display: flex;
+                    font-size: .95rem;
+                    gap: .25rem;
+                    justify-content: center
+                }
+
+            .about-container .score-calc-section .calc-card .note {
+                color: #555;
+                font-size: .875rem;
+                line-height: 1.6;
+                margin: 0 0 .75rem
+            }
+
+            .about-container .score-calc-section .calc-card .frac {
+                align-items: center;
+                display: inline-flex;
+                flex-direction: column;
+                margin: 0 .15rem;
+                vertical-align: middle
+            }
+
+                .about-container .score-calc-section .calc-card .frac .num {
+                    border-bottom: 1.5px solid #006cb5;
+                    font-size: .8rem;
+                    padding-bottom: 1px
+                }
+
+                .about-container .score-calc-section .calc-card .frac .den {
+                    font-size: .8rem;
+                    padding-top: 1px
+                }
+
+            .about-container .score-calc-section .calc-card .decay-table {
+                border-collapse: collapse;
+                font-size: .9rem;
+                width: 100%
+            }
+
+                .about-container .score-calc-section .calc-card .decay-table thead tr {
+                    border-bottom: 2px solid rgba(0, 108, 181, .2)
+                }
+
+                    .about-container .score-calc-section .calc-card .decay-table thead tr th {
+                        color: #006cb5;
+                        font-family: Roboto Mono, monospace;
+                        font-size: .7rem;
+                        font-weight: 600;
+                        letter-spacing: .1em;
+                        padding: .4rem .75rem;
+                        text-align: left;
+                        text-transform: uppercase
+                    }
+
+                .about-container .score-calc-section .calc-card .decay-table tbody tr {
+                    border-bottom: 1px solid rgba(0, 108, 181, .08)
+                }
+
+                    .about-container .score-calc-section .calc-card .decay-table tbody tr td {
+                        color: #444;
+                        padding: .6rem .75rem;
+                        vertical-align: middle
+                    }
+
+                    .about-container .score-calc-section .calc-card .decay-table tbody tr .ring-badge {
+                        border-radius: 4px;
+                        display: inline-block;
+                        font-family: Bebas Neue, sans-serif;
+                        font-size: 1rem;
+                        letter-spacing: .05em;
+                        min-width: 28px;
+                        padding: .1rem .4rem;
+                        text-align: center
+                    }
+
+                        .about-container .score-calc-section .calc-card .decay-table tbody tr .ring-badge.ring1 {
+                            background-color: #006cb5e6;
+                            color: #fff
+                        }
+
+                        .about-container .score-calc-section .calc-card .decay-table tbody tr .ring-badge.ring2 {
+                            background-color: #006cb5a6;
+                            color: #fff
+                        }
+
+                        .about-container .score-calc-section .calc-card .decay-table tbody tr .ring-badge.ring3 {
+                            background-color: #006cb566;
+                            color: #fff
+                        }
+
+                        .about-container .score-calc-section .calc-card .decay-table tbody tr .ring-badge.ring4 {
+                            background-color: #006cb533;
+                            color: #006cb5
+                        }
+
+                        .about-container .score-calc-section .calc-card .decay-table tbody tr .ring-badge.out {
+                            background-color: #00000014;
+                            color: #999
+                        }
+
+                    .about-container .score-calc-section .calc-card .decay-table tbody tr .decay-bar {
+                        background-color: #006cb51f;
+                        border-radius: 4px;
+                        height: 10px;
+                        overflow: hidden;
+                        position: relative;
+                        width: 120px
+                    }
+
+                        .about-container .score-calc-section .calc-card .decay-table tbody tr .decay-bar:after {
+                            background: linear-gradient(90deg, #33b5bd, #006cb5);
+                            border-radius: 4px;
+                            content: "";
+                            height: 100%;
+                            left: 0;
+                            position: absolute;
+                            top: 0;
+                            width: var(--pct)
+                        }

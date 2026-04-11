@@ -1,12 +1,14 @@
-﻿*, *::before, *::after {
+﻿@import "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap";
+
+*, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 body {
-    font-family: 'DM Sans', sans-serif;
-    background: #f4f5f8;
+    font-family: 'Roboto', sans-serif;
+    background: #e7ecf7;
     color: #1a1c22;
     min-height: 100vh;
     display: flex;
@@ -15,7 +17,7 @@ body {
 .sidebar {
     width: 220px;
     min-height: 100vh;
-    background: #1a1c22;
+    background: #006cb5;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -26,23 +28,23 @@ body {
 
 .sidebar-logo {
     padding: 28px 24px 20px;
-    border-bottom: 1px solid rgba(255,255,255,.08);
+    border-bottom: 1px solid rgba(255,255,255,.12);
 }
 
     .sidebar-logo .label {
-        font-family: 'DM Mono', monospace;
+        font-family: 'Roboto Mono', monospace;
         font-size: 9px;
         letter-spacing: 3px;
-        color: #1ec97e;
+        color: #33b5bd;
         text-transform: uppercase;
         margin-bottom: 4px;
     }
 
     .sidebar-logo h1 {
-        font-size: 18px;
-        font-weight: 700;
-        color: #fff;
-        letter-spacing: -.3px;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 26px;
+        color: #ffffff;
+        letter-spacing: .05em;
     }
 
 .sidebar-nav {
@@ -60,7 +62,8 @@ body {
     padding: 10px 12px;
     border-radius: 6px;
     cursor: pointer;
-    color: rgba(255,255,255,.5);
+    color: rgba(255,255,255,.6);
+    font-family: 'Roboto', sans-serif;
     font-size: 13px;
     font-weight: 500;
     transition: background .15s, color .15s;
@@ -68,16 +71,17 @@ body {
     background: none;
     width: 100%;
     text-align: left;
+    letter-spacing: .03em;
 }
 
     .nav-item:hover {
-        background: rgba(255,255,255,.06);
-        color: rgba(255,255,255,.85);
+        background: rgba(255,255,255,.1);
+        color: #ffffff;
     }
 
     .nav-item.active {
-        background: rgba(30,201,126,.12);
-        color: #1ec97e;
+        background: rgba(51,181,189,.2);
+        color: #33b5bd;
     }
 
 .nav-icon {
@@ -89,10 +93,10 @@ body {
 
 .sidebar-footer {
     padding: 16px;
-    border-top: 1px solid rgba(255,255,255,.08);
+    border-top: 1px solid rgba(255,255,255,.1);
     font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    color: rgba(255,255,255,.2);
+    font-family: 'Roboto Mono', monospace;
+    color: rgba(255,255,255,.25);
 }
 
 .main {
@@ -104,8 +108,8 @@ body {
 }
 
 .topbar {
-    background: #ffffff;
-    border-bottom: 1px solid #e2e5ec;
+    background: #006cb5;
+    border-bottom: 1px solid rgba(255,255,255,.1);
     padding: 0 32px;
     height: 60px;
     display: flex;
@@ -115,9 +119,10 @@ body {
 }
 
 .page-title {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: -.2px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: #ffffff;
+    letter-spacing: .08em;
 }
 
 .topbar-right {
@@ -142,40 +147,41 @@ body {
 
 .stat-card {
     background: #ffffff;
-    border: 1px solid #e2e5ec;
+    border: 1px solid rgba(0,108,181,.2);
+    border-top: 3px solid #006cb5;
     border-radius: 8px;
     padding: 20px 24px;
     display: flex;
     flex-direction: column;
     gap: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,.12), 0 4px 16px rgba(0,0,0,.06);
 }
 
 .stat-label {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: .8px;
-    color: #8b90a0;
+    letter-spacing: 1px;
+    color: rgba(0,0,0,.5);
 }
 
 .stat-value {
-    font-size: 28px;
-    font-weight: 700;
-    font-family: 'DM Mono', monospace;
-    color: #1a1c22;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: #006cb5;
+    letter-spacing: .05em;
 }
 
 .stat-sub {
     font-size: 12px;
-    color: #8b90a0;
+    color: rgba(0,0,0,.5);
 }
 
 .panel {
     background: #ffffff;
-    border: 1px solid #e2e5ec;
+    border: 1px solid rgba(0,108,181,.2);
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,.12), 0 4px 16px rgba(0,0,0,.06);
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -185,15 +191,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 20px;
-    border-bottom: 1px solid #e2e5ec;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(0,108,181,.2);
+    background: #006cb514;
+    border-radius: 8px 8px 0 0;
     flex-wrap: wrap;
     gap: 10px;
 }
 
 .panel-title {
-    font-size: 14px;
-    font-weight: 600;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: #006cb5;
+    letter-spacing: .06em;
 }
 
 .panel-toolbar {
@@ -223,14 +233,14 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 14px;
+    padding: 8px 16px;
     border-radius: 6px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     border: none;
-    transition: opacity .15s, transform .1s;
+    transition: background-color .2s, opacity .15s, transform .1s;
     white-space: nowrap;
 }
 
@@ -239,27 +249,27 @@ body {
     }
 
 .btn-primary {
-    background: #1a1c22;
-    color: #fff;
+    background: #006cb5;
+    color: #ffffff;
 }
 
     .btn-primary:hover {
-        background: #2d303a;
+        background: #004f8a;
     }
 
 .btn-ghost {
     background: transparent;
-    color: #1a1c22;
-    border: 1px solid #e2e5ec;
+    color: #006cb5;
+    border: 1px solid rgba(0,108,181,.2);
 }
 
     .btn-ghost:hover {
-        background: #f4f5f8;
+        background: #006cb514;
     }
 
 .btn-danger {
-    background: #ef4444;
-    color: #fff;
+    background: #f05a2a;
+    color: #ffffff;
 }
 
     .btn-danger:hover {
@@ -273,32 +283,32 @@ body {
 
 .search {
     padding: 8px 12px;
-    border: 1px solid #e2e5ec;
+    border: 1px solid rgba(0,108,181,.2);
     border-radius: 6px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 13px;
     outline: none;
-    background: #f4f5f8;
+    background: #e7ecf7;
     color: #1a1c22;
     width: 200px;
     transition: border-color .2s, width .2s;
 }
 
     .search:focus {
-        border-color: #3b82f6;
+        border-color: #33b5bd;
         width: 260px;
     }
 
 .ag-theme-alpine {
-    --ag-background-color: #fff;
-    --ag-odd-row-background-color: #fafbfc;
-    --ag-header-background-color: #f8f9fb;
-    --ag-header-foreground-color: #8b90a0;
+    --ag-background-color: #ffffff;
+    --ag-odd-row-background-color: #f7fafd;
+    --ag-header-background-color: #eaf2fb;
+    --ag-header-foreground-color: #006cb5;
     --ag-foreground-color: #1a1c22;
-    --ag-border-color: #e2e5ec;
-    --ag-row-hover-color: #f0f7ff;
-    --ag-selected-row-background-color: #eff6ff;
-    --ag-font-family: 'DM Sans', sans-serif;
+    --ag-border-color: rgba(0,108,181,.15);
+    --ag-row-hover-color: #e8f3fc;
+    --ag-selected-row-background-color: #d0e8f7;
+    --ag-font-family: 'Roboto', sans-serif;
     --ag-font-size: 13px;
     --ag-cell-horizontal-padding: 16px;
     --ag-row-height: 44px;
@@ -309,7 +319,7 @@ body {
         font-size: 10px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: .6px;
+        letter-spacing: .8px;
     }
 
     .ag-theme-alpine .ag-root-wrapper {
@@ -335,23 +345,23 @@ body {
 }
 
 .badge-green {
-    background: #e8faf2;
-    color: #0a7f4e;
+    background: rgba(51,181,189,.15);
+    color: #1a7a80;
 }
 
 .badge-red {
-    background: #fef2f2;
-    color: #b91c1c;
+    background: rgba(240,90,42,.12);
+    color: #c0340a;
 }
 
 .badge-amber {
-    background: #fffbeb;
-    color: #92400e;
+    background: rgba(186,117,23,.12);
+    color: #92540a;
 }
 
 .badge-blue {
-    background: #eff6ff;
-    color: #1d4ed8;
+    background: rgba(0,108,181,.12);
+    color: #006cb5;
 }
 
 .cell-acts {
@@ -368,7 +378,7 @@ body {
     font-weight: 600;
     cursor: pointer;
     border: 1px solid transparent;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     transition: opacity .15s;
 }
 
@@ -377,22 +387,22 @@ body {
     }
 
 .cell-btn-edit {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-    color: #3b82f6;
+    background: rgba(0,108,181,.1);
+    border-color: rgba(0,108,181,.3);
+    color: #006cb5;
 }
 
 .cell-btn-del {
-    background: #fef2f2;
-    border-color: #fecaca;
-    color: #ef4444;
+    background: rgba(240,90,42,.1);
+    border-color: rgba(240,90,42,.3);
+    color: #f05a2a;
 }
 
 .backdrop {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.35);
+    background: rgba(0,0,0,.4);
     backdrop-filter: blur(3px);
     z-index: 500;
     align-items: center;
@@ -405,12 +415,12 @@ body {
 
 .modal {
     background: #ffffff;
-    border: 1px solid #e2e5ec;
+    border: 1px solid rgba(0,108,181,.2);
     border-radius: 12px;
     padding: 28px;
     width: 480px;
     max-width: 95vw;
-    box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -433,11 +443,15 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 2px solid #006cb5;
+    padding-bottom: 12px;
 }
 
     .modal-head h2 {
-        font-size: 17px;
-        font-weight: 700;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 22px;
+        color: #006cb5;
+        letter-spacing: .06em;
     }
 
 .modal-close {
@@ -445,12 +459,12 @@ body {
     border: none;
     font-size: 22px;
     cursor: pointer;
-    color: #8b90a0;
+    color: rgba(0,0,0,.5);
     line-height: 1;
 }
 
     .modal-close:hover {
-        color: #1a1c22;
+        color: #f05a2a;
     }
 
 .form-grid {
@@ -470,30 +484,30 @@ body {
     }
 
     .fg label {
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
-        letter-spacing: .5px;
+        letter-spacing: .8px;
         text-transform: uppercase;
-        color: #8b90a0;
+        color: #006cb5;
     }
 
     .fg input,
     .fg select {
         padding: 9px 11px;
-        border: 1px solid #e2e5ec;
+        border: 1px solid rgba(0,108,181,.2);
         border-radius: 6px;
-        font-family: 'DM Sans', sans-serif;
+        font-family: 'Roboto', sans-serif;
         font-size: 13px;
         color: #1a1c22;
-        background: #f4f5f8;
+        background: #e7ecf7;
         outline: none;
         transition: border-color .2s;
     }
 
         .fg input:focus,
         .fg select:focus {
-            border-color: #3b82f6;
-            background: #fff;
+            border-color: #33b5bd;
+            background: #ffffff;
         }
 
 .modal-foot {
@@ -506,15 +520,16 @@ body {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background: #1a1c22;
-    color: #fff;
+    background: #006cb5;
+    color: #ffffff;
     border-radius: 8px;
     padding: 12px 20px;
     font-size: 13px;
+    font-family: 'Roboto', sans-serif;
     display: flex;
     align-items: center;
     gap: 10px;
-    box-shadow: 0 8px 32px rgba(0,0,0,.25);
+    box-shadow: 0 8px 32px rgba(0,108,181,.35);
     opacity: 0;
     transform: translateY(6px);
     transition: opacity .25s, transform .25s;
@@ -541,22 +556,21 @@ body {
 }
 
 .rank-num {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    background: #f4f5f8;
-    color: #8b90a0;
-    font-family: 'DM Mono', monospace;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    background: #006cb514;
+    color: #006cb5;
 }
 
     .rank-num.gold {
-        background: #fef3c7;
-        color: #92400e;
+        background: rgba(186,117,23,.15);
+        color: #ba7517;
     }
 
     .rank-num.silver {
@@ -565,18 +579,18 @@ body {
     }
 
     .rank-num.bronze {
-        background: #fef9ee;
-        color: #78350f;
+        background: rgba(240,90,42,.1);
+        color: #f05a2a;
     }
 
 .code-pill {
-    font-family: 'DM Mono', monospace;
+    font-family: 'Roboto Mono', monospace;
     font-size: 11px;
-    background: #f4f5f8;
-    border: 1px solid #e2e5ec;
+    background: #e7ecf7;
+    border: 1px solid rgba(0,108,181,.2);
     border-radius: 4px;
     padding: 2px 8px;
-    color: #2d303a;
+    color: #006cb5;
     letter-spacing: .5px;
 }
 
