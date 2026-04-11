@@ -142,5 +142,14 @@ namespace AmenityScaleCore.Data
             }
             return list;
         }
+
+        public List<BattleDTO> GetAll()
+        {
+            SqlDataReader r = PDM.Data.SqlHelper.ExecuteReader(
+                GetConnectionString(),
+                "sp_Battle_GetAll"
+            );
+            return MapBattles(r);
+        }
     }
 }

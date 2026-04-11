@@ -74,7 +74,8 @@ namespace AmenityScaleCore.Data
                 new SqlParameter("@City", dto.City ?? string.Empty),
                 new SqlParameter("@SubdivisionID", dto.SubdivisionID),
                 new SqlParameter("@Latitude", dto.Latitude),
-                new SqlParameter("@Longitude", dto.Longitude)
+                new SqlParameter("@Longitude", dto.Longitude),
+                new SqlParameter("@CalculatedScore", dto.CalculatedScore)
             );
         }
 
@@ -126,6 +127,7 @@ namespace AmenityScaleCore.Data
 
             row.Latitude = r["Latitude"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(r["Latitude"]);
             row.Longitude = r["Longitude"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(r["Longitude"]);
+            row.CalculatedScore = r["CalculatedScore"] == DBNull.Value ? 0 : Convert.ToDouble(r["CalculatedScore"]);
 
             return row;
         }

@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title — AmenityScale Admin</title>
+
+    @Styles.Render("https://cdn.jsdelivr.net/npm/ag-grid-community@31.3.2/styles/ag-grid.css")
+    @Styles.Render("https://cdn.jsdelivr.net/npm/ag-grid-community@31.3.2/styles/ag-theme-alpine.css")
+    @Styles.Render("~/Content/admin.css")
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="label">Admin</div>
+            <h1>AmenityScale</h1>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="nav-item active" onclick="showTab('amenities', this)">
+                <span class="nav-icon"></span><span>Amenities</span>
+            </button>
+            <button class="nav-item" onclick="showTab('locations', this)">
+                <span class="nav-icon"></span><span>Locations</span>
+            </button>
+            <button class="nav-item" onclick="showTab('battles', this)">
+                <span class="nav-icon"></span><span>Battles</span>
+            </button>
+        </nav>
+        <div class="sidebar-footer">v0.1 Greeley CRUD BUSTER Extreme</div>
+    </aside>
+
+    <div class="main">
+        <div class="topbar">
+            <span class="page-title" id="pageTitle">Amenities</span>
+        </div>
+
+        <div class="content">
+            @RenderBody()
+        </div>
+    </div>
+
+    <div id="toast"><div class="toast-dot" id="toastDot"></div><span id="toastMsg"></span></div>
+    @Scripts.Render("https://cdn.jsdelivr.net/npm/ag-grid-community@31.3.2/dist/ag-grid-community.min.js")
+    @Scripts.Render("~/Scripts/admin.js")
+
+
+</body>
+</html>

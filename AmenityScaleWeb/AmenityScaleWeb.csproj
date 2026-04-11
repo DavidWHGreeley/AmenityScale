@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\BattleController.cs" />
+    <Compile Include="API\LocationController.cs" />
     <Compile Include="API\ORSController.cs" />
     <Compile Include="API\UsersController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="API\AmenitiesController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -189,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\admin.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -214,6 +217,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\address.js" />
+    <Content Include="Scripts\admin.js" />
     <Content Include="Scripts\api-requests.js" />
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\Battle.js" />
@@ -274,6 +278,8 @@
     <Content Include="Views\Shared\_BattleModal.cshtml" />
     <Content Include="Views\Shared\_BattleTabModal.cshtml" />
     <Content Include="Views\Shared\_AlreadyInBattleModal.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

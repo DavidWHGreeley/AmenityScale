@@ -1,5 +1,6 @@
 ﻿using AmenityScaleCore.Data;
 using AmenityScaleCore.Models.AmenitiesInRadius;
+using AmenityScaleCore.Models.Amenity;
 using AmenityScaleCore.Models.Location;
 using AmenityScaleWeb.Services;
 using System.Collections.Generic;
@@ -95,6 +96,46 @@ namespace AmenityScaleWeb.Controllers
                 city = request.city,
                 locationID
             });
+        }
+
+
+        [HttpGet]
+        [Route("api/amenities/categories")]
+        public IHttpActionResult GetCategories()
+        {
+            var categories = _amenityDataAccess.ReadCategories();
+            return Ok(categories);
+        }
+
+        [HttpGet]
+        [Route("api/amenities")]
+        public IHttpActionResult GetAmenities()
+        {
+            var amenities = _amenityDataAccess.ReadAll();
+            return Ok(amenities);
+        }
+        [HttpPost]
+        [Route("api/amenities")]
+        public IHttpActionResult CreateAmenity([FromBody] AmenityDTO dto)
+        {
+            _amenityDataAccess.Create(dto);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("api/amenities")]
+        public IHttpActionResult UpdateAmenity([FromBody] AmenityDTO dto)
+        {
+            _amenityDataAccess.Update(dto);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("api/amenities/{id}")]
+        public IHttpActionResult DeleteAmenity(int id)
+        {
+            _amenityDataAccess.Delete(id);
+            return Ok();
         }
 
     }
