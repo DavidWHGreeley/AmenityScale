@@ -1,9 +1,15 @@
 ﻿/// <summary>
 /// Version         Date        Coder                   Remarks
-/// 0.1             2026-02-04  Greeley                 get the local stored user name or create and store it.
+/// 0.1             2026-02-04  Greeley                 Gets or creates a user object
 
 import { createUser } from './api-requests.js'
 
+/**
+ * Gets the exisiting user from the Local Storage or creates a new one with a random name
+ * from our user name json. If we're create a new user, we're also gonna make a POST
+ * to the backend with that users object.
+ * @returns
+ */
 export async function getOrCreateUser() {
     const storedUser = localStorage.getItem('ameni_user')
     console.log('username: ', storedUser)

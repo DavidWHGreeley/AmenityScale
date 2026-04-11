@@ -1,8 +1,16 @@
-﻿import Gauge from 'https://esm.sh/svg-gauge'
+﻿/// <summary>
+/// Version         Date        Coder                   Remarks
+/// 0.1             2026-02-04  Greeley                 Gets or creates a user object
+/// 0.2             2026-02-04  Greeley                  UI logic, guages
+/// 0.3             2026-02-04  Greeley                 Battle Mode!!!!
+
+import Gauge from 'https://esm.sh/svg-gauge'
 import { AMENITIES } from './constants.js'
 import { redrawMarkers, displayBattleMarkers } from './map.js'
 import { getLeaderboard, getBattlesByUser } from './api-requests.js'
 import { getBattleCodeFromURL } from './battle.js'
+import { drawHoverIsochrones, clearHoverIsochrones } from './map.js'
+import { getIsochrones } from './api-requests.js'
 
 const btn = document.getElementById('hammy-btn')
 const menu = document.getElementById('menu-container')
@@ -28,6 +36,124 @@ let panelOpen = true
 
 export let locationSelected = false
 export function setLocationSelected(val) { locationSelected = val }
+
+/**
+ * Async function that fetches the leaderboard data and than conditionally renders the 
+ * share URL OR hides it if expired.
+ * @param {any} battleCode
+ * @param {any} status
+ */
+async function showLeaderboardView(battleCode, status) {
+    const { currentUser } = await import('./app.js')
+
+    battlesView.style.display = 'none'
+    leaderboardView.style.display = 'block'
+
+    leaderboardStatus.textContent = status
+    leaderboardStatus.className = `battle-status-badge ${status}`
+
+    const shareContainer = leaderboardView.querySelector('.input-container')
+    if (status === 'expired') {
+        shareContainer.style.display = 'none'
+    } else {
+        shareContainer.style.display = 'block'
+        const shareUrl = `${window.location.origin}?code=${battleCode}`
+        leaderboardShareUrl.value = shareUrl
+    }
+
+    const participants = await getLeaderboard(battleCode)
+    renderLeaderboard(participants, currentUser?.UserID)
+    displayBattleMarkers(participants, currentUser?.UserID, true)
+}
+
+/**
+ * Builds the leaderboard table to be added to the DOM.
+ * Users in the top spot are highlighted
+ * @param {any} participants
+ * @param {any} currentUserID
+ * @returns
+ */
+function renderLeaderboard(participants, currentUserID) {
+    leaderboardList.innerHTML = ''
+
+    if (!participants.length) {
+        leaderboardList.innerHTML = '<p class="battles-empty">No participants yet.</p>'
+        return
+    }
+
+    participants.forEach((p, i) => {
+        const isYou = p.UserID === currentUserID
+        const row = document.createElement('div')
+        row.classList.add('leaderboard-row')
+        row.innerHTML = `
+            <span class="leaderboard-rank ${i === 0 ? 'gold' : ''}">${i + 1}</span>
+            <div style="flex:1;">
+                <div class="leaderboard-name">${p.DisplayName} ${isYou ? '<span class="you-badge">YOU</span>' : ''}</div>
+                <div class="leaderboard-location">${p.LocationName || ''}</div>
+            </div>
+            <span class="leaderboard-score">${p.Score}</span>
+        `
+
+        row.addEventListener('mouseenter', async () => {
+            console.log('[hover] participant:', p)
+            if (!p.LocationID) return
+            const isochrones = await getIsochrones(p.LocationID)
+            console.log('[hover] isochrones:', isochrones)
+            drawHoverIsochrones(isochrones)
+        })
+
+        row.addEventListener('mouseleave', () => {
+            clearHoverIsochrones()
+        })
+
+
+        leaderboardList.appendChild(row)
+    })
+}
+
+/**
+ * Fetches the users battles, determins expiry status, and renders history items
+ * @param {any} userID
+ * @returns
+ */
+export async function renderBattlesList(userID) {
+    if (!userID) return
+
+    const battles = await getBattlesByUser(userID)
+
+    if (!battles.length) {
+        battlesList.innerHTML = '<p class="battles-empty">No battles yet. Click the map to start one!</p>'
+        return
+    }
+
+    battlesList.innerHTML = ''
+    battles.forEach(b => {
+        const item = document.createElement('button')
+        item.classList.add('battle-history-item')
+
+        const isExpired = new Date(b.ExpiresAt) < new Date()
+        const status = isExpired ? 'expired' : b.Status
+
+        const shortCode = b.BattleCode.substring(0, 13) + '...'
+        const date = new Date(b.ExpiresAt).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })
+        item.innerHTML = `
+    <div class="battle-item-row">
+        <span class="battle-item-code">${shortCode}</span>
+        <span class="battle-status-badge ${status}">${status}</span>
+    </div>
+    <div class="battle-item-meta">Expires ${date}</div>
+`
+        item.addEventListener('click', () => showLeaderboardView(b.BattleCode, status))
+        battlesList.appendChild(item)
+    })
+}
+
+/*
+~~~~ UI LOGIC!~~~~
+Since we have a ton of battle mode, and Amenity selecting code, errors and UI / UX
+issues are bound to happen. Most of the code below is surrounding UI related stuff. like
+UI interactions, menu toggles, loading states, trigger for popups etc etc.
+*/
 
 
 btn.addEventListener('click', () => {
@@ -147,85 +273,6 @@ document.getElementById('leaderboard-share-url')?.addEventListener('click', asyn
 function showBattlesView() {
     battlesView.style.display = 'block'
     leaderboardView.style.display = 'none'
-}
-
-async function showLeaderboardView(battleCode, status) {
-    const { currentUser } = await import('./app.js')
-
-    battlesView.style.display = 'none'
-    leaderboardView.style.display = 'block'
-
-    leaderboardStatus.textContent = status
-    leaderboardStatus.className = `battle-status-badge ${status}`
-
-    const shareContainer = leaderboardView.querySelector('.input-container')
-    if (status === 'expired') {
-        shareContainer.style.display = 'none'
-    } else {
-        shareContainer.style.display = 'block'
-        const shareUrl = `${window.location.origin}?code=${battleCode}`
-        leaderboardShareUrl.value = shareUrl
-    }
-
-    const participants = await getLeaderboard(battleCode)
-    renderLeaderboard(participants, currentUser?.UserID)
-    displayBattleMarkers(participants, currentUser?.UserID, true)
-}
-
-function renderLeaderboard(participants, currentUserID) {
-    leaderboardList.innerHTML = ''
-
-    if (!participants.length) {
-        leaderboardList.innerHTML = '<p class="battles-empty">No participants yet.</p>'
-        return
-    }
-
-    participants.forEach((p, i) => {
-        const isYou = p.UserID === currentUserID
-        const row = document.createElement('div')
-        row.classList.add('leaderboard-row')
-        row.innerHTML = `
-            <span class="leaderboard-rank ${i === 0 ? 'gold' : ''}">${i + 1}</span>
-            <div style="flex:1;">
-                <div class="leaderboard-name">${p.DisplayName} ${isYou ? '<span class="you-badge">YOU</span>' : ''}</div>
-                <div class="leaderboard-location">${p.LocationName || ''}</div>
-            </div>
-            <span class="leaderboard-score">${p.Score}</span>
-        `
-        leaderboardList.appendChild(row)
-    })
-}
-
-export async function renderBattlesList(userID) {
-    if (!userID) return
-
-    const battles = await getBattlesByUser(userID)
-
-    if (!battles.length) {
-        battlesList.innerHTML = '<p class="battles-empty">No battles yet. Click the map to start one!</p>'
-        return
-    }
-
-    battlesList.innerHTML = ''
-    battles.forEach(b => {
-        const item = document.createElement('button')
-        item.classList.add('battle-history-item')
-
-        const isExpired = new Date(b.ExpiresAt) < new Date()
-        const status = isExpired ? 'expired' : b.Status
-
-        const shortCode = b.BattleCode.substring(0, 13) + '...'
-        const date = new Date(b.ExpiresAt).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })
-        item.innerHTML = `
-    <div class="battle-item-row">
-        <span class="battle-item-code">${shortCode}</span>
-        <span class="battle-status-badge ${status}">${status}</span>
-    </div>
-    <div class="battle-item-meta">Expires ${date}</div>
-`
-        item.addEventListener('click', () => showLeaderboardView(b.BattleCode, status))
-        battlesList.appendChild(item)
-    })
 }
 
 backToBattles.addEventListener('click', showBattlesView)

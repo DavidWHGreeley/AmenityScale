@@ -1,4 +1,8 @@
-﻿const BASE = ''
+﻿// <summary>
+/// Version         Date        Coder                   Remarks
+/// 0.1             2026-04-10  Greeley                 Admin dashboard! Amenities, Locations, and Battles CRUD via AG Grid. Ripped from the old Loot.io game I worked on.
+
+const BASE = ''
 
 async function api(method, path, body) {
     const options = { method, headers: { 'Content-Type': 'application/json' } }

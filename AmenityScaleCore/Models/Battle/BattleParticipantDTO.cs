@@ -9,6 +9,7 @@
         public decimal? Longitude { get; set; }
 
         public int UserID { get; set; }
+        public int LocationID { get; set; }
 
     }
 }

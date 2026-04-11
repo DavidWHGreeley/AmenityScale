@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\BattleController.cs" />
+    <Compile Include="API\IsochronesController.cs" />
     <Compile Include="API\LocationController.cs" />
     <Compile Include="API\ORSController.cs" />
     <Compile Include="API\UsersController.cs" />

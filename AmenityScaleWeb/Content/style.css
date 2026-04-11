@@ -701,6 +701,12 @@ body {
     padding: 8px 0
 }
 
+    #app .content-container .map-container .leaderboard-row:hover {
+        background-color: rgba(240, 90, 42, 0.05);
+        border-left: 3px solid #f05a2a;
+        cursor: pointer;
+    }
+
     #app .content-container .map-container .leaderboard-row .leaderboard-rank {
         font-family: Bebas Neue, sans-serif;
         font-size: 1.1rem;
@@ -913,6 +919,7 @@ body {
     margin: 0 auto;
     width: 100%
 }
+
 .you-badge {
     background-color: rgba($primary, 0.15);
     border: 1px solid rgba($primary, 0.3);
@@ -964,17 +971,18 @@ body {
     border-radius: 50%;
     position: relative;
 }
+
     .location-pin-pulse::after {
-    animation: pulse 1.5s ease-out infinite;
-    background: rgba(0, 108, 181, 0.3);
-    border-radius: 50%;
-    content: '';
-    height: 32px;
-    left: -9px;
-    position: absolute;
-    top: -9px;
-    width: 32px;
-}
+        animation: pulse 1.5s ease-out infinite;
+        background: rgba(0, 108, 181, 0.3);
+        border-radius: 50%;
+        content: '';
+        height: 32px;
+        left: -9px;
+        position: absolute;
+        top: -9px;
+        width: 32px;
+    }
 
 
 
