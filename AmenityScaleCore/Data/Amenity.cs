@@ -6,16 +6,14 @@
 /// 0.4             2026-12-03  Cody            Added and fixed the baseweight not being read, Added insertlocation for created point
 
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Runtime.InteropServices;
 using AmenityScaleCore.Models.AmenitiesInRadius;
 using AmenityScaleCore.Models.Amenity;
 using AmenityScaleCore.Models.Category;
 using AmenityScaleCore.Models.Location;
 using AmenityScaleCore.Models.Subdivision;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
 
 
 
@@ -217,12 +215,12 @@ namespace AmenityScaleCore.Data
                 {
                     searchResult.IsNegative = Convert.ToInt32(r["IsNegative"]);
                 }
-                
+
                 if (HasColumn(r, "BaseWeight"))
                 {
                     searchResult.BaseWeight = Convert.ToDouble(r["BaseWeight"]);
                 }
-                
+
             }
 
             return row;
@@ -259,6 +257,7 @@ namespace AmenityScaleCore.Data
             // Call sp_Location_Create
             PDM.Data.SqlHelper.ExecuteNonQuery(GetConnectionString(), "sp_Location_Create", parameters);
         }
+
     }
 
 

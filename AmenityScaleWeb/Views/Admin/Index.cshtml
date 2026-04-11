@@ -1,0 +1,188 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Admin";
+}
+
+<div class="tab-page active" id="tab-amenities">
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">Total Amenities</div>
+            <div class="stat-value" id="stat-amenity-total">—</div>
+            <div class="stat-sub">All records in DB</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Categories</div>
+            <div class="stat-value" id="stat-amenity-cats">—</div>
+            <div class="stat-sub">Distinct categories</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Filtered Rows</div>
+            <div class="stat-value" id="stat-amenity-filtered">—</div>
+            <div class="stat-sub">Matching current filter</div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <span class="panel-title">Amenities</span>
+            <div class="panel-toolbar">
+                <input type="text" class="search" placeholder=" Filter…" oninput="amenityGrid.setGridOption('quickFilterText', this.value); updateAmenityStats()" />
+                <button class="btn btn-ghost" onclick="amenityGrid.exportDataAsCsv({fileName:'amenities.csv'})"> CSV</button>
+                <button class="btn btn-danger" id="amenityDelSelBtn" disabled onclick="deleteSelectedAmenities()"> Delete Selected</button>
+                <button class="btn btn-primary" onclick="openAmenityModal()"> Add</button>
+            </div>
+        </div>
+        <div class="grid-wrap ag-theme-alpine" id="amenityGrid"></div>
+    </div>
+</div>
+
+<div class="tab-page" id="tab-locations">
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">Total Locations</div>
+            <div class="stat-value" id="stat-loc-total">—</div>
+            <div class="stat-sub">Scored locations</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Avg Score</div>
+            <div class="stat-value" id="stat-loc-avg">—</div>
+            <div class="stat-sub">Mean walkability score</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Filtered Rows</div>
+            <div class="stat-value" id="stat-loc-filtered">—</div>
+            <div class="stat-sub">Matching current filter</div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <span class="panel-title">Locations</span>
+            <div class="panel-toolbar">
+                <input type="text" class="search" placeholder=" Filter…" oninput="locationGrid.setGridOption('quickFilterText', this.value); updateLocationStats()" />
+                <button class="btn btn-ghost" onclick="locationGrid.exportDataAsCsv({fileName:'locations.csv'})"> CSV</button>
+                <button class="btn btn-danger" id="locDelSelBtn" disabled onclick="deleteSelectedLocations()">Delete Selected</button>
+                <button class="btn btn-primary" onclick="openLocationModal()">Add</button>
+            </div>
+        </div>
+        <div class="grid-wrap ag-theme-alpine" id="locationGrid"></div>
+    </div>
+</div>
+
+<div class="tab-page" id="tab-battles">
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">Total Battles</div>
+            <div class="stat-value" id="stat-battle-total">—</div>
+            <div class="stat-sub">All-time battles</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Active</div>
+            <div class="stat-value" id="stat-battle-active">—</div>
+            <div class="stat-sub">Status = open &amp; not expired</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Participants</div>
+            <div class="stat-value" id="stat-battle-participants">—</div>
+            <div class="stat-sub">Leaderboard entries</div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <span class="panel-title">Battles</span>
+            <div class="panel-toolbar">
+                <input type="text" class="search" placeholder="Filter…" oninput="battleGrid.setGridOption('quickFilterText', this.value)" />
+                <button class="btn btn-ghost" onclick="battleGrid.exportDataAsCsv({fileName:'battles.csv'})">CSV</button>
+                <button class="btn btn-primary" onclick="openCreateBattleModal()">New Battle</button>
+            </div>
+        </div>
+        <div class="grid-wrap ag-theme-alpine" id="battleGrid" style="min-height:260px;"></div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <span class="panel-title" id="leaderboardTitle">Leaderboard - Select a battle above</span>
+            <div class="panel-toolbar">
+                <button class="btn btn-ghost" id="leaderboardRefresh" onclick="refreshLeaderboard()" disabled> Refresh</button>
+            </div>
+        </div>
+        <div class="grid-wrap ag-theme-alpine" id="leaderboardGrid" style="min-height:220px;"></div>
+    </div>
+</div>
+
+<div class="backdrop" id="amenityModal">
+    <div class="modal">
+        <div class="modal-head">
+            <h2 id="amenityModalTitle">Add Amenity</h2>
+            <button class="modal-close" onclick="closeModal('amenityModal')">×</button>
+        </div>
+        <div class="form-grid">
+            <div class="fg full"><label>Name</label><input id="am-name" placeholder="e.g. Central Park" /></div>
+            <div class="fg">
+                <label>Category</label>
+                <select id="am-category">
+                    <option value="">— Select —</option>
+                </select>
+            </div>
+            <div class="fg"><label>Street</label><input id="am-street" placeholder="123 Main St" /></div>
+            <div class="fg"><label>City</label><input id="am-city" placeholder="Toronto" /></div>
+            <div class="fg">
+                <label>Subdivision</label>
+                <select id="am-subdivision">
+                    <option value="">— Select —</option>
+                </select>
+            </div>
+            <div class="fg"><label>Latitude</label><input id="am-lat" type="number" step="any" placeholder="43.6532" /></div>
+            <div class="fg"><label>Longitude</label><input id="am-lng" type="number" step="any" placeholder="-79.3832" /></div>
+        </div>
+        <div class="modal-foot">
+            <button class="btn btn-ghost" onclick="closeModal('amenityModal')">Cancel</button>
+            <button class="btn btn-primary" onclick="saveAmenity()">Save Amenity</button>
+        </div>
+    </div>
+</div>
+
+<div class="backdrop" id="locationModal">
+    <div class="modal">
+        <div class="modal-head">
+            <h2 id="locationModalTitle">Add Location</h2>
+            <button class="modal-close" onclick="closeModal('locationModal')">×</button>
+        </div>
+        <div class="form-grid">
+            <div class="fg full"><label>Location Name</label><input id="lm-name" placeholder="123 Princess St" /></div>
+            <div class="fg"><label>Street Number</label><input id="lm-streetnum" placeholder="123" /></div>
+            <div class="fg"><label>Street</label><input id="lm-street" placeholder="Princess St" /></div>
+            <div class="fg"><label>City</label><input id="lm-city" placeholder="Kingston" /></div>
+            <div class="fg">
+                <label>Subdivision</label>
+                <select id="lm-subdivision">
+                    <option value="">— Select —</option>
+                </select>
+            </div>
+            <div class="fg"><label>Latitude</label><input id="lm-lat" type="number" step="any" placeholder="44.2312" /></div>
+            <div class="fg"><label>Longitude</label><input id="lm-lng" type="number" step="any" placeholder="-76.4860" /></div>
+            <div class="fg"><label>Calculated Score</label><input id="lm-score" type="number" step="0.01" placeholder="72.5" /></div>
+        </div>
+        <div class="modal-foot">
+            <button class="btn btn-ghost" onclick="closeModal('locationModal')">Cancel</button>
+            <button class="btn btn-primary" onclick="saveLocation()">Save Location</button>
+        </div>
+    </div>
+</div>
+
+<div class="backdrop" id="battleModal">
+    <div class="modal" style="width:360px;">
+        <div class="modal-head">
+            <h2>New Battle</h2>
+            <button class="modal-close" onclick="closeModal('battleModal')">×</button>
+        </div>
+        <div class="form-grid" style="grid-template-columns:1fr;">
+            <div class="fg"><label>Your User ID</label><input id="bm-userid" type="number" placeholder="e.g. 42" /></div>
+        </div>
+        <div class="modal-foot">
+            <button class="btn btn-ghost" onclick="closeModal('battleModal')">Cancel</button>
+            <button class="btn btn-primary" onclick="createBattle()">Create Battle</button>
+        </div>
+    </div>
+</div>
