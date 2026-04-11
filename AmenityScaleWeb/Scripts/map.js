@@ -14,9 +14,12 @@ This file is for Google maps specific task
 import { TRAVEL_TIMES } from './constants.js'
 import { generateIsochroneWKT } from './isochrones.js';
 import { reverseGeocode } from "./address.js";
+import { isLoadingFn, showScoreFn, endLoadingFn, setLocationSelected, amenityState, locationSelected } from './ui.js'
 
+let battleMarkers = []
 
 const kingstonCenter = { lat: 44.245019, lng: -76.54911 }
+
 
 let map
 let markers = []
@@ -25,8 +28,11 @@ let activeMarker = null
 let heatmap = null
 let heatmapVisible = false
 let onLocationSelected = null
+let amenities = null
+
 
 function buildLocationPin() {
+    console.log('testing')
     const pin = new google.maps.marker.PinElement({
         background: '#006cb5',
         borderColor: '#004f8a',
@@ -76,7 +82,7 @@ function drawIsochronePolygons(pathList = []) {
 
     });
 }
-    
+
 
 // Builds a heatmap layer from amenity coordinates.
 function buildHeatmap(data) {
@@ -96,6 +102,10 @@ function buildHeatmap(data) {
 }
 
 export function toggleHeatmap() {
+    if (!locationSelected) {
+        new bootstrap.Modal(document.getElementById('noLocationModal')).show()
+        return
+    }
     if (!heatmap) return
     heatmapVisible = !heatmapVisible
     heatmap.setMap(heatmapVisible ? map : null)
@@ -114,6 +124,7 @@ export function panToAddress({ lat, lon, displayName }) {
 
     clearActiveMarker()
 
+
     activeMarker = new google.maps.marker.AdvancedMarkerElement({
         position,
         map,
@@ -121,8 +132,8 @@ export function panToAddress({ lat, lon, displayName }) {
         content: buildLocationPin(),
         zIndex: 999,
     })
-
-//    drawRadiusCircle(position)
+    const content = `<h2>${displayName}</h2>`
+    attachInfoWindow(activeMarker, content)
     map.panTo(position)
     map.setZoom(15)
 
@@ -134,34 +145,36 @@ export function displayScore(score) {
 
     if (!activeMarker) return
 
-    const content = `
-        <div>
-            <h3>Location Score</h3>
-            <p><strong>Score:</strong> ${score}</p>
-        </div>`
-
-    attachInfoWindow(activeMarker, content)
+    showScoreFn(score)
 }
 
 async function main() {
+    await google.maps.importLibrary("maps");
+    await google.maps.importLibrary("marker");
+    await google.maps.importLibrary("visualization");
+
     map = new google.maps.Map(document.getElementById('map'), {
         center: kingstonCenter,
         zoom: 13,
-        mapId: 'YOUR_MAP_ID',
+        mapId: 'SomeID',
+        mapTypeControl: false,
+        fullscreenControl: false
     })
 
     attachMapClickListener()
 }
 
-window.main = main
 
 function attachMapClickListener() {
     map.addListener('click', async (event) => {
+
         const lat = event.latLng.lat()
         const lng = event.latLng.lng()
         const position = { lat, lng }
 
         clearActiveMarker()
+        clearBattleMarkers()
+        setLocationSelected(true)
 
         activeMarker = new google.maps.marker.AdvancedMarkerElement({
             position,
@@ -171,8 +184,9 @@ function attachMapClickListener() {
             zIndex: 999,
         })
 
-
         try {
+            isLoadingFn()
+            amenities = null
             // Gets address from coordinates
             const address = await reverseGeocode({ lat: lat, lon: lng });
 
@@ -188,7 +202,7 @@ function attachMapClickListener() {
                 let wktData = {}
                 let counter = 1;
 
-                for (let i = sortedIsochrones.length - 1; i >=0; i--) {
+                for (let i = sortedIsochrones.length - 1; i >= 0; i--) {
                     wktData["wkt" + counter] = sortedIsochrones[i].wkt;
                     counter++;
                 }
@@ -200,12 +214,13 @@ function attachMapClickListener() {
                 wktData.streetNumber = address.streetNumber
                 wktData.street = address.street
                 wktData.city = address.city
-                
+
                 onLocationSelected(wktData);
             }
 
         } catch (error) {
             console.error("Isochrone calculation failed:", error);
+            endLoadingFn()
         }
 
     })
@@ -221,11 +236,14 @@ function attachInfoWindow(marker, content) {
 
 // Clears all existing amenity markers, plots fresh ones from the result set,
 // attaches info windows, updates the score display, and rebuilds the heatmap.
-export function displayResults(data, score) {
+export async function displayResults(data, score) {
     for (const m of markers) m.map = null
     markers = []
+    amenities = data
 
-    for (const amenity of data) {
+    for (const amenity of amenities) {
+        if (!amenityState[amenity.CategoryName]) continue
+
         const amenityMarker = new google.maps.marker.AdvancedMarkerElement({
             position: { lat: amenity.Latitude, lng: amenity.Longitude },
             map,
@@ -238,8 +256,69 @@ export function displayResults(data, score) {
         markers.push(amenityMarker)
     }
 
+    endLoadingFn()
     displayScore(score)
     buildHeatmap(data)
 }
 
-//window.addEventListener('load', main)
+export function redrawMarkers() {
+    if (!amenities) return
+    for (const m of markers) m.map = null
+    markers = []
+
+    for (const amenity of amenities) {
+        if (!amenityState[amenity.CategoryName]) continue
+
+        const amenityMarker = new google.maps.marker.AdvancedMarkerElement({
+            position: { lat: amenity.Latitude, lng: amenity.Longitude },
+            map,
+            title: amenity.Name,
+            content: buildAmenityPin(),
+        })
+
+        const content = `<h2>${amenity.Name}</h2><p>Distance: ${amenity.DistanceInMeters} meters</p>`
+        attachInfoWindow(amenityMarker, content)
+        markers.push(amenityMarker)
+    }
+}
+
+export function clearBattleMarkers() {
+    for (const marker of battleMarkers) marker.map = null
+}
+
+export function displayBattleMarkers(participants, currentUserID, showAll = false) {
+    clearBattleMarkers()
+
+    for (const participant of participants) {
+        if (!participant.Latitude || !participant.Longitude) continue
+
+        const isCurrentUser = participant.UserID === currentUserID
+        if (isCurrentUser && !showAll) continue
+
+        const pin = new google.maps.marker.PinElement({
+            background: isCurrentUser ? '#006cb5' : '#f05a2a',
+            borderColor: isCurrentUser ? '#004f8a' : '#c43d0e',
+            glyphColor: '#ffffff',
+        })
+
+        const marker = new google.maps.marker.AdvancedMarkerElement({
+            position: { lat: Number(participant.Latitude), lng: Number(participant.Longitude) },
+            map,
+            title: participant.DisplayName,
+            content: pin.element,
+            zIndex: 998,
+        })
+
+        const content = `
+            <div>
+                <h3>${participant.DisplayName}${isCurrentUser ? ' (You)' : ''}</h3>
+                <p>Score: <strong>${participant.Score}</strong></p>
+                <p>${participant.LocationName || ''}</p>
+            </div>`
+
+        attachInfoWindow(marker, content)
+        battleMarkers.push(marker)
+    }
+}
+
+window.addEventListener('load', main)

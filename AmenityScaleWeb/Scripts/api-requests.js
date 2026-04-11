@@ -3,6 +3,7 @@
 /// 0.1             2026-16-02  Patrick                 Init Script
 /// 0.2             2026-20-02  Cody & Greeley          Refactor and added Save address function
 /// 0.2.1           2026-16-03  Cody                    Added Street address to JSON payload
+/// 0.3             2026-02-04  Greeley                 Create User, Start battle
 ///
 
 
@@ -24,7 +25,7 @@ export async function whenLocationSelected(wktData) {
                 'Content-Type': 'application/json'
             },
             // Convert to JSON string
-            
+
             // TODO: That also means any DTO used in GetFullNeighborhoodScore MIGHT have to change as well.
             body: JSON.stringify({
                 wkt1: wktData.wkt1,
@@ -39,7 +40,7 @@ export async function whenLocationSelected(wktData) {
                 street: wktData.street,
                 city: wktData.city
             })
-        
+
         });
 
         if (!response.ok) {
@@ -53,6 +54,8 @@ export async function whenLocationSelected(wktData) {
         if (data.amenities) {
             displayResults(data.amenities, data.totalScore);
         }
+
+        return data
     } catch (error) {
         console.error('[api] Scoring fetch failed:', error);
     }
@@ -101,5 +104,47 @@ export async function saveAddress(addressData) {
         lon: addressData.lon,
     }
 
-    console.log('[api] TODO saveAddress — would POST to /api/SaveAddress:', payload)
+}
+
+export async function createUser(DisplayName) {
+    const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(DisplayName)
+    })
+    return await response.json()
+}
+
+export async function startBattle(UserID) {
+    const response = await fetch('/api/battles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(UserID)
+    })
+    return await response.json()
+}
+
+export async function joinBattle(battleCode, userID, locationID) {
+    const response = await fetch(`/api/battles/${battleCode}/join`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userID, locationID })
+    });
+
+    if (!response.ok) {
+        const err = await response.text();
+        throw new Error(err);
+    }
+
+    return await response.json();
+}
+
+export async function getLeaderboard(battleCode) {
+    const response = await fetch(`/api/battles/${battleCode}/leaderboard`);
+    return await response.json();
+}
+
+export async function getBattlesByUser(userID) {
+    const response = await fetch(`/api/battles/user/${userID}`);
+    return await response.json();
 }

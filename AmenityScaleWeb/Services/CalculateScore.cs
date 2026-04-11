@@ -1,8 +1,7 @@
-﻿using System;
+﻿using AmenityScaleCore.Models.AmenitiesInRadius;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using AmenityScaleCore.Models.AmenitiesInRadius;
-using AmenityScaleWeb.MathHelpers;
 
 /// <summary>
 /// Version         Date        Coder                   Remarks
@@ -21,6 +20,9 @@ namespace AmenityScaleWeb.Services
             { 3, 0.6 },
             { 4, 0.4 }
         };
+
+        private const double TheoreticalMax = 11522.00;
+
 
         public static double CalculateTotalScore(Dictionary<int, List<AmenitiesInRadiusDTO>> rings)
         {
@@ -55,7 +57,9 @@ namespace AmenityScaleWeb.Services
                 }
             }
 
-            return finalScore;
+            double normalizedScore = (finalScore / TheoreticalMax) * 100;
+
+            return Math.Max(0, Math.Min(100, normalizedScore));
         }
 
     }

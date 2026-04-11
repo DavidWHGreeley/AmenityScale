@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
-using AmenityScaleCore.Data;
+﻿using AmenityScaleCore.Data;
 using AmenityScaleCore.Models.AmenitiesInRadius;
 using AmenityScaleCore.Models.Location;
 using AmenityScaleWeb.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
 
 /// <summary>
 /// Version         Date        Coder                   Remarks
@@ -76,7 +74,7 @@ namespace AmenityScaleWeb.Controllers
             // Save User Score to Location Table
             System.Diagnostics.Debug.WriteLine($"Saving location: {request.streetNumber} {request.street}");
 
-            _locationDataAccess.Create(new LocationDTO
+            int locationID = _locationDataAccess.Create(new LocationDTO
             {
                 LocationName = $"{request.streetNumber} {request.street}",
                 StreetNumber = request.streetNumber,
@@ -87,15 +85,15 @@ namespace AmenityScaleWeb.Controllers
                 Longitude = (decimal)(request.lng),
                 CalculatedScore = totalScore
             });
-            // Round score to 2 decimal places
-            //return Ok(new { amenities = uniqueAmenities, totalScore = System.Math.Round(totalScore, 2) });
+
             return Ok(new
             {
                 amenities = uniqueAmenities,
                 totalScore = System.Math.Round(totalScore, 2),
                 streetNumber = request.streetNumber,
                 street = request.street,
-                city = request.city
+                city = request.city,
+                locationID
             });
         }
 

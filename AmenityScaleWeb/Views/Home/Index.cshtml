@@ -1,6 +1,5 @@
 ﻿@{
-    ViewBag.Title = "AmeniScaleWeb Basic Map";
-    Layout = null;
+    Layout = "/Views/Shared/_Layout.cshtml";
 }
 
 @*
@@ -10,77 +9,140 @@
     /// 0.2             2026-21-02  Greeley                 Added Address form, debug features, and other basic styling. Updated scripts.
     /// 0.3             2026-21-02  Greeley                 API key using ViewBag
 *@
-<!doctype html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/Content/style.css">
-    <title>vite-project</title>
-</head>
+<div class="content-container">
 
-<body>
-    <div id="app">
-        <div class="navigation-bar">
-            <div class="logo-container">
-                <img src="~/Content/logoMin.png" alt="">
+    <div class="map-container">
+        <div id="battle-ribbon" style="display:none;">
+            <span>BATTLE MODE</span>
+            <div class="battle-tooltip">
+                Click the map to score your location and join the fight. May the best neighborhood win!
             </div>
-            <div class="links"></div>
         </div>
-
-        <div class="content-container">
-
-            <button id="toggle-slider" aria-label="Enter address">&#9776; Enter Address</button>
-            <button id="toggle-heatmap" aria-label="Toggle heatmap">&#x1F525; Heatmap</button>
-
-            <div class="right-slider" id="right-slider">
-                <h2>Your Address</h2>
-
-                <form id="address-form">
-                    <div class="form-group">
-                        <label for="street-number">Street Number</label>
-                        <input type="text" id="street-number" placeholder="123" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="street-name">Street Name</label>
-                        <input type="text" id="street-name" placeholder="Main St" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" id="city" placeholder="Kingston" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="province">Province</label>
-                        <select id="province" required>
-                            <option value="" disabled selected>Select province</option>
-                            <option value="ON">Ontario</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" id="find-amenities">Find Amenities</button>
-                    <p id="geocode-status" class="status-msg"></p>
-                </form>
-
-                <!--Save Location Button-->
-                <button id="save-location-score" type="button">
-                    Save Current Point Score
+        <div id="amenity-panel" class="amenity-panel">
+            <div class="nav nav-tabs" id="amenity-tab" role="tablist">
+                <button class="nav-link active" id="tab-amenities" data-bs-toggle="tab"
+                        data-bs-target="#panel-amenities" type="button" role="tab" aria-controls="panel-amenities"
+                        aria-selected="true">
+                    Amenities
                 </button>
+                <button class="nav-link" id="tab-battle" data-bs-toggle="tab" data-bs-target="#panel-battle"
+                        type="button" role="tab" aria-controls="panel-battle" aria-selected="false">
+                    Battle
+                    Mode
+                </button>
+            </div>
+            <div class="tab-content" id="amenity-tab-content">
 
-                <div class="debug-section">
-                    <p class="debug-label">&#x1F6E0; Debug</p>
-                    <button id="debug-fill" type="button">Use 216 Ontario St, Kingston</button>
+                <div class="tab-pane fade show active" id="panel-amenities" role="tabpanel"
+                     aria-labelledby="tab-amenities">
+                    <div class="gauges">
+                        <div id="gauge3" class="gauge-container two"></div>
+                    </div>
+                    <div class="info-container">Amenity Score</div>
+                    <div class="actions">
+                        <button id="toggle-heatmap" aria-label="Toggle heatmap">Toggle Heatmap</button>
+                    </div>
+                    <h3>Amenities</h3>
+                    <hr>
+                    <div class="actions">
+                        <button id="show-all">Show all</button>
+                        <button id="hide-all">Hide all</button>
+                    </div>
+                    <hr>
+                    <div class="amenity-grid" id="amenity-grid"></div>
+                </div>
+
+                <div class="tab-pane fade" id="panel-battle" role="tabpanel" aria-labelledby="tab-battle">
+                    <div class="battle-container">
+
+                        <div id="battle-start-section" class="battle-start-section">
+                            <h3>Start a Battle</h3>
+                            <p>Click anywhere on the map to score your location, then start a battle and share the link with friends. Whoever has the best neighborhood wins!</p>
+                            <button id="start-battle-btn" class="btn btn-primary" style="margin: 10px 0px;" disabled>Start Battle</button>
+                            <div class="input-container">
+                                <input type="text" id="share-url" class="share-url" readonly
+                                       placeholder="Score a location first..." />
+                                <span id="copied" class="copied">Copied</span>
+                            </div>
+                        </div>
+                        <div id="battle-invite-banner" class="battle-invite-banner" style="display:none;">
+                            <h3>You're in a Battle!</h3>
+                            <p>Click the map to score your location and join the fight. May the best neighbourhood win!</p>
+                            <button id="submit-location-btn" class="btn btn-primary">Submit My Location</button>
+                        </div>
+                        <br>
+                        <h3>My Past Battles</h3>
+                        <div id="battles-view">
+
+                            <div id="battles-list">
+                                <p class="battles-empty">No battles yet. Click the map to start one!</p>
+                            </div>
+                        </div>
+
+                        <div id="leaderboard-view" style="display:none;">
+                            <div class="leaderboard-header">
+                                <button id="back-to-battles">&#8592; Back</button>
+                                <span id="leaderboard-status" class="battle-status-badge"></span>
+                            </div>
+                            <div id="leaderboard-list"></div>
+                            <div class="input-container">
+                                <input type="text" id="leaderboard-share-url" class="share-url" readonly
+                                       placeholder="Battle Link" />
+                                <span id="leaderboard-copied" class="copied">Copied</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div id="map" class="map"></div>
+        <div class="sidebar">
+            <div class="menu-items">
+                <div class="item" id="toggle-panel">
+                    <img src="~/Content/gauge-high(1).svg" alt="">
+                    <span class="text" id="panel-toggle-text">Show Details</span>
                 </div>
             </div>
+            <div class="menu__border" id="bulge"></div>
 
-            <div id="map" class="map"></div>
+            <div class="svg-container">
+                <svg viewBox="0 0 202.9 45.5">
+                    <clipPath id="bulge-clip" clipPathUnits="objectBoundingBox"
+                              transform="scale(0.0049285362247413 0.021978021978022)">
+                        <path d="M6.7,45.5c5.7,0.1,14.1-0.4,23.3-4c5.7-2.3,9.9-5,18.1-10.5c10.7-7.1,11.8-9.2,20.6-14.3c5-2.9,9.2-5.2,15.2-7c7.1-2.1,13.3-2.3,17.6-2.1c4.2-0.2,10.5,0.1,17.6,2.1c6.1,1.8,10.2,4.1,15.2,7c8.8,5,9.9,7.1,20.6,14.3c8.3,5.5,12.4,8.2,18.1,10.5c9.2,3.6,17.6,4.2,23.3,4H6.7z" />
+                    </clipPath>
+                </svg>
+            </div>
         </div>
+
+        <div id="score-popup" class="score-container">
+            <div class="dismissContainer">
+                <i id="close-score" class="fa-regular fa-circle-xmark"></i>
+            </div>
+            <div class="gauges">
+                <div id="gauge2" class="gauge-container two">
+                </div>
+            </div>
+            <div class="info-container">
+                Amenity Score
+            </div>
+        </div>
+        <div id="leaderboard"></div>
     </div>
+    <div id="loading" class="infinity-loader">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150">
+            <path fill="none" stroke="#006CB5" stroke-width="15" stroke-linecap="round"
+                  stroke-dasharray="300 385" stroke-dashoffset="0"
+                  d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z">
+                <animate attributeName="stroke-dashoffset" calcMode="spline" dur="1.9" values="685;-685"
+                         keySplines="0 0 1 1" repeatCount="indefinite"></animate>
+            </path>
+        </svg>
+        <div class="info">Calculating</div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleMapsKey&libraries=marker,visualization,geometry&callback=main" async defer></script>
-    <script type="module" src="~/Scripts/app.js"></script>
-    <script type="module" src="~/Scripts/map.js"></script>
-</body>
-
-</html>
+    </div>
+</div>

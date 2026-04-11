@@ -25,24 +25,24 @@ const DEBUG_ADDRESS = {
     province: 'ON',
 }
 
-const toggleBtn = document.getElementById('toggle-slider')
-const slider = document.getElementById('right-slider')
+// const toggleBtn = document.getElementById('toggle-slider')
+// const slider = document.getElementById('right-slider')
 const form = document.getElementById('address-form')
 const statusMsg = document.getElementById('geocode-status')
 const submitBtn = document.getElementById('find-amenities')
-const debugBtn = document.getElementById('debug-fill')
+// const debugBtn = document.getElementById('debug-fill')
 
-toggleBtn.addEventListener('click', () => {
-    slider.classList.toggle('open')
-})
+// toggleBtn.addEventListener('click', () => {
+//     slider.classList.toggle('open')
+// })
 
-debugBtn.addEventListener('click', () => {
-    document.getElementById('street-number').value = DEBUG_ADDRESS.streetNumber
-    document.getElementById('street-name').value = DEBUG_ADDRESS.streetName
-    document.getElementById('city').value = DEBUG_ADDRESS.city
-    document.getElementById('province').value = DEBUG_ADDRESS.province
-    form.requestSubmit()
-})
+// debugBtn.addEventListener('click', () => {
+//     document.getElementById('street-number').value = DEBUG_ADDRESS.streetNumber
+//     document.getElementById('street-name').value = DEBUG_ADDRESS.streetName
+//     document.getElementById('city').value = DEBUG_ADDRESS.city
+//     document.getElementById('province').value = DEBUG_ADDRESS.province
+//     form.requestSubmit()
+// })
 
 // Calls the Nominatim API to convert a street address into lat / lon coordinates.
 async function geocodeAddress({ streetNumber, streetName, city, province }) {
@@ -67,34 +67,34 @@ async function geocodeAddress({ streetNumber, streetName, city, province }) {
 
 // On valid form submission, geocodes the address, updates the shared addressData
 // object, and fires address:resolved so other functions can react.
-form.addEventListener('submit', async (e) => {
-    e.preventDefault()
+// form.addEventListener('submit', async (e) => {
+//     e.preventDefault()
 
-    const streetNumber = document.getElementById('street-number').value.trim()
-    const streetName = document.getElementById('street-name').value.trim()
-    const city = document.getElementById('city').value.trim()
-    const province = document.getElementById('province').value
+//     const streetNumber = document.getElementById('street-number').value.trim()
+//     const streetName = document.getElementById('street-name').value.trim()
+//     const city = document.getElementById('city').value.trim()
+//     const province = document.getElementById('province').value
 
-    setStatus('Geocoding address...', '')
-    submitBtn.disabled = true
+//     setStatus('Geocoding address...', '')
+//     submitBtn.disabled = true
 
-    try {
-        const { lat, lon, displayName } = await geocodeAddress({ streetNumber, streetName, city, province })
+//     try {
+//         const { lat, lon, displayName } = await geocodeAddress({ streetNumber, streetName, city, province })
 
-        Object.assign(addressData, { streetNumber, streetName, city, province, lat, lon, displayName })
+//         Object.assign(addressData, { streetNumber, streetName, city, province, lat, lon, displayName })
 
-        setStatus(`Found: ${displayName}`, 'success')
-        console.log('[address] Address data ready:', addressData)
+//         setStatus(`Found: ${displayName}`, 'success')
+//         console.log('[address] Address data ready:', addressData)
 
-        document.dispatchEvent(new CustomEvent('address:resolved', { detail: { ...addressData } }))
+//         document.dispatchEvent(new CustomEvent('address:resolved', { detail: { ...addressData } }))
 
-    } catch (err) {
-        setStatus(err.message, 'error')
-        console.error('[address] Geocoding error:', err)
-    } finally {
-        submitBtn.disabled = false
-    }
-})
+//     } catch (err) {
+//         setStatus(err.message, 'error')
+//         console.error('[address] Geocoding error:', err)
+//     } finally {
+//         submitBtn.disabled = false
+//     }
+// })
 
 function setStatus(msg, type) {
     statusMsg.textContent = msg
